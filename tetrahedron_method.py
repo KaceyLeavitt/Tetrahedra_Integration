@@ -1,4 +1,24 @@
 def integrate(r_lattice_vectors, grid, PP, valence_electrons, apply_weight_correction):
+    """A function that performs Brillouin zone integration of the energy bands to determine the total energy. An 
+    improved version of the tetrahedron method is used.
+    
+    This function is an implementation of the algorithm proposed in "Improved tetrahedron method for Brillouin-zone 
+    integrations" by Peter E. Blöchl, O. Jepsen, and O. K. Andersen from Physical Review B 49, 16223 – Published 15 June 
+    1994.
+    
+    Args:
+        r_lattice_vectors (NumPy array): the reciprocal lattice vectors
+        grid (Numpy array): the k points in the reciprocal lattice unit cell at which calculations will be performed
+        PP (
+        valence_electrons (int): the number of valence electrons possessed by the element in question
+        apply_weight_correction (bool): true if the integration weights should be corrected to take curvature into 
+            account, false otherwise
+    
+    Returns:
+        E_Fermi (float): the calculated Fermi energy level
+        total_energy (float): the total calculated energy in the Brillouin zone, the result of the integration
+    """
+
     #number of intervals in each direction
     n1 =
     """int: the number of grid intervals in the direction of the first reciprocal lattice vector.
@@ -6,7 +26,7 @@ def integrate(r_lattice_vectors, grid, PP, valence_electrons, apply_weight_corre
     n2 =
     """int: the number of grid intervals in the direction of the second reciprocal lattice vector.
     This value is one less than the number of grid points in the direction of the second reciprocal lattice vector."""
-    n3 = r_lattice_vectors.shape[1] - 1
+    n3 =
     """int: the number of grid intervals in the direction of the third reciprocal lattice vector.
     This value is one less than the number of grid points in the direction of the third reciprocal lattice vector."""
 
@@ -310,11 +330,14 @@ def integrate(r_lattice_vectors, grid, PP, valence_electrons, apply_weight_corre
         tetrahedra_by_point.append(adjacent_tetrahedra)
 
 
-    #Calculating integration weights at the corners of each tetrahedron from the fermi level and energy levels for each band
+    #Calculating integration weights at the corners of each tetrahedron from the fermi level and energy levels for each
+    # band. Integration of the energy levels over the Brillouin zone is performed.
     total_energy = 0
+    """float: the total energy in the Brillouin zone. This value is the final result of the integration."""
 
     for m in range(len(tetrahedra_quadruples)):
         corners = tetrahedra_quadruples[m] #The corner points for the tetrahedron are called.
+        """list of ints: the indices of each corner of the given tetrahedron."""
 
         #Each energy band is looped over
         for n in range(8):
@@ -337,9 +360,17 @@ def integrate(r_lattice_vectors, grid, PP, valence_electrons, apply_weight_corre
 
             #The weightings for each corner of the tetrahedron are determined
             w_1 = 0
+            """float: the weighting assigned to the energy level at the first corner of the tetrahedron when integration 
+            is being performed."""
             w_2 = 0
+            """float: the weighting assigned to the energy level at the second corner of the tetrahedron when 
+            integration is being performed."""
             w_3 = 0
+            """float: the weighting assigned to the energy level at the third corner of the tetrahedron when integration 
+            is being performed."""
             w_4 = 0
+            """float: the weighting assigned to the energy level at the fourth corner of the tetrahedron when 
+            integration is being performed."""
 
             if E_Fermi < E_1:
                 w_1 = 0
@@ -348,6 +379,7 @@ def integrate(r_lattice_vectors, grid, PP, valence_electrons, apply_weight_corre
                 w_4 = 0
             elif E_Fermi >= E_1 and E_Fermi < E_2:
                 C = V_T/(4*V_G)*(E_Fermi - E_1)**3/(E_21*E_31*E_41)
+                """float: a useful value for the following calculations."""
 
                 w_1 = C*(4 - (E_Fermi- E_1)*(1/E_21 + 1/E_31 + 1/E_41))
                 w_2 = C*(E_Fermi - E_1)/E_21
@@ -355,8 +387,11 @@ def integrate(r_lattice_vectors, grid, PP, valence_electrons, apply_weight_corre
                 w_4 = C*(E_Fermi - E_1)/E_41
             elif E_Fermi >= E_2 and E_Fermi < E_3:
                 C_1 = V_T/(4*V_G)*(E_Fermi - E_1)**2/(E_41*E_31)
+                """float: a useful value for the following calculations."""
                 C_2 = V_T/(4*V_G)*(E_Fermi - E_1)*(E_Fermi - E_2)*(E_3 - E_Fermi)/(E_41*E_32*E_31)
+                """float: a useful value for the following calculations."""
                 C_3 = V_T/(4*V_G)*(E_Fermi - E_2)**2*(E_4 - E_Fermi)/(E_42*E_32*E_41)
+                """float: a useful value for the following calculations."""
 
                 w_1 = C_1 + (C_1 + C_2)*(E_3 - E_Fermi)/E_31 + (C_1 + C_2 + C_3)*(E_4 - E_Fermi)/E_41
                 w_2 = C_1 + C_2 + C_3 + (C_2 + C_3)*(E_3 - E_Fermi)/E_32 + C_3*(E_4 - E_Fermi)/E_42
@@ -364,6 +399,7 @@ def integrate(r_lattice_vectors, grid, PP, valence_electrons, apply_weight_corre
                 w_4 = (C_1 + C_2 + C_3)*(E_Fermi - E_1)/E_41 + C_3*(E_Fermi - E_2)/E_42
             elif E_Fermi >= E_3 and E_Fermi < E_4:
                 C = V_T/(4*V_G)*(E_4 - E_Fermi)**3/(E_41*E_42*E_43)
+                """float: a useful value for the following calculations."""
 
                 w_1 = V_T/(4*V_G) - C*(E_4 - E_Fermi)/E_41
                 w_2 = V_T/(4*V_G) - C*(E_4 - E_Fermi)/E_42
@@ -379,12 +415,22 @@ def integrate(r_lattice_vectors, grid, PP, valence_electrons, apply_weight_corre
             if apply_weight_correction == True:
                 #corrections for w_1
                 adjacent_tetrahedra1 = tetrahedra_by_point[corners[0] - 1]
+                """list of ints: the indices of each tetrahedron that contains the first corner of the given 
+                tetrahedron."""
                 weight_correction1 = 0
+                """float: how much the weighting for the first corner should be adjusted by to take curvature into 
+                account."""
 
                 for p in range(len(adjacent_tetrahedra1)):
                     E_for_adjacent_tetrahedron = E_values_by_tetrahedron[n + 8 * (adjacent_tetrahedra1[p] - 1), :]
+                    """list of floats: the energy values for the second tetrahedron that contains the first corner of 
+                    the first tetrahedron in question."""
                     density_of_states = density_by_tetrahedron[n + 8*(adjacent_tetrahedra1[p] - 1)]
+                    """float the density of states for the second tetrahedron that contains the first corner of the 
+                    first tetrahedron in question."""
                     corner_E_sum = 0
+                    """float: the sum of the difference between the energy value at the first corner of the first 
+                    tetrahedron and the the energy value at each corner of the second tetrahedron."""
 
                     for q in range(4):
                         corner_E_sum += E_for_adjacent_tetrahedron[q] - E_1
@@ -395,12 +441,22 @@ def integrate(r_lattice_vectors, grid, PP, valence_electrons, apply_weight_corre
 
                 #corrections for w_2
                 adjacent_tetrahedra2 = tetrahedra_by_point[corners[1] - 1]
+                """list of ints: the indices of each tetrahedron that contains the second corner of the given 
+                tetrahedron."""
                 weight_correction2 = 0
+                """float: how much the weighting for the second corner should be adjusted by to take curvature into 
+                account."""
 
                 for p in range(len(adjacent_tetrahedra2)):
                     E_for_adjacent_tetrahedron = E_values_by_tetrahedron[n + 8*(adjacent_tetrahedra2[p] - 1), :]
+                    """list of floats: the energy values for the second tetrahedron that contains the second corner of 
+                    the first tetrahedron in question."""
                     density_of_states = density_by_tetrahedron[n + 8*(adjacent_tetrahedra2[p] - 1)]
+                    """float the density of states for the second tetrahedron that contains the second corner of the 
+                    first tetrahedron in question."""
                     corner_E_sum = 0
+                    """float: the sum of the difference between the energy value at the second corner of the first 
+                    tetrahedron and the the energy value at each corner of the second tetrahedron."""
 
                     for q in range(4):
                         corner_E_sum += E_for_adjacent_tetrahedron[q] - E_2
@@ -411,12 +467,22 @@ def integrate(r_lattice_vectors, grid, PP, valence_electrons, apply_weight_corre
 
                 #corrections for w_3
                 adjacent_tetrahedra3 = tetrahedra_by_point[corners[2] - 1]
+                """list of ints: the indices of each tetrahedron that contains the third corner of the given 
+                tetrahedron."""
                 weight_correction3 = 0
+                """float: how much the weighting for the third corner should be adjusted by to take curvature into 
+                account."""
 
                 for p in range(len(adjacent_tetrahedra3)):
                     E_for_adjacent_tetrahedron = E_values_by_tetrahedron[n + 8*(adjacent_tetrahedra3[p] - 1), :]
+                    """list of floats: the energy values for the second tetrahedron that contains the third corner of 
+                    the first tetrahedron in question."""
                     density_of_states = density_by_tetrahedron[n + 8*(adjacent_tetrahedra3[p] - 1)]
+                    """float the density of states for the second tetrahedron that contains the third corner of the 
+                    first tetrahedron in question."""
                     corner_E_sum = 0
+                    """float: the sum of the difference between the energy value at the third corner of the first 
+                    tetrahedron and the the energy value at each corner of the second tetrahedron."""
 
                     for q in range(4):
                         corner_E_sum += E_for_adjacent_tetrahedron[q] - E_3
@@ -427,12 +493,22 @@ def integrate(r_lattice_vectors, grid, PP, valence_electrons, apply_weight_corre
 
                 #corrections for w_4
                 adjacent_tetrahedra4 = tetrahedra_by_point[corners[3] - 1]
+                """list of ints: the indices of each tetrahedron that contains the fourth corner of the given 
+                tetrahedron."""
                 weight_correction4 = 0
+                """float: how much the weighting for the fourth corner should be adjusted by to take curvature into 
+                account."""
 
                 for p in range(len(adjacent_tetrahedra4)):
                     E_for_adjacent_tetrahedron = E_values_by_tetrahedron[n + 8*(adjacent_tetrahedra4[p] - 1), :]
+                    """list of floats: the energy values for the second tetrahedron that contains the fourth corner of 
+                    the first tetrahedron in question."""
                     density_of_states = density_by_tetrahedron[n + 8*(adjacent_tetrahedra4[p] - 1)]
+                    """float the density of states for the second tetrahedron that contains the fourth corner of the 
+                    first tetrahedron in question."""
                     corner_E_sum = 0
+                    """float: the sum of the difference between the energy value at the fourth corner of the first 
+                    tetrahedron and the the energy value at each corner of the second tetrahedron."""
 
                     for q in range(4):
                         corner_E_sum += E_for_adjacent_tetrahedron[q] - E_4
@@ -443,6 +519,7 @@ def integrate(r_lattice_vectors, grid, PP, valence_electrons, apply_weight_corre
 
             #use weights for integration
             tetrahedra_integral_contribution = w_1*E_1 + w_2*E_2 + w_3*E_3 + w_4*E_4
+            """float: the contribution of the given tetrahedron to the total energy in the Brillouin zone."""
             total_energy += tetrahedra_integral_contribution
 
     print ("The integral result is:", total_energy)

@@ -1,58 +1,52 @@
-def integrate(r_lattice_vectors, grid, PP, valence_electrons, apply_weight_correction):
+def integrate(r_lattice_vectors, grid_vecs, grid, PP, valence_electrons, apply_weight_correction):
     """A function that performs Brillouin zone integration of the energy bands to determine the total energy. An 
     improved version of the tetrahedron method is used.
     
     This function is an implementation of the algorithm proposed in "Improved tetrahedron method for Brillouin-zone 
     integrations" by Peter E. Blöchl, O. Jepsen, and O. K. Andersen from Physical Review B 49, 16223 – Published 15 June 
-    1994.
+    1994. It is modified in that the submesh vectors (grid_vecs) are not necessarily the reciprocal lattice vectors 
+    divided by an integer.
     
     Args:
-        r_lattice_vectors (NumPy array): the reciprocal lattice vectors
-        grid (Numpy array): the k points in the reciprocal lattice unit cell at which calculations will be performed
-        PP (
-        valence_electrons (int): the number of valence electrons possessed by the element in question
+        r_lattice_vectors (NumPy array): the reciprocal lattice vectors. Each column of the array is one of the vectors.
+        grid_vecs (NumPy array): the vectors used to create the grid of k points. All grid points are an integer 
+            combination of these vectors. Each column of the array is one of the vectors.
+        grid (list of lists of floats): the coordinates of each k point in the reciprocal lattice unit cell at which 
+            calculations will be performed.
+        PP (function): calculates the first n energy levels at a given k point using the pseudopotential method. PP has 
+            two arguments. For its first argument, PP takes a list of floats containing the coordinates of the k point 
+            to evaluate the energy levels at. For its second argument, PP takes the number of eigenvalues (equivalent to 
+            the number of energy levels) to return. It returns a sorted list (from least to greatest) of the first n 
+            eigenvalues (energy values) at that point.
+        valence_electrons (int): the number of valence electrons possessed by the element in question.
         apply_weight_correction (bool): true if the integration weights should be corrected to take curvature into 
-            account, false otherwise
+            account, false otherwise.
     
     Returns:
-        E_Fermi (float): the calculated Fermi energy level
-        total_energy (float): the total calculated energy in the Brillouin zone, the result of the integration
+        E_Fermi (float): the calculated Fermi energy level.
+        total_energy (float): the total calculated energy in the Brillouin zone, the result of the integration.
     """
 
-    #number of intervals in each direction
-    n1 =
-    """int: the number of grid intervals in the direction of the first reciprocal lattice vector.
-    This value is one less than the number of grid points in the direction of the first reciprocal lattice vector."""
-    n2 =
-    """int: the number of grid intervals in the direction of the second reciprocal lattice vector.
-    This value is one less than the number of grid points in the direction of the second reciprocal lattice vector."""
-    n3 =
-    """int: the number of grid intervals in the direction of the third reciprocal lattice vector.
-    This value is one less than the number of grid points in the direction of the third reciprocal lattice vector."""
-
-    k = (n1 + 1)*(n2 + 1)*(n3 + 1)
+    k = len(grid)
     """int: the total number of points in the grid."""
 
-    #reciprocal lattice vectors
-    b1 = r_lattice_vectors[0,:]
+    # reciprocal lattice vectors
+    b1 = r_lattice_vectors[:, 0]
     """NumPy array: the first reciprocal lattice vector."""
-    b2 = r_lattice_vectors[1,:]
+    b2 = r_lattice_vectors[:, 1]
     """NumPy array: the second reciprocal lattice vector."""
-    b3 = r_lattice_vectors[2,:]
+    b3 = r_lattice_vectors[:, 2]
     """NumPy array: the third reciprocal lattice vector."""
 
-    #submesh lattice vectors
-    B1 = b1/n1
-    """NumPy array: the separation between each point in the grid in the direction of the first reciprocal lattice 
-        vector."""
-    B2 = b2/n2
-    """NumPy array: the separation between each point in the grid in the direction of the second reciprocal lattice 
-        vector."""
-    B3 = b3/n3
-    """NumPy array: the separation between each point in the grid in the direction of the third reciprocal lattice 
-        vector."""
+    # submesh lattice vectors
+    B1 = grid_vecs[:, 0]
+    """NumPy array: the separation between each point in the grid in the first direction."""
+    B2 = grid_vecs[:, 1]
+    """NumPy array: the separation between each point in the grid in the second direction."""
+    B3 = grid_vecs[:, 2]
+    """NumPy array: the separation between each point in the grid in the third direction."""
 
-    #length of diagonals
+    # length of diagonals
     diagonal1 = B1 + B2 + B3
     """NumPy array: a vector spanning one of the diagonals of each parallelepiped in the grid."""
     diagonal2 = -B1 + B2 + B3
@@ -86,99 +80,134 @@ def integrate(r_lattice_vectors, grid, PP, valence_electrons, apply_weight_corre
     elif shortest_diagonal_length == diagonal4_length:
         shortest_diagonal = 4
 
-
-    #grid array generation
+    # Tetrahedra are generated
     tetrahedra_quadruples = []
     """list of lists of ints: a list of quadruples. There is exactly one quadruple for every tetrahedron. Each quadruple 
     is a list of the grid_points indices for the corners of the tetrahedron."""
-    grid_points = np.empty([k, 3])
-    grid_points_added = 0
 
-    for m in range(n1 + 1):
-        for n in range(n2 + 1):
-            for l in range(n3 + 1):
-                g = m*B1 + n*B2 + l*B3
+    for m in range(len(grid)):
+        point1 = np.asarray(grid[m])
+        """NumPy array: the coordinates of the first corner of a parallelepiped from the grid."""
+        point2 = point1 + B3
+        """NumPy array: the coordinates of the second corner of a parallelepiped from the grid."""
+        point3 = point1 + B2
+        """NumPy array: the coordinates of the third corner of a parallelepiped from the grid."""
+        point4 = point1 + B1
+        """NumPy array: the coordinates of the fourth corner of a parallelepiped from the grid."""
+        point5 = point1 + B3 + B2
+        """NumPy array: the coordinates of the fifth corner of a parallelepiped from the grid."""
+        point6 = point1 + B3 + B1
+        """NumPy array: the coordinates of the sixth corner of a parallelepiped from the grid."""
+        point7 = point1 + B2 + B1
+        """NumPy array: the coordinates of the seventh corner of a parallelepiped from the grid."""
+        point8 = point1 + B3 + B2 + B1
+        """NumPy array: the coordinates of the eighth corner of a parallelepiped from the grid."""
 
-                N = 1 + l  + (n1 + 1)*(n + (n2 + 1)*m) #submesh point index number
+        pt2_in_grid = False
+        """bool: whether or not point2 is a point in the grid."""
+        pt3_in_grid = False
+        """bool: whether or not point3 is a point in the grid."""
+        pt4_in_grid = False
+        """bool: whether or not point4 is a point in the grid."""
+        pt5_in_grid = False
+        """bool: whether or not point5 is a point in the grid."""
+        pt6_in_grid = False
+        """bool: whether or not point6 is a point in the grid."""
+        pt7_in_grid = False
+        """bool: whether or not point7 is a point in the grid."""
+        pt8_in_grid = False
+        """bool: whether or not point8 is a point in the grid."""
 
-                grid_points[N - 1, 0] = g[0]
-                grid_points[N - 1, 1] = g[1]
-                grid_points[N - 1, 2] = g[2]
-                grid_points_added += 1
+        point1_index = m + 1
+        """int: the index for point1 in the grid."""
+        point2_index = 0
+        """int: the index for point2 in the grid."""
+        point3_index = 0
+        """int: the index for point3 in the grid."""
+        point4_index = 0
+        """int: the index for point4 in the grid."""
+        point5_index = 0
+        """int: the index for point5 in the grid."""
+        point6_index = 0
+        """int: the index for point6 in the grid."""
+        point7_index = 0
+        """int: the index for point7 in the grid."""
+        point8_index = 0
+        """int: the index for point8 in the grid."""
 
-                # generate tetrahedra using submesh cell between (m,n,l) and (m+1,n+1,l+1)
-                if m != n1 and n != n2 and l != n3:
-                    #index numbers for corner points of submesh cell
-                    point1_index = N
-                    point2_index = 1 + (l + 1)  + (n1 + 1)*(n + (n2 + 1)*m)
-                    point3_index = 1 + l + (n1 + 1)*((n + 1) + (n2 + 1)*m)
-                    point4_index = 1 + l + (n1 + 1)*(n + (n2 + 1)*(m + 1))
-                    point5_index = 1 + (l + 1) + (n1 + 1)*((n + 1) + (n2 + 1)*m)
-                    point6_index = 1 + (l + 1) + (n1 + 1)*(n + (n2 + 1)*(m + 1))
-                    point7_index = 1 + l + (n1 + 1)*((n + 1) + (n2 + 1)*(m + 1))
-                    point8_index = 1 + (l + 1) + (n1 + 1)*((n + 1) + (n2 + 1)*(m + 1))
+        for n in range(len(grid)):
+            grid_point = np.asarray(grid[n])
+            """NumPy array: the coordinates of a point in the grid to be compared against."""
 
-                    #create quadruples for the corner points of each tetrahedra
-                    if shortest_diagonal == 1:
-                        tetrahedra_quadruples.append([point1_index, point4_index, point7_index, point8_index])
-                        tetrahedra_quadruples.append([point1_index, point3_index, point7_index, point8_index])
-                        tetrahedra_quadruples.append([point1_index, point2_index, point5_index, point8_index])
-                        tetrahedra_quadruples.append([point1_index, point2_index, point6_index, point8_index])
-                        tetrahedra_quadruples.append([point1_index, point4_index, point6_index, point8_index])
-                        tetrahedra_quadruples.append([point1_index, point3_index, point5_index, point8_index])
-                    elif shortest_diagonal == 2:
-                        tetrahedra_quadruples.append([point4_index, point6_index, point2_index, point5_index])
-                        tetrahedra_quadruples.append([point4_index, point6_index, point8_index, point5_index])
-                        tetrahedra_quadruples.append([point4_index, point1_index, point3_index, point5_index])
-                        tetrahedra_quadruples.append([point4_index, point7_index, point3_index, point5_index])
-                        tetrahedra_quadruples.append([point4_index, point7_index, point8_index, point5_index])
-                        tetrahedra_quadruples.append([point4_index, point1_index, point2_index, point5_index])
-                    elif shortest_diagonal == 3:
-                        tetrahedra_quadruples.append([point3_index, point1_index, point4_index, point6_index])
-                        tetrahedra_quadruples.append([point3_index, point7_index, point4_index, point6_index])
-                        tetrahedra_quadruples.append([point3_index, point1_index, point2_index, point6_index])
-                        tetrahedra_quadruples.append([point3_index, point7_index, point8_index, point6_index])
-                        tetrahedra_quadruples.append([point3_index, point5_index, point2_index, point6_index])
-                        tetrahedra_quadruples.append([point3_index, point5_index, point8_index, point6_index])
-                    elif shortest_diagonal == 4:
-                        tetrahedra_quadruples.append([point7_index, point8_index, point6_index, point2_index])
-                        tetrahedra_quadruples.append([point7_index, point8_index, point5_index, point2_index])
-                        tetrahedra_quadruples.append([point7_index, point4_index, point6_index, point2_index])
-                        tetrahedra_quadruples.append([point7_index, point3_index, point5_index, point2_index])
-                        tetrahedra_quadruples.append([point7_index, point1_index, point4_index, point2_index])
-                        tetrahedra_quadruples.append([point7_index, point1_index, point3_index, point2_index])
+            if grid_point == point2:
+                pt2_in_grid = True
+                point2_index = n + 1
+            elif grid_point == point3:
+                pt3_in_grid = True
+                point3_index = n + 1
+            elif grid_point == point4:
+                pt4_in_grid = True
+                point4_index = n + 1
+            elif grid_point == point5:
+                pt5_in_grid = True
+                point5_index = n + 1
+            elif grid_point == point6:
+                pt6_in_grid = True
+                point6_index = n + 1
+            elif grid_point == point7:
+                pt7_in_grid = True
+                point7_index = n + 1
+            elif grid_point == point8:
+                pt8_in_grid = True
+                point8_index = n + 1
 
+        if pt2_in_grid and pt3_in_grid and pt4_in_grid and pt5_in_grid and pt6_in_grid and pt7_in_grid and pt8_in_grid:
+            # create quadruples for the corner points of each tetrahedra
+            if shortest_diagonal == 1:
+                tetrahedra_quadruples.append([point1_index, point4_index, point7_index, point8_index])
+                tetrahedra_quadruples.append([point1_index, point3_index, point7_index, point8_index])
+                tetrahedra_quadruples.append([point1_index, point2_index, point5_index, point8_index])
+                tetrahedra_quadruples.append([point1_index, point2_index, point6_index, point8_index])
+                tetrahedra_quadruples.append([point1_index, point4_index, point6_index, point8_index])
+                tetrahedra_quadruples.append([point1_index, point3_index, point5_index, point8_index])
+            elif shortest_diagonal == 2:
+                tetrahedra_quadruples.append([point4_index, point6_index, point2_index, point5_index])
+                tetrahedra_quadruples.append([point4_index, point6_index, point8_index, point5_index])
+                tetrahedra_quadruples.append([point4_index, point1_index, point3_index, point5_index])
+                tetrahedra_quadruples.append([point4_index, point7_index, point3_index, point5_index])
+                tetrahedra_quadruples.append([point4_index, point7_index, point8_index, point5_index])
+                tetrahedra_quadruples.append([point4_index, point1_index, point2_index, point5_index])
+            elif shortest_diagonal == 3:
+                tetrahedra_quadruples.append([point3_index, point1_index, point4_index, point6_index])
+                tetrahedra_quadruples.append([point3_index, point7_index, point4_index, point6_index])
+                tetrahedra_quadruples.append([point3_index, point1_index, point2_index, point6_index])
+                tetrahedra_quadruples.append([point3_index, point7_index, point8_index, point6_index])
+                tetrahedra_quadruples.append([point3_index, point5_index, point2_index, point6_index])
+                tetrahedra_quadruples.append([point3_index, point5_index, point8_index, point6_index])
+            elif shortest_diagonal == 4:
+                tetrahedra_quadruples.append([point7_index, point8_index, point6_index, point2_index])
+                tetrahedra_quadruples.append([point7_index, point8_index, point5_index, point2_index])
+                tetrahedra_quadruples.append([point7_index, point4_index, point6_index, point2_index])
+                tetrahedra_quadruples.append([point7_index, point3_index, point5_index, point2_index])
+                tetrahedra_quadruples.append([point7_index, point1_index, point4_index, point2_index])
+                tetrahedra_quadruples.append([point7_index, point1_index, point3_index, point2_index])
 
-    #determine energy band levels for each of the k points in the submesh
-    pseudopotential1_3 = pseudopotential_array[0, 0]
-    pseudopotential2_3 = pseudopotential_array[0, 1]
-    pseudopotential1_4 = pseudopotential_array[1, 0]
-    pseudopotential2_4 = pseudopotential_array[1, 1]
-    pseudopotential1_11 = pseudopotential_array[2, 0]
-    pseudopotential2_11 = pseudopotential_array[2, 1]
-
-    energy_bands = np.empty([k, 8])
-    energy_band_array = np.empty((0,3), float)
-
-    for m in range(-10, 10):
-        for n in range(-10, 10):
-            for l in range(-10, 10):
-                h = m*b1 + n*b2 + l*b3
-
-                if np.dot(h, h) <= radius**2:
-                    energy_band_array = np.append(energy_band_array, [h], axis=0)
+    # determine energy band levels for each of the k points in the submesh
+    number_of_bands = 8
+    """int: the number of energy band levels to calculate for each point in the grid."""
+    energy_bands = np.empty([k, number_of_bands])
+    """NumPy array: the energy band levels for each point in the grid. Each row corresponds to the point in the grid 
+    with the same index, and each column corresponds to a different energy band."""
 
     for m in range(k):
-        k_vec = grid_points[m,:]
-        energy_bands_for_point = energy_bands_calculation.energy_band_values(pseudopotential1_3, pseudopotential1_4,
-                                                                             pseudopotential1_11, pseudopotential2_3,
-                                                                             pseudopotential2_4, pseudopotential2_11,
-                                                                             k_vec, energy_band_array, c, atomic_basis_vector)
-        energy_bands[m,:] = energy_bands_for_point
+        k_vec = grid[m]
+        """list of floats: the coordinates of the point that the energy levels will be calculated at."""
+        energy_bands_for_point = PP(k_vec, number_of_bands)
+        """list of floats: the energy levels at the point k_vec returned by the function PP."""
+        energy_bands[m, :] = np.asarray(energy_bands_for_point)
 
-
-    #The Fermi energy level is iteratively determined from the number of states function
-    band_index = math.ceil(valence_electrons/2)
+    # The Fermi energy level is iteratively determined from the number of states function
+    band_index = math.ceil(valence_electrons / 2)
     """int: the index of the energy band containing the Fermi energy level."""
     band_minima = np.amin(energy_bands, axis=0)
     """NumPy array: the smallest energy value contained in each energy band."""
@@ -188,19 +217,19 @@ def integrate(r_lattice_vectors, grid, PP, valence_electrons, apply_weight_corre
     """NumPy array: the largest energy value contained in each energy band."""
     upper_bound = band_maxima[band_index - 1]
     """float: an initial upper bound on the Fermi energy level."""
-    E_Fermi = (lower_bound + upper_bound)/2
+    E_Fermi = (lower_bound + upper_bound) / 2
     """float: an initial value for the Fermi energy level that will be iteratively refined."""
 
     V_G = np.dot(b1, np.cross(b2, b3))
     """float: the volume of the reciprocal unit cell."""
-    V_T = np.dot(B1, np.cross(B2, B3))/6
+    V_T = np.dot(B1, np.cross(B2, B3)) / 6
     """float: the volume of each tetrahedron in reciprocal space. Each tetrahedron has an equal volume."""
 
-    E_values_by_tetrahedron = np.empty([len(tetrahedra_quadruples)*8, 10])
-    """NumPy array: the corner energy values for each band of each tetrahedron."""
+    E_values_by_tetrahedron = np.empty([len(tetrahedra_quadruples) * number_of_bands, 10])
+    """NumPy array: the corner energy values and other useful energy values for each band of each tetrahedron."""
 
-    #number of states function generation
-    theoretical_number_of_states = valence_electrons/2
+    # number of states function generation
+    theoretical_number_of_states = valence_electrons / 2
     """float: the actual total number of states (integrated density of states) for the reciprocal unit cell."""
     total_number_of_states = 0
     """float: the total number of states (integrated density of states) for the reciprocal unit cell that is calculated 
@@ -209,7 +238,7 @@ def integrate(r_lattice_vectors, grid, PP, valence_electrons, apply_weight_corre
     number_of_states_error_threshold = .00001
     """float: the Fermi energy level is iteratively refined until the calculated number of states varies by less than 
     this amount from the calculated number of states from the previous iteration."""
-    new_number_of_states = 2*number_of_states_error_threshold
+    new_number_of_states = 2 * number_of_states_error_threshold
     """float: the calculated number of states from the most recent iteration. This value is compared to the calculated 
     number of states from the previous iteration to know whether or not to further refine the Fermi energy level."""
     old_number_of_states = 0
@@ -222,92 +251,123 @@ def integrate(r_lattice_vectors, grid, PP, valence_electrons, apply_weight_corre
         total_number_of_states = 0
 
         for m in range(len(tetrahedra_quadruples)):
-            #Each energy band is looped over
-            for n in range(8):
-                M = 1 + n + 8*m
-                "int: a unique index for the current band of the current tetrahedron."
+            # Each energy band is looped over
+            for n in range(number_of_bands):
+                M = 1 + n + number_of_bands * m
+                """int: a unique index for the current band of the current tetrahedron."""
 
-                #The energy at each corner for a given band for a given tetrahedron is determined.
+                # The energy at each corner for a given band for a given tetrahedron is determined.
                 E_at_corners = np.array([energy_bands[tetrahedra_quadruples[m][0] - 1, n],
                                          energy_bands[tetrahedra_quadruples[m][1] - 1, n],
                                          energy_bands[tetrahedra_quadruples[m][2] - 1, n],
                                          energy_bands[tetrahedra_quadruples[m][3] - 1, n]])
-                E_at_corners = np.sort(E_at_corners, axis=0) #This reorders the energy at each corner from least to greatest
+                """NumPy Array: the energy level at each corner of the tetrahedron for the specified energy band."""
+                E_at_corners = np.sort(E_at_corners,
+                                       axis=0)  # This reorders the energy at each corner from least to greatest
                 E_1 = E_at_corners[0]
+                """float: the energy level at the first corner of the tetrahedron for the specified energy 
+                band."""
                 E_2 = E_at_corners[1]
+                """float: the energy level at the second corner of the tetrahedron for the specified energy 
+                band."""
                 E_3 = E_at_corners[2]
+                """float: the energy level at the third corner of the tetrahedron for the specified energy 
+                band."""
                 E_4 = E_at_corners[3]
+                """float: the energy level at the fourth corner of the tetrahedron for the specified energy 
+                band."""
                 E_21 = E_2 - E_1
+                """float: a useful value for the following calculations."""
                 E_31 = E_3 - E_1
+                """float: a useful value for the following calculations."""
                 E_32 = E_3 - E_2
+                """float: a useful value for the following calculations."""
                 E_41 = E_4 - E_1
+                """float: a useful value for the following calculations."""
                 E_42 = E_4 - E_2
+                """float: a useful value for the following calculations."""
                 E_43 = E_4 - E_3
+                """float: a useful value for the following calculations."""
 
-                E_values_by_tetrahedron[M - 1,:] = [E_1, E_2, E_3, E_4, E_21, E_31, E_32, E_41, E_42, E_43]
+                E_values_by_tetrahedron[M - 1, :] = [E_1, E_2, E_3, E_4, E_21, E_31, E_32, E_41, E_42, E_43]
 
-                #The number of states for a given band for a given tetrahedron is determined
-                number_of_states = 0 #number-of-states function for a given tetrahedron
+                # The number of states for a given band for a given tetrahedron is determined
+                number_of_states = 0
+                """float: the number-of-states for a given tetrahedron and Fermi energy level."""
 
                 if E_Fermi < E_1:
                     number_of_states = 0
                 elif E_Fermi >= E_1 and E_Fermi < E_2:
-                    number_of_states = V_T/V_G*(E_Fermi - E_1)**3/(E_21*E_31*E_41)
+                    number_of_states = V_T / V_G * (E_Fermi - E_1) ** 3 / (E_21 * E_31 * E_41)
                 elif E_Fermi >= E_2 and E_Fermi < E_3:
-                    number_of_states = V_T/(V_G*E_31*E_41)*(E_21**2 + 3*E_21*(E_Fermi - E_2) + 3*(E_Fermi - E_2)**2 -
-                                                            (E_31 + E_42)*(E_Fermi - E_2)**3/(E_32*E_42))
+                    number_of_states = V_T / (V_G * E_31 * E_41) * (
+                    E_21 ** 2 + 3 * E_21 * (E_Fermi - E_2) + 3 * (E_Fermi - E_2) ** 2 -
+                    (E_31 + E_42) * (E_Fermi - E_2) ** 3 / (E_32 * E_42))
                 elif E_Fermi >= E_3 and E_Fermi < E_4:
-                    number_of_states = V_T/V_G*(1 - (E_4 - E_Fermi)**3/(E_41*E_42*E_43))
+                    number_of_states = V_T / V_G * (1 - (E_4 - E_Fermi) ** 3 / (E_41 * E_42 * E_43))
                 elif E_Fermi >= E_4:
-                    number_of_states = V_T/V_G
+                    number_of_states = V_T / V_G
                 total_number_of_states = total_number_of_states + number_of_states
 
-        #Adjust the Fermi level
+        # Adjust the Fermi level
         if total_number_of_states > theoretical_number_of_states:
-            #E_Fermi needs to be lowered to in between its current value and lower bound. The current value should be the new upper bound
+            # E_Fermi needs to be lowered to in between its current value and lower bound. The current value should be the new upper bound
             upper_bound = E_Fermi
         elif total_number_of_states < theoretical_number_of_states:
             lower_bound = E_Fermi
 
-        E_Fermi = (upper_bound + lower_bound)/2
+        E_Fermi = (upper_bound + lower_bound) / 2
 
         new_number_of_states = total_number_of_states
 
     print("The calculated Fermi Energy Level is:", E_Fermi)
 
-
-    #The density of states function is determined for each band of each tetrahedron
+    # The density of states function is determined for each band of each tetrahedron
     density_by_tetrahedron = []
     """list of floats: the density of states at the Fermi energy level for each band of each tetrahedron."""
     for m in range(len(tetrahedra_quadruples)):
-        #Each energy band is looped over
-        for n in range(8):
-            M = 1 + n + 8*m
+        # Each energy band is looped over
+        for n in range(number_of_bands):
+            M = 1 + n + number_of_bands * m
+            """int: a unique index for the current band of the current tetrahedron."""
 
-            E_values = E_values_by_tetrahedron[M - 1,:]
+            E_values = E_values_by_tetrahedron[M - 1, :]
+            """NumPy Array: the energy level at each corner plus other useful energy level values for the specified 
+            tetrahedron and energy band."""
             E_1 = E_values[0]
+            """float: the energy level at the first corner of the tetrahedron for the specified energy band."""
             E_2 = E_values[1]
+            """float: the energy level at the second corner of the tetrahedron for the specified energy band."""
             E_3 = E_values[2]
+            """float: the energy level at the third corner of the tetrahedron for the specified energy band."""
             E_4 = E_values[3]
+            """float: the energy level at the fourth corner of the tetrahedron for the specified energy band."""
             E_21 = E_values[4]
+            """float: a useful value for the following calculations."""
             E_31 = E_values[5]
+            """float: a useful value for the following calculations."""
             E_32 = E_values[6]
+            """float: a useful value for the following calculations."""
             E_41 = E_values[7]
+            """float: a useful value for the following calculations."""
             E_42 = E_values[8]
+            """float: a useful value for the following calculations."""
             E_43 = E_values[9]
+            """float: a useful value for the following calculations."""
 
-            #The density of states at the fermi energy level for a given band for a given tetrahedron is determined
+            # The density of states at the fermi energy level for a given band for a given tetrahedron is determined
             density_of_states = 0
             """float: the density of states at the Fermi energy level for a given band of a given tetrahedron."""
 
             if E_Fermi < E_1:
                 density_of_states = 0
             elif E_Fermi >= E_1 and E_Fermi < E_2:
-                density_of_states = V_T/V_G*3*(E_Fermi - E_1)**2/(E_21*E_31*E_41)
+                density_of_states = V_T / V_G * 3 * (E_Fermi - E_1) ** 2 / (E_21 * E_31 * E_41)
             elif E_Fermi >= E_2 and E_Fermi < E_3:
-                density_of_states = V_T/(V_G*E_31*E_41)*(3*E_21 + 6*(E_Fermi - E_2) - 3*(E_31 + E_42)*(E_Fermi - E_2)**2/(E_32*E_42))
+                density_of_states = V_T / (V_G * E_31 * E_41) * (
+                3 * E_21 + 6 * (E_Fermi - E_2) - 3 * (E_31 + E_42) * (E_Fermi - E_2) ** 2 / (E_32 * E_42))
             elif E_Fermi >= E_3 and E_Fermi < E_4:
-                density_of_states = V_T/V_G*3*(E_4 - E_Fermi)**2/(E_41*E_42*E_43)
+                density_of_states = V_T / V_G * 3 * (E_4 - E_Fermi) ** 2 / (E_41 * E_42 * E_43)
             elif E_Fermi >= E_4:
                 density_of_states = 0
 
@@ -321,7 +381,7 @@ def integrate(r_lattice_vectors, grid, PP, valence_electrons, apply_weight_corre
         adjacent_tetrahedra = []
         """list of ints: the indices of each tetrahedron containing the given k point in the grid."""
 
-        #find all tetrahedra containing the k point
+        # find all tetrahedra containing the k point
         for n in range(len(tetrahedra_quadruples)):
             for l in range(4):
                 if tetrahedra_quadruples[n][l] == m + 1:
@@ -329,23 +389,24 @@ def integrate(r_lattice_vectors, grid, PP, valence_electrons, apply_weight_corre
 
         tetrahedra_by_point.append(adjacent_tetrahedra)
 
-
-    #Calculating integration weights at the corners of each tetrahedron from the fermi level and energy levels for each
+    # Calculating integration weights at the corners of each tetrahedron from the fermi level and energy levels for each
     # band. Integration of the energy levels over the Brillouin zone is performed.
     total_energy = 0
     """float: the total energy in the Brillouin zone. This value is the final result of the integration."""
 
     for m in range(len(tetrahedra_quadruples)):
-        corners = tetrahedra_quadruples[m] #The corner points for the tetrahedron are called.
+        corners = tetrahedra_quadruples[m]  # The corner points for the tetrahedron are called.
         """list of ints: the indices of each corner of the given tetrahedron."""
 
-        #Each energy band is looped over
-        for n in range(8):
-            #The energy at each corner for a given band for a given tetrahedron is determined.
+        # Each energy band is looped over
+        for n in range(number_of_bands):
+            # The energy at each corner for a given band for a given tetrahedron is determined.
             E_at_corners = np.array([energy_bands[corners[0] - 1, n], energy_bands[corners[1] - 1, n],
                                      energy_bands[corners[2] - 1, n], energy_bands[corners[3] - 1, n]])
-            corners.sort(key=dict(zip(corners, E_at_corners)).get) #This reorders the corners list according to the energies
-            E_at_corners = np.sort(E_at_corners, axis=0) #This reorders the energy at each corner from least to greatest
+            corners.sort(
+                key=dict(zip(corners, E_at_corners)).get)  # This reorders the corners list according to the energies
+            E_at_corners = np.sort(E_at_corners,
+                                   axis=0)  # This reorders the energy at each corner from least to greatest
 
             E_1 = E_at_corners[0]
             E_2 = E_at_corners[1]
@@ -358,7 +419,7 @@ def integrate(r_lattice_vectors, grid, PP, valence_electrons, apply_weight_corre
             E_42 = E_4 - E_2
             E_43 = E_4 - E_3
 
-            #The weightings for each corner of the tetrahedron are determined
+            # The weightings for each corner of the tetrahedron are determined
             w_1 = 0
             """float: the weighting assigned to the energy level at the first corner of the tetrahedron when integration 
             is being performed."""
@@ -378,42 +439,42 @@ def integrate(r_lattice_vectors, grid, PP, valence_electrons, apply_weight_corre
                 w_3 = 0
                 w_4 = 0
             elif E_Fermi >= E_1 and E_Fermi < E_2:
-                C = V_T/(4*V_G)*(E_Fermi - E_1)**3/(E_21*E_31*E_41)
+                C = V_T / (4 * V_G) * (E_Fermi - E_1) ** 3 / (E_21 * E_31 * E_41)
                 """float: a useful value for the following calculations."""
 
-                w_1 = C*(4 - (E_Fermi- E_1)*(1/E_21 + 1/E_31 + 1/E_41))
-                w_2 = C*(E_Fermi - E_1)/E_21
-                w_3 = C*(E_Fermi - E_1)/E_41
-                w_4 = C*(E_Fermi - E_1)/E_41
+                w_1 = C * (4 - (E_Fermi - E_1) * (1 / E_21 + 1 / E_31 + 1 / E_41))
+                w_2 = C * (E_Fermi - E_1) / E_21
+                w_3 = C * (E_Fermi - E_1) / E_41
+                w_4 = C * (E_Fermi - E_1) / E_41
             elif E_Fermi >= E_2 and E_Fermi < E_3:
-                C_1 = V_T/(4*V_G)*(E_Fermi - E_1)**2/(E_41*E_31)
+                C_1 = V_T / (4 * V_G) * (E_Fermi - E_1) ** 2 / (E_41 * E_31)
                 """float: a useful value for the following calculations."""
-                C_2 = V_T/(4*V_G)*(E_Fermi - E_1)*(E_Fermi - E_2)*(E_3 - E_Fermi)/(E_41*E_32*E_31)
+                C_2 = V_T / (4 * V_G) * (E_Fermi - E_1) * (E_Fermi - E_2) * (E_3 - E_Fermi) / (E_41 * E_32 * E_31)
                 """float: a useful value for the following calculations."""
-                C_3 = V_T/(4*V_G)*(E_Fermi - E_2)**2*(E_4 - E_Fermi)/(E_42*E_32*E_41)
+                C_3 = V_T / (4 * V_G) * (E_Fermi - E_2) ** 2 * (E_4 - E_Fermi) / (E_42 * E_32 * E_41)
                 """float: a useful value for the following calculations."""
 
-                w_1 = C_1 + (C_1 + C_2)*(E_3 - E_Fermi)/E_31 + (C_1 + C_2 + C_3)*(E_4 - E_Fermi)/E_41
-                w_2 = C_1 + C_2 + C_3 + (C_2 + C_3)*(E_3 - E_Fermi)/E_32 + C_3*(E_4 - E_Fermi)/E_42
-                w_3 = (C_1 + C_2)*(E_Fermi - E_1)/E_41 + (C_2 + C_3)*(E_Fermi - E_2)/E_32
-                w_4 = (C_1 + C_2 + C_3)*(E_Fermi - E_1)/E_41 + C_3*(E_Fermi - E_2)/E_42
+                w_1 = C_1 + (C_1 + C_2) * (E_3 - E_Fermi) / E_31 + (C_1 + C_2 + C_3) * (E_4 - E_Fermi) / E_41
+                w_2 = C_1 + C_2 + C_3 + (C_2 + C_3) * (E_3 - E_Fermi) / E_32 + C_3 * (E_4 - E_Fermi) / E_42
+                w_3 = (C_1 + C_2) * (E_Fermi - E_1) / E_41 + (C_2 + C_3) * (E_Fermi - E_2) / E_32
+                w_4 = (C_1 + C_2 + C_3) * (E_Fermi - E_1) / E_41 + C_3 * (E_Fermi - E_2) / E_42
             elif E_Fermi >= E_3 and E_Fermi < E_4:
-                C = V_T/(4*V_G)*(E_4 - E_Fermi)**3/(E_41*E_42*E_43)
+                C = V_T / (4 * V_G) * (E_4 - E_Fermi) ** 3 / (E_41 * E_42 * E_43)
                 """float: a useful value for the following calculations."""
 
-                w_1 = V_T/(4*V_G) - C*(E_4 - E_Fermi)/E_41
-                w_2 = V_T/(4*V_G) - C*(E_4 - E_Fermi)/E_42
-                w_3 = V_T/(4*V_G) - C*(E_4 - E_Fermi)/E_43
-                w_4 = V_T/(4*V_G) - C*(4 - (1/E_41 + 1/E_42 + 1/ E_43)*(E_4 - E_Fermi))
+                w_1 = V_T / (4 * V_G) - C * (E_4 - E_Fermi) / E_41
+                w_2 = V_T / (4 * V_G) - C * (E_4 - E_Fermi) / E_42
+                w_3 = V_T / (4 * V_G) - C * (E_4 - E_Fermi) / E_43
+                w_4 = V_T / (4 * V_G) - C * (4 - (1 / E_41 + 1 / E_42 + 1 / E_43) * (E_4 - E_Fermi))
             elif E_Fermi >= E_4:
-                w_1 = V_T/(4*V_G)
-                w_2 = V_T/(4*V_G)
-                w_3 = V_T/(4*V_G)
-                w_4 = V_T/(4*V_G)
+                w_1 = V_T / (4 * V_G)
+                w_2 = V_T / (4 * V_G)
+                w_3 = V_T / (4 * V_G)
+                w_4 = V_T / (4 * V_G)
 
-            #The weighting corrections are applied
+            # The weighting corrections are applied
             if apply_weight_correction == True:
-                #corrections for w_1
+                # corrections for w_1
                 adjacent_tetrahedra1 = tetrahedra_by_point[corners[0] - 1]
                 """list of ints: the indices of each tetrahedron that contains the first corner of the given 
                 tetrahedron."""
@@ -422,10 +483,11 @@ def integrate(r_lattice_vectors, grid, PP, valence_electrons, apply_weight_corre
                 account."""
 
                 for p in range(len(adjacent_tetrahedra1)):
-                    E_for_adjacent_tetrahedron = E_values_by_tetrahedron[n + 8 * (adjacent_tetrahedra1[p] - 1), :]
+                    E_for_adjacent_tetrahedron = E_values_by_tetrahedron[n + number_of_bands * (adjacent_tetrahedra1[p]
+                                                                                                - 1), :]
                     """list of floats: the energy values for the second tetrahedron that contains the first corner of 
                     the first tetrahedron in question."""
-                    density_of_states = density_by_tetrahedron[n + 8*(adjacent_tetrahedra1[p] - 1)]
+                    density_of_states = density_by_tetrahedron[n + number_of_bands * (adjacent_tetrahedra1[p] - 1)]
                     """float the density of states for the second tetrahedron that contains the first corner of the 
                     first tetrahedron in question."""
                     corner_E_sum = 0
@@ -435,11 +497,11 @@ def integrate(r_lattice_vectors, grid, PP, valence_electrons, apply_weight_corre
                     for q in range(4):
                         corner_E_sum += E_for_adjacent_tetrahedron[q] - E_1
 
-                    weight_correction1 += density_of_states/40*corner_E_sum
+                    weight_correction1 += density_of_states / 40 * corner_E_sum
 
                 w_1 += weight_correction1
 
-                #corrections for w_2
+                # corrections for w_2
                 adjacent_tetrahedra2 = tetrahedra_by_point[corners[1] - 1]
                 """list of ints: the indices of each tetrahedron that contains the second corner of the given 
                 tetrahedron."""
@@ -448,10 +510,10 @@ def integrate(r_lattice_vectors, grid, PP, valence_electrons, apply_weight_corre
                 account."""
 
                 for p in range(len(adjacent_tetrahedra2)):
-                    E_for_adjacent_tetrahedron = E_values_by_tetrahedron[n + 8*(adjacent_tetrahedra2[p] - 1), :]
+                    E_for_adjacent_tetrahedron = E_values_by_tetrahedron[n + number_of_bands * (adjacent_tetrahedra2[p] - 1), :]
                     """list of floats: the energy values for the second tetrahedron that contains the second corner of 
                     the first tetrahedron in question."""
-                    density_of_states = density_by_tetrahedron[n + 8*(adjacent_tetrahedra2[p] - 1)]
+                    density_of_states = density_by_tetrahedron[n + number_of_bands * (adjacent_tetrahedra2[p] - 1)]
                     """float the density of states for the second tetrahedron that contains the second corner of the 
                     first tetrahedron in question."""
                     corner_E_sum = 0
@@ -461,11 +523,11 @@ def integrate(r_lattice_vectors, grid, PP, valence_electrons, apply_weight_corre
                     for q in range(4):
                         corner_E_sum += E_for_adjacent_tetrahedron[q] - E_2
 
-                    weight_correction2 += density_of_states/40*corner_E_sum
+                    weight_correction2 += density_of_states / 40 * corner_E_sum
 
                 w_2 += weight_correction2
 
-                #corrections for w_3
+                # corrections for w_3
                 adjacent_tetrahedra3 = tetrahedra_by_point[corners[2] - 1]
                 """list of ints: the indices of each tetrahedron that contains the third corner of the given 
                 tetrahedron."""
@@ -474,10 +536,11 @@ def integrate(r_lattice_vectors, grid, PP, valence_electrons, apply_weight_corre
                 account."""
 
                 for p in range(len(adjacent_tetrahedra3)):
-                    E_for_adjacent_tetrahedron = E_values_by_tetrahedron[n + 8*(adjacent_tetrahedra3[p] - 1), :]
+                    E_for_adjacent_tetrahedron = E_values_by_tetrahedron[n + number_of_bands * (adjacent_tetrahedra3[p]
+                                                                                                - 1), :]
                     """list of floats: the energy values for the second tetrahedron that contains the third corner of 
                     the first tetrahedron in question."""
-                    density_of_states = density_by_tetrahedron[n + 8*(adjacent_tetrahedra3[p] - 1)]
+                    density_of_states = density_by_tetrahedron[n + number_of_bands * (adjacent_tetrahedra3[p] - 1)]
                     """float the density of states for the second tetrahedron that contains the third corner of the 
                     first tetrahedron in question."""
                     corner_E_sum = 0
@@ -487,11 +550,11 @@ def integrate(r_lattice_vectors, grid, PP, valence_electrons, apply_weight_corre
                     for q in range(4):
                         corner_E_sum += E_for_adjacent_tetrahedron[q] - E_3
 
-                    weight_correction3 += density_of_states/40*corner_E_sum
+                    weight_correction3 += density_of_states / 40 * corner_E_sum
 
                 w_3 += weight_correction3
 
-                #corrections for w_4
+                # corrections for w_4
                 adjacent_tetrahedra4 = tetrahedra_by_point[corners[3] - 1]
                 """list of ints: the indices of each tetrahedron that contains the fourth corner of the given 
                 tetrahedron."""
@@ -500,10 +563,11 @@ def integrate(r_lattice_vectors, grid, PP, valence_electrons, apply_weight_corre
                 account."""
 
                 for p in range(len(adjacent_tetrahedra4)):
-                    E_for_adjacent_tetrahedron = E_values_by_tetrahedron[n + 8*(adjacent_tetrahedra4[p] - 1), :]
+                    E_for_adjacent_tetrahedron = E_values_by_tetrahedron[n + number_of_bands * (adjacent_tetrahedra4[p]
+                                                                                                - 1), :]
                     """list of floats: the energy values for the second tetrahedron that contains the fourth corner of 
                     the first tetrahedron in question."""
-                    density_of_states = density_by_tetrahedron[n + 8*(adjacent_tetrahedra4[p] - 1)]
+                    density_of_states = density_by_tetrahedron[n + number_of_bands * (adjacent_tetrahedra4[p] - 1)]
                     """float the density of states for the second tetrahedron that contains the fourth corner of the 
                     first tetrahedron in question."""
                     corner_E_sum = 0
@@ -513,15 +577,15 @@ def integrate(r_lattice_vectors, grid, PP, valence_electrons, apply_weight_corre
                     for q in range(4):
                         corner_E_sum += E_for_adjacent_tetrahedron[q] - E_4
 
-                    weight_correction4 += density_of_states/40*corner_E_sum
+                    weight_correction4 += density_of_states / 40 * corner_E_sum
 
                 w_4 += weight_correction4
 
-            #use weights for integration
-            tetrahedra_integral_contribution = w_1*E_1 + w_2*E_2 + w_3*E_3 + w_4*E_4
+            # use weights for integration
+            tetrahedra_integral_contribution = w_1 * E_1 + w_2 * E_2 + w_3 * E_3 + w_4 * E_4
             """float: the contribution of the given tetrahedron to the total energy in the Brillouin zone."""
             total_energy += tetrahedra_integral_contribution
 
-    print ("The integral result is:", total_energy)
+    print("The integral result is:", total_energy)
 
     return E_Fermi, total_energy

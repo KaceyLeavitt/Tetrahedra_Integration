@@ -59,7 +59,7 @@ def generate_diagonal_vectors(B1, B2, B3):
     Args:
         B1 (NumPy array): the first submesh lattice vector.
         B2 (NumPy array): the second submesh lattice vector.
-        B1 (NumPy array): the third submesh lattice vector.
+        B3 (NumPy array): the third submesh lattice vector.
         
     Returns:
         (diagonal1, diagonal2, diagonal3, diagonal4) (tuple of NumPy arrays): 
@@ -160,6 +160,25 @@ def determine_shortest_diagonal(diagonal1_length, diagonal2_length,
 
 
 def determine_parallelepiped_corners(point1, B1, B2, B3):
+    """Determines the grid points that define the corners of a given 
+    parallelepiped. All of the edges of the parallelepipeds can be spanned by 
+    the submesh lattice vectors.
+    
+    Args:
+        point1 (Numpy array): the coordinates of the first corner of a 
+            parallelepiped. The other corners are determined based on this 
+            point.
+        B1 (NumPy array): the first submesh lattice vector.
+        B2 (NumPy array): the second submesh lattice vector.
+        B3 (NumPy array): the third submesh lattice vector.
+        
+    Returns:
+        (point2, point3, point4, point5, point6, point7, point8) (tuple of 
+            NumPy arrays): vectors defining the coordinates of the second, 
+            third, fourth, fifth, sixth, seventh and eighth coordinates of a 
+            parallelepiped respectively.
+    """
+
     point2 = point1 + B3
     """NumPy array: the coordinates of the second corner of a parallelepiped 
     from the grid."""
@@ -217,59 +236,42 @@ def generate_tetrahedra(grid, B1, B2, B3, shortest_diagonal):
         point1 = np.asarray(grid[m])
         """NumPy array: the coordinates of the first corner of a parallelepiped 
         from the grid."""
-        point2 = point1 + B3
-        """NumPy array: the coordinates of the second corner of a 
-        parallelepiped from the grid."""
-        point3 = point1 + B2
-        """NumPy array: the coordinates of the third corner of a parallelepiped 
-        from the grid."""
-        point4 = point1 + B1
-        """NumPy array: the coordinates of the fourth corner of a 
-        parallelepiped from the grid."""
-        point5 = point1 + B3 + B2
-        """NumPy array: the coordinates of the fifth corner of a parallelepiped 
-        from the grid."""
-        point6 = point1 + B3 + B1
-        """NumPy array: the coordinates of the sixth corner of a parallelepiped 
-        from the grid."""
-        point7 = point1 + B2 + B1
-        """NumPy array: the coordinates of the seventh corner of a 
-        parallelepiped from the grid."""
-        point8 = point1 + B3 + B2 + B1
-        """NumPy array: the coordinates of the eighth corner of a 
-        parallelepiped from the grid."""
+        point2, point3, point4, point5, point6, point7, point8 = \
+            determine_parallelepiped_corners(point1, B1, B2, B3)
+        """tuple of NumPy arrays: the coordinates of the second through eighth 
+        corners of a parallelepiped from the grid respectively."""
 
         pt2_in_grid = False
-        """bool: whether or not point2 is a point in the grid."""
+        # bool: whether or not point2 is a point in the grid.
         pt3_in_grid = False
-        """bool: whether or not point3 is a point in the grid."""
+        # bool: whether or not point3 is a point in the grid.
         pt4_in_grid = False
-        """bool: whether or not point4 is a point in the grid."""
+        # bool: whether or not point4 is a point in the grid.
         pt5_in_grid = False
-        """bool: whether or not point5 is a point in the grid."""
+        # bool: whether or not point5 is a point in the grid.
         pt6_in_grid = False
-        """bool: whether or not point6 is a point in the grid."""
+        # bool: whether or not point6 is a point in the grid.
         pt7_in_grid = False
-        """bool: whether or not point7 is a point in the grid."""
+        # bool: whether or not point7 is a point in the grid.
         pt8_in_grid = False
-        """bool: whether or not point8 is a point in the grid."""
+        # bool: whether or not point8 is a point in the grid.
 
         point1_index = m + 1
-        """int: the index for point1 in the grid."""
+        # int: the index for point1 in the grid.
         point2_index = 0
-        """int: the index for point2 in the grid."""
+        # int: the index for point2 in the grid.
         point3_index = 0
-        """int: the index for point3 in the grid."""
+        # int: the index for point3 in the grid.
         point4_index = 0
-        """int: the index for point4 in the grid."""
+        # int: the index for point4 in the grid.
         point5_index = 0
-        """int: the index for point5 in the grid."""
+        # int: the index for point5 in the grid.
         point6_index = 0
-        """int: the index for point6 in the grid."""
+        # int: the index for point6 in the grid.
         point7_index = 0
-        """int: the index for point7 in the grid."""
+        # int: the index for point7 in the grid.
         point8_index = 0
-        """int: the index for point8 in the grid."""
+        # int: the index for point8 in the grid.
 
         for n in range(len(grid)):
             grid_point = np.asarray(grid[n])

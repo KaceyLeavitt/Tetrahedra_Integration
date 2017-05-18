@@ -127,7 +127,61 @@ def test_determine_shortest_diagonal():
         test_diagonal4_length) == 2
 
 
-#test determine_parallelepiped_corners and create other functions for generate_tetrahedra
+# Tests for determine_parallelepiped_corners.
+test_point1 = np.array([.1, -.2, .3])
+# coordinates of first corner of parallelepiped used for testing.
+test_B1 = np.array([1, 2, 3])
+# First submesh lattice vector used for testing.
+test_B2 = np.array([4, 5, -6])
+# Second submesh lattice vector used for testing.
+test_B3 = np.array([7, 8, 9])
+# Third submesh lattice vector used for testing.
+
+def test_determine_parallelepiped_corners2():
+    """Checking if the second corner of the parallelepiped is correctly 
+    determined."""
+    assert np.array_equal(tetrahedron_method.determine_parallelepiped_corners(test_point1,
+        test_B1, test_B2, test_B3)[0], [7.1, 7.8, 9.3])
+
+def test_determine_parallelepiped_corners3():
+    """Checking if the third corner of the parallelepiped is correctly 
+    determined."""
+    assert np.array_equal(tetrahedron_method.determine_parallelepiped_corners(
+        test_point1, test_B1, test_B2, test_B3)[1], [4.1, 4.8, -5.7])
+
+def test_determine_parallelepiped_corners4():
+    """Checking if the fourth corner of the parallelepiped is correctly 
+    determined."""
+    assert np.array_equal(tetrahedron_method.determine_parallelepiped_corners(
+        test_point1, test_B1, test_B2, test_B3)[2], [1.1, 1.8, 3.3])
+
+def test_determine_parallelepiped_corners5():
+    """Checking if the fifth corner of the parallelepiped is correctly 
+    determined."""
+    assert np.allclose(tetrahedron_method.determine_parallelepiped_corners(
+        test_point1, test_B1, test_B2, test_B3)[3], [11.1, 12.8, 3.3])
+
+def test_determine_parallelepiped_corners6():
+    """Checking if the sixth corner of the parallelepiped is correctly 
+    determined."""
+    assert np.array_equal(tetrahedron_method.determine_parallelepiped_corners(
+        test_point1, test_B1, test_B2, test_B3)[4], [8.1, 9.8, 12.3])
+
+def test_determine_parallelepiped_corners7():
+    """Checking if the seventh corner of the parallelepiped is correctly 
+    determined."""
+    assert np.array_equal(tetrahedron_method.determine_parallelepiped_corners(
+        test_point1, test_B1, test_B2, test_B3)[5], [5.1, 6.8, -2.7])
+
+def test_determine_parallelepiped_corners8():
+    """Checking if the eighth corner of the parallelepiped is correctly 
+    determined."""
+    assert np.allclose(tetrahedron_method.determine_parallelepiped_corners(
+        test_point1, test_B1, test_B2, test_B3)[6], [12.1, 14.8, 6.3])
+
+
+
+
 
 
 """test_grid = [[0, 0, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 1, 0], [1, 0, 1], [0, 1, 1], [1, 1, 1]]

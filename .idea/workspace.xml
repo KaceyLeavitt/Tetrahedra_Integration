@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c8e350bb-1183-4ae4-97e2-bd46b215a6e3" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test_tetrahedron_method.py" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/pseudopots.py" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/Tetrahedra_Integration.iml" afterPath="$PROJECT_DIR$/.idea/Tetrahedra_Integration.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test_tetrahedron_method.py" afterPath="$PROJECT_DIR$/test_tetrahedron_method.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tetrahedron_method.py" afterPath="$PROJECT_DIR$/tetrahedron_method.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -18,25 +17,25 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
-      <file leaf-file-name="test_tetrahedron_method.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/test_tetrahedron_method.py">
+      <file leaf-file-name="tetrahedron_method.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tetrahedron_method.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="371">
-              <caret line="125" column="1" lean-forward="true" selection-start-line="125" selection-start-column="1" selection-end-line="125" selection-end-column="1" />
+            <state relative-caret-position="-1753">
+              <caret line="205" column="0" lean-forward="true" selection-start-line="205" selection-start-column="0" selection-end-line="205" selection-end-column="0" />
               <folding>
-                <element signature="e#0#25#0" expanded="true" />
+                <element signature="e#0#11#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tetrahedron_method.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tetrahedron_method.py">
+      <file leaf-file-name="test_tetrahedron_method.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/test_tetrahedron_method.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="249">
-              <caret line="184" column="67" lean-forward="false" selection-start-line="184" selection-start-column="67" selection-end-line="184" selection-end-column="67" />
+            <state relative-caret-position="322">
+              <caret line="179" column="70" lean-forward="true" selection-start-line="179" selection-start-column="70" selection-end-line="180" selection-end-column="0" />
               <folding>
-                <element signature="e#0#11#0" expanded="true" />
+                <element signature="e#0#25#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -67,8 +66,8 @@
         <option value="$PROJECT_DIR$/test.py" />
         <option value="$PROJECT_DIR$/test_sample.py" />
         <option value="$PROJECT_DIR$/test_integrate.py" />
-        <option value="$PROJECT_DIR$/tetrahedron_method.py" />
         <option value="$PROJECT_DIR$/test_tetrahedron_method.py" />
+        <option value="$PROJECT_DIR$/tetrahedron_method.py" />
       </list>
     </option>
   </component>
@@ -93,8 +92,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -109,10 +106,12 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$USER_HOME$/PycharmProjects/crystal_pseudopotential" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyIntegratedToolsModulesConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -132,8 +131,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python tests.py.test for test_tetrahedron_method.test_determine_shortest_diagonal">
-    <configuration default="false" name="py.test for test_tetrahedron_method.test_calculate_diagonal_length1" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python tests.py.test for test_tetrahedron_method.test_determine_parallelepiped_corners8">
+    <configuration default="false" name="py.test for test_tetrahedron_method.test_determine_parallelepiped_corners4" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
@@ -145,11 +144,11 @@
       <module name="Tetrahedra_Integration" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_tetrahedron_method.test_calculate_diagonal_length1&quot;" />
+      <option name="_new_target" value="&quot;test_tetrahedron_method.test_determine_parallelepiped_corners4&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method />
     </configuration>
-    <configuration default="false" name="py.test for test_tetrahedron_method.test_calculate_diagonal_length2" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="py.test for test_tetrahedron_method.test_determine_parallelepiped_corners5" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
@@ -161,11 +160,11 @@
       <module name="Tetrahedra_Integration" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_tetrahedron_method.test_calculate_diagonal_length2&quot;" />
+      <option name="_new_target" value="&quot;test_tetrahedron_method.test_determine_parallelepiped_corners5&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method />
     </configuration>
-    <configuration default="false" name="py.test for test_tetrahedron_method.test_calculate_diagonal_length3" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="py.test for test_tetrahedron_method.test_determine_parallelepiped_corners6" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
@@ -177,11 +176,11 @@
       <module name="Tetrahedra_Integration" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_tetrahedron_method.test_calculate_diagonal_length3&quot;" />
+      <option name="_new_target" value="&quot;test_tetrahedron_method.test_determine_parallelepiped_corners6&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method />
     </configuration>
-    <configuration default="false" name="py.test for test_tetrahedron_method.test_calculate_diagonal_length4" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="py.test for test_tetrahedron_method.test_determine_parallelepiped_corners7" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
@@ -193,11 +192,11 @@
       <module name="Tetrahedra_Integration" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_tetrahedron_method.test_calculate_diagonal_length4&quot;" />
+      <option name="_new_target" value="&quot;test_tetrahedron_method.test_determine_parallelepiped_corners7&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method />
     </configuration>
-    <configuration default="false" name="py.test for test_tetrahedron_method.test_determine_shortest_diagonal" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="py.test for test_tetrahedron_method.test_determine_parallelepiped_corners8" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
@@ -209,7 +208,7 @@
       <module name="Tetrahedra_Integration" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_tetrahedron_method.test_determine_shortest_diagonal&quot;" />
+      <option name="_new_target" value="&quot;test_tetrahedron_method.test_determine_parallelepiped_corners8&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method />
     </configuration>
@@ -313,19 +312,19 @@
     </configuration>
     <list size="6">
       <item index="0" class="java.lang.String" itemvalue="Python.Unnamed" />
-      <item index="1" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_calculate_diagonal_length1" />
-      <item index="2" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_calculate_diagonal_length2" />
-      <item index="3" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_calculate_diagonal_length3" />
-      <item index="4" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_calculate_diagonal_length4" />
-      <item index="5" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_determine_shortest_diagonal" />
+      <item index="1" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_determine_parallelepiped_corners4" />
+      <item index="2" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_determine_parallelepiped_corners5" />
+      <item index="3" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_determine_parallelepiped_corners6" />
+      <item index="4" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_determine_parallelepiped_corners7" />
+      <item index="5" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_determine_parallelepiped_corners8" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_determine_shortest_diagonal" />
-        <item index="1" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_calculate_diagonal_length4" />
-        <item index="2" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_calculate_diagonal_length3" />
-        <item index="3" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_calculate_diagonal_length2" />
-        <item index="4" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_calculate_diagonal_length1" />
+        <item index="0" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_determine_parallelepiped_corners8" />
+        <item index="1" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_determine_parallelepiped_corners7" />
+        <item index="2" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_determine_parallelepiped_corners6" />
+        <item index="3" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_determine_parallelepiped_corners5" />
+        <item index="4" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_determine_parallelepiped_corners4" />
       </list>
     </recent_temporary>
   </component>
@@ -343,35 +342,35 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="py_test_for_test_tetrahedron_method_test_calculate_diagonal_length1 - 2017.05.17 at 17h 15m 22s.xml">
-      <configuration name="py.test for test_tetrahedron_method.test_calculate_diagonal_length1" configurationId="tests" />
+    <history-entry file="py_test_for_test_tetrahedron_method_test_determine_parallelepiped_corners4 - 2017.05.17 at 23h 38m 16s.xml">
+      <configuration name="py.test for test_tetrahedron_method.test_determine_parallelepiped_corners4" configurationId="tests" />
     </history-entry>
-    <history-entry file="py_test_for_test_tetrahedron_method_test_calculate_diagonal_length1 - 2017.05.17 at 17h 15m 28s.xml">
-      <configuration name="py.test for test_tetrahedron_method.test_calculate_diagonal_length1" configurationId="tests" />
+    <history-entry file="py_test_for_test_tetrahedron_method_test_determine_parallelepiped_corners4 - 2017.05.17 at 23h 38m 46s.xml">
+      <configuration name="py.test for test_tetrahedron_method.test_determine_parallelepiped_corners4" configurationId="tests" />
     </history-entry>
-    <history-entry file="py_test_for_test_tetrahedron_method_test_calculate_diagonal_length2 - 2017.05.17 at 17h 16m 26s.xml">
-      <configuration name="py.test for test_tetrahedron_method.test_calculate_diagonal_length2" configurationId="tests" />
+    <history-entry file="py_test_for_test_tetrahedron_method_test_determine_parallelepiped_corners5 - 2017.05.17 at 23h 36m 06s.xml">
+      <configuration name="py.test for test_tetrahedron_method.test_determine_parallelepiped_corners5" configurationId="tests" />
     </history-entry>
-    <history-entry file="py_test_for_test_tetrahedron_method_test_calculate_diagonal_length2 - 2017.05.17 at 17h 17m 02s.xml">
-      <configuration name="py.test for test_tetrahedron_method.test_calculate_diagonal_length2" configurationId="tests" />
+    <history-entry file="py_test_for_test_tetrahedron_method_test_determine_parallelepiped_corners5 - 2017.05.17 at 23h 38m 30s.xml">
+      <configuration name="py.test for test_tetrahedron_method.test_determine_parallelepiped_corners5" configurationId="tests" />
     </history-entry>
-    <history-entry file="py_test_for_test_tetrahedron_method_test_calculate_diagonal_length2 - 2017.05.17 at 17h 18m 17s.xml">
-      <configuration name="py.test for test_tetrahedron_method.test_calculate_diagonal_length2" configurationId="tests" />
+    <history-entry file="py_test_for_test_tetrahedron_method_test_determine_parallelepiped_corners5 - 2017.05.17 at 23h 38m 53s.xml">
+      <configuration name="py.test for test_tetrahedron_method.test_determine_parallelepiped_corners5" configurationId="tests" />
     </history-entry>
-    <history-entry file="py_test_for_test_tetrahedron_method_test_calculate_diagonal_length3 - 2017.05.17 at 17h 19m 15s.xml">
-      <configuration name="py.test for test_tetrahedron_method.test_calculate_diagonal_length3" configurationId="tests" />
+    <history-entry file="py_test_for_test_tetrahedron_method_test_determine_parallelepiped_corners6 - 2017.05.17 at 23h 42m 22s.xml">
+      <configuration name="py.test for test_tetrahedron_method.test_determine_parallelepiped_corners6" configurationId="tests" />
     </history-entry>
-    <history-entry file="py_test_for_test_tetrahedron_method_test_calculate_diagonal_length3 - 2017.05.17 at 17h 19m 28s.xml">
-      <configuration name="py.test for test_tetrahedron_method.test_calculate_diagonal_length3" configurationId="tests" />
+    <history-entry file="py_test_for_test_tetrahedron_method_test_determine_parallelepiped_corners7 - 2017.05.17 at 23h 44m 12s.xml">
+      <configuration name="py.test for test_tetrahedron_method.test_determine_parallelepiped_corners7" configurationId="tests" />
     </history-entry>
-    <history-entry file="py_test_for_test_tetrahedron_method_test_calculate_diagonal_length3 - 2017.05.17 at 17h 20m 24s.xml">
-      <configuration name="py.test for test_tetrahedron_method.test_calculate_diagonal_length3" configurationId="tests" />
+    <history-entry file="py_test_for_test_tetrahedron_method_test_determine_parallelepiped_corners7 - 2017.05.17 at 23h 44m 47s.xml">
+      <configuration name="py.test for test_tetrahedron_method.test_determine_parallelepiped_corners7" configurationId="tests" />
     </history-entry>
-    <history-entry file="py_test_for_test_tetrahedron_method_test_calculate_diagonal_length4 - 2017.05.17 at 17h 21m 25s.xml">
-      <configuration name="py.test for test_tetrahedron_method.test_calculate_diagonal_length4" configurationId="tests" />
+    <history-entry file="py_test_for_test_tetrahedron_method_test_determine_parallelepiped_corners8 - 2017.05.17 at 23h 46m 32s.xml">
+      <configuration name="py.test for test_tetrahedron_method.test_determine_parallelepiped_corners8" configurationId="tests" />
     </history-entry>
-    <history-entry file="py_test_for_test_tetrahedron_method_test_determine_shortest_diagonal - 2017.05.17 at 17h 48m 59s.xml">
-      <configuration name="py.test for test_tetrahedron_method.test_determine_shortest_diagonal" configurationId="tests" />
+    <history-entry file="py_test_for_test_tetrahedron_method_test_determine_parallelepiped_corners8 - 2017.05.17 at 23h 46m 54s.xml">
+      <configuration name="py.test for test_tetrahedron_method.test_determine_parallelepiped_corners8" configurationId="tests" />
     </history-entry>
   </component>
   <component name="TodoView">
@@ -384,19 +383,18 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-11" y="-11" width="1942" height="1046" extended-state="6" />
-    <editor active="true" />
+    <frame x="-11" y="-11" width="1942" height="1046" extended-state="7" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25405404" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2583784" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289941" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30650887" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30650887" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32972974" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -415,6 +413,26 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/test_tetrahedron_method.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tetrahedron_method.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4575">
+          <caret line="184" column="67" lean-forward="false" selection-start-line="184" selection-start-column="67" selection-end-line="184" selection-end-column="67" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/tetrahedron_method.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -433,33 +451,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pseudopots.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/pseudopots.py" />
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test_sample.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/test_sample.py" />
     <entry file="file://$PROJECT_DIR$/tetrahedron_method.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="249">
-          <caret line="184" column="67" lean-forward="false" selection-start-line="184" selection-start-column="67" selection-end-line="184" selection-end-column="67" />
+        <state relative-caret-position="-1753">
+          <caret line="205" column="0" lean-forward="true" selection-start-line="205" selection-start-column="0" selection-end-line="205" selection-end-column="0" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
@@ -468,8 +472,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test_tetrahedron_method.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="371">
-          <caret line="125" column="1" lean-forward="true" selection-start-line="125" selection-start-column="1" selection-end-line="125" selection-end-column="1" />
+        <state relative-caret-position="322">
+          <caret line="179" column="70" lean-forward="true" selection-start-line="179" selection-start-column="70" selection-end-line="180" selection-end-column="0" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
           </folding>

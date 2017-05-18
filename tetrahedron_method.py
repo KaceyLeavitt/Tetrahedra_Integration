@@ -204,6 +204,104 @@ def determine_parallelepiped_corners(point1, B1, B2, B3):
     return (point2, point3, point4, point5, point6, point7, point8)
 
 
+def add_tetrahedra(tetrahedra_quadruples, shortest_diagonal, point_indices):
+    """Adds a quadruple of point indices of the corners of a tetrahedron to the 
+    list tetrahedra_quadruples. The corner points of the tetrahedron are formed 
+    by breaking every parallelepiped in the grid up into six tetrahedra that 
+    all share the shortest diagonal as an edge and all have the same volume.
+    
+    Args:
+        tetrahedra_quadruples (list of lists of ints): a list of quadruples. 
+            There is exactly one quadruple for every tetrahedron. Each 
+            quadruple is a list of the grid_points indices for the corners of 
+            the tetrahedron.
+        shortest_diagonal (int): either 1, 2, 3, or 4; an index designating 
+            whether diagonal1, diagonal2, diagonal3, or diagonal is the 
+            shortest.
+        point_indices (NumPy array of ints): the indices for point one through 
+            point eight in the grid arranged in order by point number (i.e. 
+            point 1 is first, point 2 is second, etc.).
+    
+    Returns:
+        tetrahedra_quadruples (list of lists of ints): a list of quadruples. 
+            There is exactly one quadruple for every tetrahedron. Each 
+            quadruple is a list of the grid_points indices for the corners of 
+            the tetrahedron.
+    """
+
+    point1_index = point_indices[0]
+    # int: the index for point1 in the grid.
+    point2_index = point_indices[1]
+    # int: the index for point2 in the grid.
+    point3_index = point_indices[2]
+    # int: the index for point3 in the grid.
+    point4_index = point_indices[3]
+    # int: the index for point4 in the grid.
+    point5_index = point_indices[4]
+    # int: the index for point5 in the grid.
+    point6_index = point_indices[5]
+    # int: the index for point6 in the grid.
+    point7_index = point_indices[6]
+    # int: the index for point7 in the grid.
+    point8_index = point_indices[7]
+    # int: the index for point8 in the grid.
+
+    if shortest_diagonal == 1:
+        tetrahedra_quadruples.append([point1_index, point4_index, point7_index,
+                                      point8_index])
+        tetrahedra_quadruples.append([point1_index, point3_index, point7_index,
+                                      point8_index])
+        tetrahedra_quadruples.append([point1_index, point2_index, point5_index,
+                                      point8_index])
+        tetrahedra_quadruples.append([point1_index, point2_index, point6_index,
+                                      point8_index])
+        tetrahedra_quadruples.append([point1_index, point4_index, point6_index,
+                                      point8_index])
+        tetrahedra_quadruples.append([point1_index, point3_index, point5_index,
+                                      point8_index])
+    elif shortest_diagonal == 2:
+        tetrahedra_quadruples.append([point4_index, point6_index, point2_index,
+                                      point5_index])
+        tetrahedra_quadruples.append([point4_index, point6_index, point8_index,
+                                      point5_index])
+        tetrahedra_quadruples.append([point4_index, point1_index, point3_index,
+                                      point5_index])
+        tetrahedra_quadruples.append([point4_index, point7_index, point3_index,
+                                      point5_index])
+        tetrahedra_quadruples.append([point4_index, point7_index, point8_index,
+                                      point5_index])
+        tetrahedra_quadruples.append([point4_index, point1_index, point2_index,
+                                      point5_index])
+    elif shortest_diagonal == 3:
+        tetrahedra_quadruples.append([point3_index, point1_index, point4_index,
+                                      point6_index])
+        tetrahedra_quadruples.append([point3_index, point7_index, point4_index,
+                                      point6_index])
+        tetrahedra_quadruples.append([point3_index, point1_index, point2_index,
+                                      point6_index])
+        tetrahedra_quadruples.append([point3_index, point7_index, point8_index,
+                                      point6_index])
+        tetrahedra_quadruples.append([point3_index, point5_index, point2_index,
+                                      point6_index])
+        tetrahedra_quadruples.append([point3_index, point5_index, point8_index,
+                                      point6_index])
+    elif shortest_diagonal == 4:
+        tetrahedra_quadruples.append([point7_index, point8_index, point6_index,
+                                      point2_index])
+        tetrahedra_quadruples.append([point7_index, point8_index, point5_index,
+                                      point2_index])
+        tetrahedra_quadruples.append([point7_index, point4_index, point6_index,
+                                      point2_index])
+        tetrahedra_quadruples.append([point7_index, point3_index, point5_index,
+                                      point2_index])
+        tetrahedra_quadruples.append([point7_index, point1_index, point4_index,
+                                      point2_index])
+        tetrahedra_quadruples.append([point7_index, point1_index, point3_index,
+                                      point2_index])
+
+    return tetrahedra_quadruples
+
+
 def generate_tetrahedra(grid, B1, B2, B3, shortest_diagonal):
     """Creates a list of corner points of tetrahedra that are formed by 
     breaking every parallelepiped in the grid up into six tetrahedra that all 
@@ -300,36 +398,14 @@ def generate_tetrahedra(grid, B1, B2, B3, shortest_diagonal):
                 pt8_in_grid = True
                 point8_index = n + 1
 
-        if pt2_in_grid and pt3_in_grid and pt4_in_grid and pt5_in_grid and pt6_in_grid and pt7_in_grid and pt8_in_grid:
+        if pt2_in_grid and pt3_in_grid and pt4_in_grid and pt5_in_grid and \
+                pt6_in_grid and pt7_in_grid and pt8_in_grid:
             # create quadruples for the corner points of each tetrahedra
-            if shortest_diagonal == 1:
-                tetrahedra_quadruples.append([point1_index, point4_index, point7_index, point8_index])
-                tetrahedra_quadruples.append([point1_index, point3_index, point7_index, point8_index])
-                tetrahedra_quadruples.append([point1_index, point2_index, point5_index, point8_index])
-                tetrahedra_quadruples.append([point1_index, point2_index, point6_index, point8_index])
-                tetrahedra_quadruples.append([point1_index, point4_index, point6_index, point8_index])
-                tetrahedra_quadruples.append([point1_index, point3_index, point5_index, point8_index])
-            elif shortest_diagonal == 2:
-                tetrahedra_quadruples.append([point4_index, point6_index, point2_index, point5_index])
-                tetrahedra_quadruples.append([point4_index, point6_index, point8_index, point5_index])
-                tetrahedra_quadruples.append([point4_index, point1_index, point3_index, point5_index])
-                tetrahedra_quadruples.append([point4_index, point7_index, point3_index, point5_index])
-                tetrahedra_quadruples.append([point4_index, point7_index, point8_index, point5_index])
-                tetrahedra_quadruples.append([point4_index, point1_index, point2_index, point5_index])
-            elif shortest_diagonal == 3:
-                tetrahedra_quadruples.append([point3_index, point1_index, point4_index, point6_index])
-                tetrahedra_quadruples.append([point3_index, point7_index, point4_index, point6_index])
-                tetrahedra_quadruples.append([point3_index, point1_index, point2_index, point6_index])
-                tetrahedra_quadruples.append([point3_index, point7_index, point8_index, point6_index])
-                tetrahedra_quadruples.append([point3_index, point5_index, point2_index, point6_index])
-                tetrahedra_quadruples.append([point3_index, point5_index, point8_index, point6_index])
-            elif shortest_diagonal == 4:
-                tetrahedra_quadruples.append([point7_index, point8_index, point6_index, point2_index])
-                tetrahedra_quadruples.append([point7_index, point8_index, point5_index, point2_index])
-                tetrahedra_quadruples.append([point7_index, point4_index, point6_index, point2_index])
-                tetrahedra_quadruples.append([point7_index, point3_index, point5_index, point2_index])
-                tetrahedra_quadruples.append([point7_index, point1_index, point4_index, point2_index])
-                tetrahedra_quadruples.append([point7_index, point1_index, point3_index, point2_index])
+            point_indices = np.array([point1_index, point2_index, point3_index,
+                                      point4_index, point5_index, point6_index,
+                                      point7_index, point8_index])
+            tetrahedra_quadruples = add_tetrahedra(tetrahedra_quadruples,
+                                            shortest_diagonal, point_indices)
 
     return tetrahedra_quadruples
 

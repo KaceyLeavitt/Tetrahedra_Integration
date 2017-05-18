@@ -1,75 +1,151 @@
-def integrate(r_lattice_vectors, grid_vecs, grid, PP, valence_electrons, apply_weight_correction):
-    """A function that performs Brillouin zone integration of the energy bands to determine the total energy. An 
-    improved version of the tetrahedron method is used.
-    
-    This function is an implementation of the algorithm proposed in "Improved tetrahedron method for Brillouin-zone 
-    integrations" by Peter E. Blöchl, O. Jepsen, and O. K. Andersen from Physical Review B 49, 16223 – Published 15 June 
-    1994. It is modified in that the submesh vectors (grid_vecs) are not necessarily the reciprocal lattice vectors 
-    divided by an integer.
+import math
+import numpy as np
+
+
+def generate_r_lattice_vectors(r_lattice_vectors):
+    """Generates the reciprocal lattice vectors.
     
     Args:
-        r_lattice_vectors (NumPy array): the reciprocal lattice vectors. Each column of the array is one of the vectors.
-        grid_vecs (NumPy array): the vectors used to create the grid of k points. All grid points are an integer 
-            combination of these vectors. Each column of the array is one of the vectors.
-        grid (list of lists of floats): the coordinates of each k point in the reciprocal lattice unit cell at which 
-            calculations will be performed.
-        PP (function): calculates the first n energy levels at a given k point using the pseudopotential method. PP has 
-            two arguments. For its first argument, PP takes a list of floats containing the coordinates of the k point 
-            to evaluate the energy levels at. For its second argument, PP takes the number of eigenvalues (equivalent to 
-            the number of energy levels) to return. It returns a sorted list (from least to greatest) of the first n 
-            eigenvalues (energy values) at that point.
-        valence_electrons (int): the number of valence electrons possessed by the element in question.
-        apply_weight_correction (bool): true if the integration weights should be corrected to take curvature into 
-            account, false otherwise.
+        r_lattice_vectors (NumPy array): the reciprocal lattice vectors. Each 
+            column of the array is one of the vectors.
     
     Returns:
-        E_Fermi (float): the calculated Fermi energy level.
-        total_energy (float): the total calculated energy in the Brillouin zone, the result of the integration.
+        (b1, b2, b3) (tuple of Numpy arrays): b1, b2, and b3 are the first, 
+            second, and third reciprocal lattice vectors respectively.
     """
 
-    k = len(grid)
-    """int: the total number of points in the grid."""
-
-    # reciprocal lattice vectors
     b1 = r_lattice_vectors[:, 0]
-    """NumPy array: the first reciprocal lattice vector."""
+    # NumPy array: the first reciprocal lattice vector.
     b2 = r_lattice_vectors[:, 1]
-    """NumPy array: the second reciprocal lattice vector."""
+    # NumPy array: the second reciprocal lattice vector.
     b3 = r_lattice_vectors[:, 2]
-    """NumPy array: the third reciprocal lattice vector."""
+    # NumPy array: the third reciprocal lattice vector.
 
-    # submesh lattice vectors
+    return (b1, b2, b3)
+
+
+def generate_submesh_lattice_vectors(grid_vecs):
+    """Generates the submesh lattice vectors. These vectors tell you the 
+    separation between the points in the grid.
+    
+    Args:
+        grid_vecs (NumPy array): the vectors used to create the grid of k 
+            points. All grid points are an integer combination of these 
+            vectors. Each column of the array is one of the vectors.
+    
+    Returns:
+        (B1, B2, B3) (tuple of NumPy arrays): B1, B2, and B3 are the first, 
+            second, and third submesh lattice vectors respectively.
+    """
+
     B1 = grid_vecs[:, 0]
-    """NumPy array: the separation between each point in the grid in the first direction."""
+    """NumPy array: the separation between each point in the grid in the first 
+    direction."""
     B2 = grid_vecs[:, 1]
-    """NumPy array: the separation between each point in the grid in the second direction."""
+    """NumPy array: the separation between each point in the grid in the second 
+    direction."""
     B3 = grid_vecs[:, 2]
-    """NumPy array: the separation between each point in the grid in the third direction."""
+    """NumPy array: the separation between each point in the grid in the third 
+    direction."""
 
-    # length of diagonals
+    return (B1, B2, B3)
+
+
+def generate_diagonal_vectors(B1, B2, B3):
+    """Generates vectors that span the diagonals of the smallest 
+    parallelepipeds that can be created with integer combinations of the 
+    submesh lattice vectors.
+    
+    Args:
+        B1 (NumPy array): the first submesh lattice vector.
+        B2 (NumPy array): the second submesh lattice vector.
+        B1 (NumPy array): the third submesh lattice vector.
+        
+    Returns:
+        (diagonal1, diagonal2, diagonal3, diagonal4) (tuple of NumPy arrays): 
+            diagonal1, diagonal2, diagonal3, and diagonal4 are the vectors that 
+            span the first, second, third, and fourth diagonals of the smallest 
+            parallelepipeds that can be created with integer combinations of 
+            the submesh lattice vectors respectively.
+    """
+
     diagonal1 = B1 + B2 + B3
-    """NumPy array: a vector spanning one of the diagonals of each parallelepiped in the grid."""
+    """NumPy array: a vector spanning one of the diagonals of each 
+    parallelepiped in the grid."""
     diagonal2 = -B1 + B2 + B3
-    """NumPy array: a vector spanning one of the diagonals of each parallelepiped in the grid."""
+    """NumPy array: a vector spanning one of the diagonals of each 
+    parallelepiped in the grid."""
     diagonal3 = B1 - B2 + B3
-    """NumPy array: a vector spanning one of the diagonals of each parallelepiped in the grid."""
+    """NumPy array: a vector spanning one of the diagonals of each 
+    parallelepiped in the grid."""
     diagonal4 = B1 + B2 - B3
-    """NumPy array: a vector spanning one of the diagonals of each parallelepiped in the grid."""
+    """NumPy array: a vector spanning one of the diagonals of each 
+    parallelepiped in the grid."""
+
+    return (diagonal1, diagonal2, diagonal3, diagonal4)
+
+
+def calculate_diagonal_length(diagonal1, diagonal2, diagonal3, diagonal4):
+    """Calculates the length of each diagonal of the parallelepipeds in the 
+    grid.
+    
+    Args:
+        diagonal1 (NumPy array): the vector that spans the first diagonal of 
+            the parallelepipeds.
+        diagonal2 (NumPy array): the vector that spans the second diagonal of 
+            the parallelepipeds.
+        diagonal3 (NumPy array): the vector that spans the third diagonal of 
+            the parallelepipeds.
+        diagonal4 (NumPy array): the vector that spans the fourth diagonal of 
+            the parallelepipeds.
+    
+    Returns:
+        (diagonal1_length, diagonal2_length, diagonal3_length, diagonal4_length)
+            (tuple of floats): the magnitudes of the vectors diagonal1, 
+            diagonal2, diagonal3, and diagonal4 respectively.
+    """
 
     diagonal1_length = math.sqrt(np.dot(diagonal1, diagonal1))
-    """float: the magnitude of the vector diagonal1."""
+    # float: the magnitude of the vector diagonal1.
     diagonal2_length = math.sqrt(np.dot(diagonal2, diagonal2))
-    """float: the magnitude of the vector diagonal2."""
+    # float: the magnitude of the vector diagonal2.
     diagonal3_length = math.sqrt(np.dot(diagonal3, diagonal3))
-    """float: the magnitude of the vector diagonal3."""
+    # float: the magnitude of the vector diagonal3.
     diagonal4_length = math.sqrt(np.dot(diagonal4, diagonal4))
-    """float: the magnitude of the vector diagonal4."""
+    # float: the magnitude of the vector diagonal4.
 
-    shortest_diagonal_length = min(diagonal1_length, diagonal2_length, diagonal3_length, diagonal4_length)
-    """float: the magnitude of the shortest vector that spans a diagonal of each parallelepiped in the grid."""
+    return (diagonal1_length, diagonal2_length, diagonal3_length,
+            diagonal4_length)
+
+
+def determine_shortest_diagonal(diagonal1_length, diagonal2_length,
+                                diagonal3_length, diagonal4_length):
+    """Determines which of the four diagonals of the parallelepipeds in the 
+    grid is the shortest.
+    
+    Args:
+        diagonal1_length (float): the magnitude of the vector spanning the 
+            first diagonal of the parallelepipeds.
+        diagonal2_length (float): the magnitude of the vector spanning the 
+            second diagonal of the parallelepipeds.
+        diagonal3_length (float): the magnitude of the vector spanning the 
+            third diagonal of the parallelepipeds.
+        diagonal4_length (float): the magnitude of the vector spanning the 
+            fourth diagonal of the parallelepipeds.
+            
+    Returns:
+        shortest_diagonal (int): either 1, 2, 3, or 4; an index designating 
+            whether diagonal1, diagonal2, diagonal3, or diagonal is the 
+            shortest.
+    """
+
+    shortest_diagonal_length = min(diagonal1_length, diagonal2_length,
+                                   diagonal3_length, diagonal4_length)
+    """float: the magnitude of the shortest vector that spans a diagonal of 
+    each parallelepiped in the grid."""
     shortest_diagonal = 0
-    """int: the index of the shortest vector that spans a diagonal of each parallelepiped in the grid.
-    This value will always be 1, 2, 3, or 4."""
+    """int: the index of the shortest vector that spans a diagonal of each 
+    parallelepiped in the grid. This value will always be 1, 2, 3, or 4."""
 
     if shortest_diagonal_length == diagonal1_length:
         shortest_diagonal = 1
@@ -80,28 +156,88 @@ def integrate(r_lattice_vectors, grid_vecs, grid, PP, valence_electrons, apply_w
     elif shortest_diagonal_length == diagonal4_length:
         shortest_diagonal = 4
 
-    # Tetrahedra are generated
+    return shortest_diagonal
+
+
+def determine_parallelepiped_corners(point1, B1, B2, B3):
+    point2 = point1 + B3
+    """NumPy array: the coordinates of the second corner of a parallelepiped 
+    from the grid."""
+    point3 = point1 + B2
+    """NumPy array: the coordinates of the third corner of a parallelepiped 
+    from the grid."""
+    point4 = point1 + B1
+    """NumPy array: the coordinates of the fourth corner of a parallelepiped 
+    from the grid."""
+    point5 = point1 + B3 + B2
+    """NumPy array: the coordinates of the fifth corner of a parallelepiped 
+    from the grid."""
+    point6 = point1 + B3 + B1
+    """NumPy array: the coordinates of the sixth corner of a parallelepiped 
+    from the grid."""
+    point7 = point1 + B2 + B1
+    """NumPy array: the coordinates of the seventh corner of a parallelepiped 
+    from the grid."""
+    point8 = point1 + B3 + B2 + B1
+    """NumPy array: the coordinates of the eighth corner of a parallelepiped 
+    from the grid."""
+
+    return (point2, point3, point4, point5, point6, point7, point8)
+
+
+def generate_tetrahedra(grid, B1, B2, B3, shortest_diagonal):
+    """Creates a list of corner points of tetrahedra that are formed by 
+    breaking every parallelepiped in the grid up into six tetrahedra that all 
+    share the shortest diagonal as an edge and all have the same volume.
+    
+    Args:
+        grid (list of lists of floats): the coordinates of each k point in the 
+            reciprocal lattice unit cell at which calculations will be 
+            performed.
+        B1 (NumPy array): the first submesh lattice vector.
+        B2 (NumPy array): the second submesh lattice vector.
+        B1 (NumPy array): the third submesh lattice vector.
+        shortest_diagonal (int): either 1, 2, 3, or 4; an index designating 
+            whether diagonal1, diagonal2, diagonal3, or diagonal is the 
+            shortest.
+            
+    Returns:
+        tetrahedra_quadruples (list of lists of ints): a list of quadruples. 
+            There is exactly one quadruple for every tetrahedron. Each 
+            quadruple is a list of the grid_points indices for the corners of 
+            the tetrahedron.
+    """
+
     tetrahedra_quadruples = []
-    """list of lists of ints: a list of quadruples. There is exactly one quadruple for every tetrahedron. Each quadruple 
-    is a list of the grid_points indices for the corners of the tetrahedron."""
+    """list of lists of ints: a list of quadruples. There is exactly one 
+    quadruple for every tetrahedron. Each quadruple is a list of the 
+    grid_points indices for the corners of the tetrahedron."""
 
     for m in range(len(grid)):
         point1 = np.asarray(grid[m])
-        """NumPy array: the coordinates of the first corner of a parallelepiped from the grid."""
+        """NumPy array: the coordinates of the first corner of a parallelepiped 
+        from the grid."""
         point2 = point1 + B3
-        """NumPy array: the coordinates of the second corner of a parallelepiped from the grid."""
+        """NumPy array: the coordinates of the second corner of a 
+        parallelepiped from the grid."""
         point3 = point1 + B2
-        """NumPy array: the coordinates of the third corner of a parallelepiped from the grid."""
+        """NumPy array: the coordinates of the third corner of a parallelepiped 
+        from the grid."""
         point4 = point1 + B1
-        """NumPy array: the coordinates of the fourth corner of a parallelepiped from the grid."""
+        """NumPy array: the coordinates of the fourth corner of a 
+        parallelepiped from the grid."""
         point5 = point1 + B3 + B2
-        """NumPy array: the coordinates of the fifth corner of a parallelepiped from the grid."""
+        """NumPy array: the coordinates of the fifth corner of a parallelepiped 
+        from the grid."""
         point6 = point1 + B3 + B1
-        """NumPy array: the coordinates of the sixth corner of a parallelepiped from the grid."""
+        """NumPy array: the coordinates of the sixth corner of a parallelepiped 
+        from the grid."""
         point7 = point1 + B2 + B1
-        """NumPy array: the coordinates of the seventh corner of a parallelepiped from the grid."""
+        """NumPy array: the coordinates of the seventh corner of a 
+        parallelepiped from the grid."""
         point8 = point1 + B3 + B2 + B1
-        """NumPy array: the coordinates of the eighth corner of a parallelepiped from the grid."""
+        """NumPy array: the coordinates of the eighth corner of a 
+        parallelepiped from the grid."""
 
         pt2_in_grid = False
         """bool: whether or not point2 is a point in the grid."""
@@ -137,7 +273,8 @@ def integrate(r_lattice_vectors, grid_vecs, grid, PP, valence_electrons, apply_w
 
         for n in range(len(grid)):
             grid_point = np.asarray(grid[n])
-            """NumPy array: the coordinates of a point in the grid to be compared against."""
+            """NumPy array: the coordinates of a point in the grid to be 
+            compared against."""
 
             if grid_point == point2:
                 pt2_in_grid = True
@@ -192,9 +329,88 @@ def integrate(r_lattice_vectors, grid_vecs, grid, PP, valence_electrons, apply_w
                 tetrahedra_quadruples.append([point7_index, point1_index, point4_index, point2_index])
                 tetrahedra_quadruples.append([point7_index, point1_index, point3_index, point2_index])
 
+    return tetrahedra_quadruples
+
+
+def integrate(r_lattice_vectors, grid_vecs, grid, PP, valence_electrons,
+              apply_weight_correction):
+    """A function that performs Brillouin zone integration of the energy bands 
+    to determine the total energy. An improved version of the tetrahedron 
+    method is used.
+    
+    This function is an implementation of the algorithm proposed in "Improved 
+    tetrahedron method for Brillouin-zone integrations" by Peter E. Blöchl, O. 
+    Jepsen, and O. K. Andersen from Physical Review B 49, 16223 – Published 15 
+    June 1994. It is modified in that the submesh vectors (grid_vecs) are not 
+    necessarily the reciprocal lattice vectors divided by an integer.
+    
+    Args:
+        r_lattice_vectors (NumPy array): the reciprocal lattice vectors. Each 
+            column of the array is one of the vectors.
+        grid_vecs (NumPy array): the vectors used to create the grid of k 
+            points. All grid points are an integer combination of these 
+            vectors. Each column of the array is one of the vectors.
+        grid (list of lists of floats): the coordinates of each k point in the 
+            reciprocal lattice unit cell at which calculations will be 
+            performed.
+        PP (function): calculates the first n energy levels at a given k point 
+            using the pseudopotential method. PP has two arguments. For its 
+            first argument, PP takes a list of floats containing the 
+            coordinates of the k point to evaluate the energy levels at. For 
+            its second argument, PP takes the number of eigenvalues (equivalent 
+            to the number of energy levels) to return. It returns a sorted list 
+            (from least to greatest) of the first n eigenvalues (energy values) 
+            at that point.
+        valence_electrons (int): the number of valence electrons possessed by 
+            the element in question.
+        apply_weight_correction (bool): true if the integration weights should 
+            be corrected to take curvature into account, false otherwise.
+    
+    Returns:
+        E_Fermi (float): the calculated Fermi energy level.
+        total_energy (float): the total calculated energy in the Brillouin 
+            zone, the result of the integration.
+    """
+
+    k = len(grid)
+    # int: the total number of points in the grid.
+
+    # reciprocal lattice vectors
+    b1, b2, b3 = generate_r_lattice_vectors(r_lattice_vectors)
+    """tuple of NumPy arrays: the first, second, and third reciprocal lattice 
+    vectors respectively."""
+
+    # submesh lattice vectors
+    B1, B2, B3 = generate_submesh_lattice_vectors(grid_vecs)
+    """tuple of NumPy arrays: the separation between each point in the grid in 
+    the first, second, and third directions respectively."""
+
+    # length of diagonals
+    diagonal1, diagonal2, diagonal3, diagonal4 = generate_diagonal_vectors(
+        B1, B2, B3)
+    """tuple of NumPy arrays: vectors spanning all four of the diagonals of 
+    each parallelepiped in the grid."""
+
+    diagonal1_length, diagonal2_length, diagonal3_length, diagonal4_length = \
+        calculate_diagonal_length(diagonal1, diagonal2, diagonal3, diagonal4)
+    """tuple of floats: the magnitudes of the vectors diagonal1, diagonal2, 
+    diagonal3, and diagonal4 respectively."""
+
+    shortest_diagonal = determine_shortest_diagonal(diagonal1_length,
+        diagonal2_length, diagonal3_length, diagonal4_length)
+
+    # Tetrahedra are generated
+    tetrahedra_quadruples = generate_tetrahedra(grid, B1, B2, B3,
+                                                shortest_diagonal)
+    """list of lists of ints: a list of quadruples. There is exactly one 
+    quadruple for every tetrahedron. Each quadruple is a list of the 
+    grid_points indices for the corners of the tetrahedron."""
+
+
     # determine energy band levels for each of the k points in the submesh
     number_of_bands = 8
-    """int: the number of energy band levels to calculate for each point in the grid."""
+    """int: the number of energy band levels to calculate for each point in the 
+    grid."""
     energy_bands = np.empty([k, number_of_bands])
     """NumPy array: the energy band levels for each point in the grid. Each row corresponds to the point in the grid 
     with the same index, and each column corresponds to a different energy band."""

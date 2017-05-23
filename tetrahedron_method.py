@@ -376,25 +376,25 @@ def generate_tetrahedra(grid, B1, B2, B3, shortest_diagonal):
             """NumPy array: the coordinates of a point in the grid to be 
             compared against."""
 
-            if grid_point == point2:
+            if np.array_equal(grid_point, point2):
                 pt2_in_grid = True
                 point2_index = n + 1
-            elif grid_point == point3:
+            elif np.array_equal(grid_point, point3):
                 pt3_in_grid = True
                 point3_index = n + 1
-            elif grid_point == point4:
+            elif np.array_equal(grid_point, point4):
                 pt4_in_grid = True
                 point4_index = n + 1
-            elif grid_point == point5:
+            elif np.array_equal(grid_point, point5):
                 pt5_in_grid = True
                 point5_index = n + 1
-            elif grid_point == point6:
+            elif np.array_equal(grid_point, point6):
                 pt6_in_grid = True
                 point6_index = n + 1
-            elif grid_point == point7:
+            elif np.array_equal(grid_point, point7):
                 pt7_in_grid = True
                 point7_index = n + 1
-            elif grid_point == point8:
+            elif np.array_equal(grid_point, point8):
                 pt8_in_grid = True
                 point8_index = n + 1
 
@@ -404,10 +404,285 @@ def generate_tetrahedra(grid, B1, B2, B3, shortest_diagonal):
             point_indices = np.array([point1_index, point2_index, point3_index,
                                       point4_index, point5_index, point6_index,
                                       point7_index, point8_index])
+            """NumPy array: the indices of the corner points of a 
+            parallelepiped in the grid."""
             tetrahedra_quadruples = add_tetrahedra(tetrahedra_quadruples,
                                             shortest_diagonal, point_indices)
 
     return tetrahedra_quadruples
+
+
+def calculate_volume(vector1, vector2, vector3):
+    """Calculates the volume of a parallelepiped that has its edges spanned by 
+    vector1, vector2, and vector3.
+    
+    Args:
+        vector1 (NumPy array): the first vector that spans four of the edges of 
+            the parallelepiped.
+        vector2 (NumPy array): the second vector that spans four of the edges of 
+            the parallelepiped.
+        vector3 (NumPy array): the third vector that spans four of the edges of 
+            the parallelepiped.
+            
+    Returns:
+        volume (float): the volume of the parallelepiped.
+    """
+
+    volume = np.dot(vector1, np.cross(vector2, vector3))
+
+    return volume
+
+
+def bound_fermi_energy(valence_electrons, energy_bands):
+    """Calculates initial upper and lower bounds on the Fermi energy level. The 
+    number of valence electrons is used to determine the band containing the 
+    Fermi energy. The minimum and maximum energy level of the band are used as 
+    the initial bounds.
+    
+    Args:
+        valence_electrons (int): the number of valence electrons possessed by 
+            the element in question.
+        energy_bands (NumPy array): the energy for each energy band of each of 
+            the k points in the grid.
+    
+    Returns:
+        upper_bound (float): an initial upper bound on the Fermi energy level.
+        lower_bound (float): an initial lower bound on the Fermi energy level.
+    """
+
+    band_index = math.ceil(valence_electrons / 2)
+    # int: the index of the energy band containing the Fermi energy level.
+    band_minima = np.amin(energy_bands, axis=0)
+    # NumPy array: the smallest energy value contained in each energy band.
+    lower_bound = band_minima[band_index - 1]
+    # float: an initial lower bound on the Fermi energy level.
+    band_maxima = np.amax(energy_bands, axis=0)
+    # NumPy array: the largest energy value contained in each energy band.
+    upper_bound = band_maxima[band_index - 1]
+    # float: an initial upper bound on the Fermi energy level.
+
+    return (upper_bound, lower_bound)
+
+
+def determine_energy_at_corners(energy_bands, E_values_by_tetrahedron, m, n,
+                                tetrahedra_quadruples, number_of_bands):
+    """Determines the energy values at the corners and other useful energy 
+    values for a given energy band and tetrahedron.
+    
+    Args:
+        energy_bands (NumPy array): the energy for each energy band of each of 
+            the k points in the grid.
+        E_values_by_tetrahedron (NumPy array): the energy levels and other 
+            useful energy levels for each band for each tetrahedron.
+        m  (int): the index in the list tetrahedra_quadruples for the given 
+            tetrahedron.
+        n (int): the index of the given energy band.
+        tetrahedra_quadruples (list of lists of ints): a list of quadruples. 
+            There is exactly one quadruple for every tetrahedron. Each 
+            quadruple is a list of the grid_points indices for the corners of 
+            the tetrahedron.
+        number_of_bands (int): the number of energy bands that the energy level 
+            is calculated at.
+            
+    Returns:
+        E_values_by_tetrahedron (NumPy array): the energy levels and other 
+            useful energy levels for each band for each tetrahedron.
+    """
+
+    M = 1 + n + number_of_bands * m
+    # int: a unique index for the current band of the current tetrahedron.
+
+    """The energy at each corner for a given band for a given tetrahedron is 
+    determined."""
+    E_at_corners = np.array([energy_bands[tetrahedra_quadruples[m][0] - 1, n],
+                             energy_bands[tetrahedra_quadruples[m][1] - 1, n],
+                             energy_bands[tetrahedra_quadruples[m][2] - 1, n],
+                             energy_bands[tetrahedra_quadruples[m][3] - 1, n]])
+    """NumPy Array: the energy level at each corner of the tetrahedron for the 
+    specified energy band."""
+    E_at_corners = np.sort(E_at_corners, axis=0)
+    # This reorders the energy at each corner from least to greatest
+
+    E_1 = E_at_corners[0]
+    """float: the energy level at the first corner of the tetrahedron for the 
+    specified energy band."""
+    E_2 = E_at_corners[1]
+    """float: the energy level at the second corner of the tetrahedron for the 
+    specified energy band."""
+    E_3 = E_at_corners[2]
+    """float: the energy level at the third corner of the tetrahedron for the 
+    specified energy band."""
+    E_4 = E_at_corners[3]
+    """float: the energy level at the fourth corner of the tetrahedron for the 
+    specified energy band."""
+    E_21 = E_2 - E_1
+    # float: a useful value for the following calculations.
+    E_31 = E_3 - E_1
+    # float: a useful value for the following calculations.
+    E_32 = E_3 - E_2
+    # float: a useful value for the following calculations.
+    E_41 = E_4 - E_1
+    # float: a useful value for the following calculations.
+    E_42 = E_4 - E_2
+    # float: a useful value for the following calculations.
+    E_43 = E_4 - E_3
+    # float: a useful value for the following calculations.
+
+    E_values_by_tetrahedron[M - 1, :] = [E_1, E_2, E_3, E_4, E_21, E_31, E_32,
+                                         E_41, E_42, E_43]
+
+    return E_values_by_tetrahedron
+
+
+def number_of_states_for_tetrahedron(E_Fermi, E_values, V_G, V_T):
+    """Calculates the contribution to the total number of states that is made 
+    by a single tetrahedron and energy band. This calculation is performed with 
+    the assumption of a certain Fermi energy level. This assumed value for the 
+    Fermi energy level is the current estimate that will continue to be 
+    iteratively refined.
+    
+    Args:
+        E_Fermi (float): the current estimate for the Fermi energy level.
+        E_values (NumPy array): the energy levels at the corners and other 
+            useful energy values for the given tetrahedron and energy band.
+        V_G (float): the volume of the reciprocal unit cell.
+        V_T (float): the volume of each tetrahedron in reciprocal space.
+        
+    Returns:
+        number_of_states (float): the contribution to the total number of 
+            states that is made by a single tetrahedron and energy band.
+    """
+
+    [E_1, E_2, E_3, E_4, E_21, E_31, E_32, E_41, E_42, E_43] = E_values
+
+    number_of_states = 0
+    """float: the number-of-states for a given tetrahedron and Fermi energy 
+    level."""
+
+    if E_Fermi < E_1:
+        number_of_states = 0
+    elif E_Fermi >= E_1 and E_Fermi < E_2:
+        number_of_states = V_T / V_G * (E_Fermi - E_1) ** 3 / (E_21 * E_31 *
+                                                               E_41)
+    elif E_Fermi >= E_2 and E_Fermi < E_3:
+        number_of_states = V_T / (V_G * E_31 * E_41) * (E_21 ** 2 + 3 * E_21 *
+            (E_Fermi - E_2) + 3 * (E_Fermi - E_2) ** 2 - (E_31 + E_42) *
+            (E_Fermi - E_2) ** 3 / (E_32 * E_42))
+    elif E_Fermi >= E_3 and E_Fermi < E_4:
+        number_of_states = V_T / V_G * (1 - (E_4 - E_Fermi) ** 3 / (E_41 *
+                                                                E_42 * E_43))
+    elif E_Fermi >= E_4:
+        number_of_states = V_T / V_G
+
+    return number_of_states
+
+
+def calculate_fermi_energy(valence_electrons, energy_bands, V_G, V_T,
+                           tetrahedra_quadruples, number_of_bands):
+    """Iteratively determines the Fermi energy level from the number of states 
+    function.
+    
+    Args:
+        valence_electrons (int): the number of valence electrons possessed by 
+            the element in question.
+        energy_bands (NumPy array): the energy for each energy band of each of 
+            the k points in the grid.
+        V_G (float): the volume of a parallelepiped with edges spanned by the 
+            reciprocal lattice vectors.
+        V_T (float): the volume of each tetrahedra.
+        tetrahedra_quadruples (list of lists of ints): a list of quadruples. 
+            There is exactly one quadruple for every tetrahedron. Each 
+            quadruple is a list of the grid_points indices for the corners of 
+            the tetrahedron.
+        number_of_bands (int): the number of energy bands that the energy level 
+            is calculated at.
+    
+    Returns:
+        E_Fermi (float): the calculated Fermi energy level.
+        E_values_by_tetrahedron (NumPy array): the energy levels and other 
+            useful energy levels for each band for each tetrahedron.
+    """
+
+    upper_bound, lower_bound = bound_fermi_energy(valence_electrons,
+                                                  energy_bands)
+    """tuple of floats: an initial upper and lower bound on the Fermi energy 
+    level respectively."""
+    E_Fermi = (lower_bound + upper_bound) / 2
+    """float: an initial value for the Fermi energy level that will be 
+    iteratively refined by tightening the upper and lower bounds."""
+
+    E_values_by_tetrahedron = np.empty([len(tetrahedra_quadruples) *
+                                        number_of_bands, 10])
+    """NumPy array: the corner energy values and other useful energy values for 
+    each band of each tetrahedron."""
+
+    # number of states function generation
+    theoretical_number_of_states = valence_electrons / 2
+    """float: the actual total number of states (integrated density of states) 
+    for the reciprocal unit cell."""
+    total_number_of_states = 0
+    """float: the total number of states (integrated density of states) for the 
+    reciprocal unit cell that is calculated for the given Fermi energy level. 
+    This value is compared to the actual number of states to iteratively refine 
+    the Fermi energy level."""
+    number_of_states_error_threshold = .00001
+    """float: the Fermi energy level is iteratively refined until the 
+    calculated number of states varies by less than this amount from the 
+    calculated number of states from the previous iteration."""
+    new_number_of_states = 2 * number_of_states_error_threshold
+    """float: the calculated number of states from the most recent iteration. 
+    This value is compared to the calculated number of states from the previous 
+    iteration to know whether or not to further refine the Fermi energy 
+    level."""
+    old_number_of_states = 0
+    """float: the calculated number of states from the second most recent 
+    iteration. This value is compared to the calculated number of states from 
+    the most recent iteration to know whether or not to further refine the 
+    Fermi energy level."""
+
+    while abs(new_number_of_states - old_number_of_states) > \
+            number_of_states_error_threshold:
+        old_number_of_states = total_number_of_states
+        total_number_of_states = 0
+
+        for m in range(len(tetrahedra_quadruples)):
+            # Each energy band is looped over
+            for n in range(number_of_bands):
+                M = 1 + n + number_of_bands * m
+                """int: a unique index for the current band of the current 
+                tetrahedron."""
+
+                """The energy at each corner for a given band for a given 
+                tetrahedron is determined."""
+                E_values_by_tetrahedron = determine_energy_at_corners(
+                    energy_bands, E_values_by_tetrahedron, m, n,
+                    tetrahedra_quadruples, number_of_bands)
+
+                E_values = E_values_by_tetrahedron[M - 1, :]
+
+                """The number of states for a given band for a given 
+                tetrahedron is determined."""
+                number_of_states = number_of_states_for_tetrahedron(E_Fermi,
+                    E_values, V_G, V_T)
+                """float: the number-of-states for a given tetrahedron and 
+                Fermi energy level."""
+
+                total_number_of_states = total_number_of_states + number_of_states
+
+        # Adjust the Fermi level
+        if total_number_of_states > theoretical_number_of_states:
+            # E_Fermi needs to be lowered to in between its current value and lower bound. The current value should be the new upper bound
+            upper_bound = E_Fermi
+        elif total_number_of_states < theoretical_number_of_states:
+            lower_bound = E_Fermi
+
+        E_Fermi = (upper_bound + lower_bound) / 2
+
+        new_number_of_states = total_number_of_states
+
+    print("The calculated Fermi Energy Level is:", E_Fermi)
+
+    return (E_Fermi, E_values_by_tetrahedron)
 
 
 def integrate(r_lattice_vectors, grid_vecs, grid, PP, valence_electrons,
@@ -490,131 +765,35 @@ def integrate(r_lattice_vectors, grid_vecs, grid, PP, valence_electrons,
     """int: the number of energy band levels to calculate for each point in the 
     grid."""
     energy_bands = np.empty([k, number_of_bands])
-    """NumPy array: the energy band levels for each point in the grid. Each row corresponds to the point in the grid 
-    with the same index, and each column corresponds to a different energy band."""
+    """NumPy array: the energy band levels for each point in the grid. Each row 
+    corresponds to the point in the grid with the same index, and each column 
+    corresponds to a different energy band."""
 
     for m in range(k):
         k_vec = grid[m]
-        """list of floats: the coordinates of the point that the energy levels will be calculated at."""
+        """list of floats: the coordinates of the point that the energy levels 
+        will be calculated at."""
         energy_bands_for_point = PP(k_vec, number_of_bands)
-        """list of floats: the energy levels at the point k_vec returned by the function PP."""
+        """list of floats: the energy levels at the point k_vec returned by the 
+        function PP."""
         energy_bands[m, :] = np.asarray(energy_bands_for_point)
 
-    # The Fermi energy level is iteratively determined from the number of states function
-    band_index = math.ceil(valence_electrons / 2)
-    """int: the index of the energy band containing the Fermi energy level."""
-    band_minima = np.amin(energy_bands, axis=0)
-    """NumPy array: the smallest energy value contained in each energy band."""
-    lower_bound = band_minima[band_index - 1]
-    """float: an initial lower bound on the Fermi energy level."""
-    band_maxima = np.amax(energy_bands, axis=0)
-    """NumPy array: the largest energy value contained in each energy band."""
-    upper_bound = band_maxima[band_index - 1]
-    """float: an initial upper bound on the Fermi energy level."""
-    E_Fermi = (lower_bound + upper_bound) / 2
-    """float: an initial value for the Fermi energy level that will be iteratively refined."""
-
-    V_G = np.dot(b1, np.cross(b2, b3))
+    """The Fermi energy level is iteratively determined from the number of 
+    states function"""
+    V_G = calculate_volume(b1, b2, b3)
     """float: the volume of the reciprocal unit cell."""
-    V_T = np.dot(B1, np.cross(B2, B3)) / 6
-    """float: the volume of each tetrahedron in reciprocal space. Each tetrahedron has an equal volume."""
+    V_T = calculate_volume(B1, B2, B3) / 6
+    """float: the volume of each tetrahedron in reciprocal space. Each 
+    tetrahedron has an equal volume. The 6 is present because there are 6 
+    tetrahedra per parallelepiped in the grid."""
 
-    E_values_by_tetrahedron = np.empty([len(tetrahedra_quadruples) * number_of_bands, 10])
-    """NumPy array: the corner energy values and other useful energy values for each band of each tetrahedron."""
-
-    # number of states function generation
-    theoretical_number_of_states = valence_electrons / 2
-    """float: the actual total number of states (integrated density of states) for the reciprocal unit cell."""
-    total_number_of_states = 0
-    """float: the total number of states (integrated density of states) for the reciprocal unit cell that is calculated 
-    for the given Fermi energy level. This value is compared to the actual number of states to iteratively refine the 
-    Fermi energy level."""
-    number_of_states_error_threshold = .00001
-    """float: the Fermi energy level is iteratively refined until the calculated number of states varies by less than 
-    this amount from the calculated number of states from the previous iteration."""
-    new_number_of_states = 2 * number_of_states_error_threshold
-    """float: the calculated number of states from the most recent iteration. This value is compared to the calculated 
-    number of states from the previous iteration to know whether or not to further refine the Fermi energy level."""
-    old_number_of_states = 0
-    """float: the calculated number of states from the second most recent iteration. This value is compared to the 
-    calculated number of states from the most recent iteration to know whether or not to further refine the Fermi energy 
-    level."""
-
-    while abs(new_number_of_states - old_number_of_states) > number_of_states_error_threshold:
-        old_number_of_states = total_number_of_states
-        total_number_of_states = 0
-
-        for m in range(len(tetrahedra_quadruples)):
-            # Each energy band is looped over
-            for n in range(number_of_bands):
-                M = 1 + n + number_of_bands * m
-                """int: a unique index for the current band of the current tetrahedron."""
-
-                # The energy at each corner for a given band for a given tetrahedron is determined.
-                E_at_corners = np.array([energy_bands[tetrahedra_quadruples[m][0] - 1, n],
-                                         energy_bands[tetrahedra_quadruples[m][1] - 1, n],
-                                         energy_bands[tetrahedra_quadruples[m][2] - 1, n],
-                                         energy_bands[tetrahedra_quadruples[m][3] - 1, n]])
-                """NumPy Array: the energy level at each corner of the tetrahedron for the specified energy band."""
-                E_at_corners = np.sort(E_at_corners,
-                                       axis=0)  # This reorders the energy at each corner from least to greatest
-                E_1 = E_at_corners[0]
-                """float: the energy level at the first corner of the tetrahedron for the specified energy 
-                band."""
-                E_2 = E_at_corners[1]
-                """float: the energy level at the second corner of the tetrahedron for the specified energy 
-                band."""
-                E_3 = E_at_corners[2]
-                """float: the energy level at the third corner of the tetrahedron for the specified energy 
-                band."""
-                E_4 = E_at_corners[3]
-                """float: the energy level at the fourth corner of the tetrahedron for the specified energy 
-                band."""
-                E_21 = E_2 - E_1
-                """float: a useful value for the following calculations."""
-                E_31 = E_3 - E_1
-                """float: a useful value for the following calculations."""
-                E_32 = E_3 - E_2
-                """float: a useful value for the following calculations."""
-                E_41 = E_4 - E_1
-                """float: a useful value for the following calculations."""
-                E_42 = E_4 - E_2
-                """float: a useful value for the following calculations."""
-                E_43 = E_4 - E_3
-                """float: a useful value for the following calculations."""
-
-                E_values_by_tetrahedron[M - 1, :] = [E_1, E_2, E_3, E_4, E_21, E_31, E_32, E_41, E_42, E_43]
-
-                # The number of states for a given band for a given tetrahedron is determined
-                number_of_states = 0
-                """float: the number-of-states for a given tetrahedron and Fermi energy level."""
-
-                if E_Fermi < E_1:
-                    number_of_states = 0
-                elif E_Fermi >= E_1 and E_Fermi < E_2:
-                    number_of_states = V_T / V_G * (E_Fermi - E_1) ** 3 / (E_21 * E_31 * E_41)
-                elif E_Fermi >= E_2 and E_Fermi < E_3:
-                    number_of_states = V_T / (V_G * E_31 * E_41) * (
-                    E_21 ** 2 + 3 * E_21 * (E_Fermi - E_2) + 3 * (E_Fermi - E_2) ** 2 -
-                    (E_31 + E_42) * (E_Fermi - E_2) ** 3 / (E_32 * E_42))
-                elif E_Fermi >= E_3 and E_Fermi < E_4:
-                    number_of_states = V_T / V_G * (1 - (E_4 - E_Fermi) ** 3 / (E_41 * E_42 * E_43))
-                elif E_Fermi >= E_4:
-                    number_of_states = V_T / V_G
-                total_number_of_states = total_number_of_states + number_of_states
-
-        # Adjust the Fermi level
-        if total_number_of_states > theoretical_number_of_states:
-            # E_Fermi needs to be lowered to in between its current value and lower bound. The current value should be the new upper bound
-            upper_bound = E_Fermi
-        elif total_number_of_states < theoretical_number_of_states:
-            lower_bound = E_Fermi
-
-        E_Fermi = (upper_bound + lower_bound) / 2
-
-        new_number_of_states = total_number_of_states
-
-    print("The calculated Fermi Energy Level is:", E_Fermi)
+    E_Fermi, E_values_by_tetrahedron = calculate_fermi_energy(
+        valence_electrons, energy_bands, V_G, V_T, tetrahedra_quadruples,
+        number_of_bands)
+    """tuple with float as first element and NumPy array as second element: 
+    E_Fermi is the calculated value for the Fermi energy level. 
+    E_values_by_tetrahedron contains the corner energy values and other useful 
+    energy values for each band of each tetrahedron."""
 
     # The density of states function is determined for each band of each tetrahedron
     density_by_tetrahedron = []

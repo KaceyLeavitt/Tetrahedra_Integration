@@ -180,41 +180,41 @@ def test_determine_parallelepiped_corners8():
         test_point1, test_B1_2, test_B2_2, test_B3_2)[6], [12.1, 14.8, 6.3])
 
 
-# Tests for add_tetrahedra.
+# Tests for add_tetrahedron.
 test_tetrahedra_quadruples_1 = []
 # list of lists of indices of corners of tetrahedra used for testing.
 test_point_indices = np.array([1, 2, 3, 4, 5, 6, 7, 8])
 # indices of corners of parralelepiped used for testing.
 
-def test_add_tetrahedra1():
+def test_add_tetrahedron1():
     # Checking if the tetrahedra quadruples are correctly generated.
     test_shortest_diagonal1 = 1
     # the index of the shortest diagonal used for testing.
-    assert tetrahedron_method.add_tetrahedra(test_tetrahedra_quadruples_1,
+    assert tetrahedron_method.add_tetrahedron(test_tetrahedra_quadruples_1,
         test_shortest_diagonal1, test_point_indices) == [[1, 4, 7, 8],
         [1, 3, 7, 8], [1, 2, 5, 8], [1, 2, 6, 8], [1, 4, 6, 8], [1, 3, 5, 8]]
 
-def test_add_tetrahedra2():
+def test_add_tetrahedron2():
     # Checking if the tetrahedra quadruples are correctly generated.
     test_shortest_diagonal2 = 2
     # the index of the shortest diagonal used for testing.
-    assert tetrahedron_method.add_tetrahedra(test_tetrahedra_quadruples_1,
+    assert tetrahedron_method.add_tetrahedron(test_tetrahedra_quadruples_1,
         test_shortest_diagonal2, test_point_indices) == [[4, 6, 2, 5],
         [4, 6, 8, 5], [4, 1, 3, 5], [4, 7, 3, 5], [4, 7, 8, 5], [4, 1, 2, 5]]
 
-def test_add_tetrahedra3():
+def test_add_tetrahedron3():
     # Checking if the tetrahedra quadruples are correctly generated.
     test_shortest_diagonal3 = 3
     # the index of the shortest diagonal used for testing.
-    assert tetrahedron_method.add_tetrahedra(test_tetrahedra_quadruples_1,
+    assert tetrahedron_method.add_tetrahedron(test_tetrahedra_quadruples_1,
         test_shortest_diagonal3, test_point_indices) == [[3, 1, 4, 6],
         [3, 7, 4, 6], [3, 1, 2, 6], [3, 7, 8, 6], [3, 5, 2, 6], [3, 5, 8, 6]]
 
-def test_add_tetrahedra4():
+def test_add_tetrahedron4():
     # Checking if the tetrahedra quadruples are correctly generated.
     test_shortest_diagonal4 = 4
     # the index of the shortest diagonal used for testing.
-    assert tetrahedron_method.add_tetrahedra(test_tetrahedra_quadruples_1,
+    assert tetrahedron_method.add_tetrahedron(test_tetrahedra_quadruples_1,
         test_shortest_diagonal4, test_point_indices) == [[7, 8, 6, 2],
         [7, 8, 5, 2], [7, 4, 6, 2], [7, 3, 5, 2], [7, 1, 4, 2], [7, 1, 3, 2]]
 
@@ -293,14 +293,22 @@ def test_bound_fermi_energy3():
 test_energy_bands_2 = np.array([[1, 2, 3], [.1, .2, .3], [-1, 0, 1],
                               [1.5, 2.5, 3.5], [-.5, -.2, -.1], [.4, .5, .6],
                               [.7, .8, .9], [.01, .02, .03]])
+# the energy level values at each point for each band used for testing.
 test_tetrahedra_quadruples_2 = [[7, 8, 6, 2], [7, 8, 5, 2], [7, 4, 6, 2],
                               [7, 3, 5, 2], [7, 1, 4, 2], [7, 1, 3, 2]]
+# list of lists of indices of corners of tetrahedra used for testing.
 test_E_values_by_tetrahedron = np.empty([18, 10])
+"""the energy levels at the corners and other useful energy values for each 
+band of each tetrahedron used for testing."""
 test_number_of_bands = 3
+# the number of energy bands used for testing.
 
 def test_determine_energy_at_corners1():
     test_m1 = 0
+    """the index in the list test_tetrahedra_quadruples_2 for the given 
+    tetrahedron used for testing."""
     test_n1 = 0
+    # the index of the given energy band used for testing.
     assert np.allclose(tetrahedron_method.determine_energy_at_corners(
         test_energy_bands_2, test_E_values_by_tetrahedron, test_m1, test_n1,
         test_tetrahedra_quadruples_2, test_number_of_bands)[0,:], [.01, .1, .4,
@@ -316,6 +324,62 @@ def test_number_of_states_for_tetrahedron1():
     test_E_Fermi1 = 4
     assert tetrahedron_method.number_of_states_for_tetrahedron(test_E_Fermi1,
         test_E_values, test_V_G, test_V_T) == 1 / 6
+
+def test_number_of_states_for_tetrahedron2():
+    test_E_Fermi2 = .5
+    assert math.isclose(tetrahedron_method.number_of_states_for_tetrahedron(test_E_Fermi2,
+        test_E_values, test_V_G, test_V_T), .15593129361)
+
+def test_number_of_states_for_tetrahedron3():
+    test_E_Fermi3 = .3
+    assert math.isclose(tetrahedron_method.number_of_states_for_tetrahedron(test_E_Fermi3,
+        test_E_values, test_V_G, test_V_T), .08553202031)
+
+def test_number_of_states_for_tetrahedron4():
+    test_E_Fermi4 = .05
+    assert math.isclose(tetrahedron_method.number_of_states_for_tetrahedron(test_E_Fermi4,
+        test_E_values, test_V_G, test_V_T), .0004404255611984084114)
+
+def test_number_of_states_for_tetrahedron5():
+    test_E_Fermi1 = -.1
+    assert tetrahedron_method.number_of_states_for_tetrahedron(test_E_Fermi1,
+        test_E_values, test_V_G, test_V_T) == 0
+
+
+# Tests for adjust_fermi_level.
+test_E_Fermi_initial = 5
+# an initial value for the Fermi energy level used for testing.
+test_upper_bound_initial = 10.1
+# an initial upper bound for the Fermi energy level used for testing.
+test_lower_bound_initial = -.1
+# an initial lower bound for the Fermi energy level used for testing.
+test_theoretical_number_of_states = 5
+# the theoretical number of states used for testing.
+
+def test_adjust_fermi_level1():
+    test_total_number_of_states1 = 6
+    # the calculated number of states used for testing.
+    assert np.array_equal(np.asarray(tetrahedron_method.adjust_fermi_level(
+        test_E_Fermi_initial, test_upper_bound_initial,
+        test_lower_bound_initial, test_total_number_of_states1,
+        test_theoretical_number_of_states)), [2.45, 5, -.1])
+
+def test_adjust_fermi_level2():
+    test_total_number_of_states2 = 4
+    # the calculated number of states used for testing.
+    assert np.array_equal(np.asarray(tetrahedron_method.adjust_fermi_level(
+        test_E_Fermi_initial, test_upper_bound_initial,
+        test_lower_bound_initial, test_total_number_of_states2,
+        test_theoretical_number_of_states)), [7.55, 10.1, 5])
+
+def test_adjust_fermi_level3():
+    test_total_number_of_states3 = 5
+    # the calculated number of states used for testing.
+    assert np.array_equal(np.asarray(tetrahedron_method.adjust_fermi_level(
+        test_E_Fermi_initial, test_upper_bound_initial,
+        test_lower_bound_initial, test_total_number_of_states3,
+        test_theoretical_number_of_states)), [5, 5, 5])
+
 
 
 

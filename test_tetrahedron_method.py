@@ -546,7 +546,7 @@ def test_cluster_tetrahedra_by_point():
 
 
 # Tests for sort_corners_by_energy.
-test_corners = [1, 2, 3, 4]
+test_corners_1 = [1, 2, 3, 4]
 # the unsorted list of indices for the tetrahedron's corners used for testing.
 test_energy_bands_3 = np.array([[1, 2, 3], [.1, .2, .3], [-1, 0, 1],
                                 [1.5, 2.5, 3.5]])
@@ -557,10 +557,10 @@ test_n_2 = 0
 def test_sort_corners_by_energy():
     # Checking if the corners and energy values are correctly sorted
     assert np.array_equal(tetrahedron_method.sort_corners_by_energy(
-        test_corners, test_energy_bands_3, test_n_2)[0],
+        test_corners_1, test_energy_bands_3, test_n_2)[0],
                           np.array([-1, .1, 1, 1.5]))
     assert np.array_equal(tetrahedron_method.sort_corners_by_energy(
-        test_corners, test_energy_bands_3, test_n_2)[1], [3, 2, 1, 4])
+        test_corners_1, test_energy_bands_3, test_n_2)[1], [3, 2, 1, 4])
 
 
 # Tests for calculate_integration_weights
@@ -577,9 +577,10 @@ def test_calculate_integration_weights1():
     given Fermi energy level."""
     test_E_Fermi1_4 = 4
     # the Fermi energy level used for testing.
-    assert tetrahedron_method.calculate_integration_weights(test_E_Fermi1_4,
-        test_E_values_2, test_V_G_3, test_V_T_3) == (1 / 24, 1 / 24, 1 / 24,
-                                                     1 / 24)
+    assert np.allclose(np.asarray(tetrahedron_method.
+                                  calculate_integration_weights(
+        test_E_Fermi1_4, test_E_values_2, test_V_G_3, test_V_T_3)),
+        np.array([1 / 24, 1 / 24, 1 / 24, 1 / 24]))
 
 def test_calculate_integration_weights2():
     """Checking if the integration weights are correctly determined for the 
@@ -622,20 +623,30 @@ def test_calculate_integration_weights5():
     given Fermi energy level."""
     test_E_Fermi5_4 = -.1
     # the Fermi energy level used for testing.
-    assert tetrahedron_method.calculate_integration_weights(test_E_Fermi5_4,
-        test_E_values_2, test_V_G_3, test_V_T_3) == (0, 0, 0, 0)
+    assert np.allclose(np.asarray(tetrahedron_method.
+        calculate_integration_weights(test_E_Fermi5_4, test_E_values_2,
+                                      test_V_G_3, test_V_T_3)),
+                       np.array([0, 0, 0, 0]))
 
 
 # Tests for calculate_weight_correction.
 test_adjacent_tetrahedra = [1, 2]
+# the tetrahedra containing the given corner point used for testing.
 test_E_values_by_tetrahedron_3 = np.array([[.01, .1, .4, .7, .09, .39, .3, .69,
                         .6, .3], [.01, .1, .4, .7, .09, .39, .3, .69, .6, .3]])
+"""the corner energy values and other useful energy values for each tetrahedron 
+and energy band used for testing."""
 test_n_3 = 0
+# the band index used for testing.
 test_number_of_bands_3 = 1
+# the number of bands used for testing.
 test_E = .4
+# the energy value at the given corner used for testing.
 test_density_by_tetrahedron_2 = [.2, .1]
+# the density of states for the tetrahedra used for testing.
 
 def test_calculate_weight_correction():
+    # Checking if the weight correction is calculated correctly.
     assert math.isclose(tetrahedron_method.calculate_weight_correction(
         test_adjacent_tetrahedra, test_E_values_by_tetrahedron_3, test_n_3,
         test_number_of_bands_3, test_E, test_density_by_tetrahedron_2),
@@ -643,13 +654,41 @@ def test_calculate_weight_correction():
 
 
 # Tests for adjust_integration_weightings.
+test_tetrahedra_by_point = [[5, 6], [1, 2, 3, 4, 5, 6], [4, 6], [3, 5], [2, 4],
+                            [1, 3], [1, 2, 3, 4, 5, 6], [1, 2]]
+# the indices of the tetrahedra containing each k point used for testing.
+test_corners_2 = [7, 8, 6, 2]
+# the indices of the corner points of the given tetrahedron used for testing.
+test_E_values_by_tetrahedron_4 = np.array([
+    [.01, .1, .4, .7, .09, .39, .3, .69, .6, .3],
+    [.01, .1, .4, .7, .09, .39, .3, .69, .6, .3],
+    [.01, .1, .4, .7, .09, .39, .3, .69, .6, .3],
+    [.01, .1, .4, .7, .09, .39, .3, .69, .6, .3],
+    [.01, .1, .4, .7, .09, .39, .3, .69, .6, .3],
+    [.01, .1, .4, .7, .09, .39, .3, .69, .6, .3]])
+"""the corner energy values and other useful energy values for each tetrahedron 
+and energy band used for testing."""
+test_n_4 = 0
+# the band index used for testing.
+test_number_of_bands_4 = 1
+# the number of bands used for testing.
+test_density_by_tetrahedron_3 = [.1, .2, .3, .4, .5, .6]
+# the density of states for each tetrahedron used for testing.
+test_weightings = np.array([1, 2, 3, 4])
+"""the unadjusted integration weightings for the corners of the given 
+tetrahedron used for testing."""
+test_E_at_corners = np.array([.01, .1, .4, .7])
+# the energy levels at each corner of the tetrahedron used for testing.
+
+def test_adjust_integration_weightings():
+    # Checking if each of the integration weights are adjusted correctly.
+    assert np.allclose(tetrahedron_method.adjust_integration_weightings(
+        test_tetrahedra_by_point, test_corners_2,
+        test_E_values_by_tetrahedron_4, test_n_4, test_number_of_bands_4,
+        test_density_by_tetrahedron_3, test_weightings, test_E_at_corners),
+        np.array([1.061425, 2.006075, 2.9961, 3.916525]))
 
 
-#create tests for adjust_integration_weightings and perform_integration and create function that performs the integral summation with weightings as an input.
+# Tests for perform_integration.
 
-
-
-
-"""
-def test_integrate_result_positive():
-    assert tetrahedron_method.integrate()"""
+# Tests for integrate.

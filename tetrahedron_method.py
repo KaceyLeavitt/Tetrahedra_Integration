@@ -987,15 +987,21 @@ def calculate_integration_weights(E_Fermi, E_values, V_G, V_T):
     elif E_Fermi >= E_2 and E_Fermi < E_3:
         C_1 = V_T / (4 * V_G) * (E_Fermi - E_1) ** 2 / (E_41 * E_31)
         """float: a useful value for the following calculations."""
-        C_2 = V_T / (4 * V_G) * (E_Fermi - E_1) * (E_Fermi - E_2) * (E_3 - E_Fermi) / (E_41 * E_32 * E_31)
+        C_2 = V_T / (4 * V_G) * (E_Fermi - E_1) * (E_Fermi - E_2) * \
+              (E_3 - E_Fermi) / (E_41 * E_32 * E_31)
         """float: a useful value for the following calculations."""
-        C_3 = V_T / (4 * V_G) * (E_Fermi - E_2) ** 2 * (E_4 - E_Fermi) / (E_42 * E_32 * E_41)
+        C_3 = V_T / (4 * V_G) * (E_Fermi - E_2) ** 2 * (E_4 - E_Fermi) / \
+              (E_42 * E_32 * E_41)
         """float: a useful value for the following calculations."""
 
-        w_1 = C_1 + (C_1 + C_2) * (E_3 - E_Fermi) / E_31 + (C_1 + C_2 + C_3) * (E_4 - E_Fermi) / E_41
-        w_2 = C_1 + C_2 + C_3 + (C_2 + C_3) * (E_3 - E_Fermi) / E_32 + C_3 * (E_4 - E_Fermi) / E_42
-        w_3 = (C_1 + C_2) * (E_Fermi - E_1) / E_31 + (C_2 + C_3) * (E_Fermi - E_2) / E_32
-        w_4 = (C_1 + C_2 + C_3) * (E_Fermi - E_1) / E_41 + C_3 * (E_Fermi - E_2) / E_42
+        w_1 = C_1 + (C_1 + C_2) * (E_3 - E_Fermi) / E_31 + \
+              (C_1 + C_2 + C_3) * (E_4 - E_Fermi) / E_41
+        w_2 = C_1 + C_2 + C_3 + (C_2 + C_3) * (E_3 - E_Fermi) / E_32 + \
+              C_3 * (E_4 - E_Fermi) / E_42
+        w_3 = (C_1 + C_2) * (E_Fermi - E_1) / E_31 + (C_2 + C_3) * \
+              (E_Fermi - E_2) / E_32
+        w_4 = (C_1 + C_2 + C_3) * (E_Fermi - E_1) / E_41 + C_3 * \
+              (E_Fermi - E_2) / E_42
     elif E_Fermi >= E_3 and E_Fermi < E_4:
         C = V_T / (4 * V_G) * (E_4 - E_Fermi) ** 3 / (E_41 * E_42 * E_43)
         """float: a useful value for the following calculations."""
@@ -1003,7 +1009,8 @@ def calculate_integration_weights(E_Fermi, E_values, V_G, V_T):
         w_1 = V_T / (4 * V_G) - C * (E_4 - E_Fermi) / E_41
         w_2 = V_T / (4 * V_G) - C * (E_4 - E_Fermi) / E_42
         w_3 = V_T / (4 * V_G) - C * (E_4 - E_Fermi) / E_43
-        w_4 = V_T / (4 * V_G) - C * (4 - (1 / E_41 + 1 / E_42 + 1 / E_43) * (E_4 - E_Fermi))
+        w_4 = V_T / (4 * V_G) - C * (4 - (1 / E_41 + 1 / E_42 + 1 / E_43) *
+                                     (E_4 - E_Fermi))
     elif E_Fermi >= E_4:
         w_1 = V_T / (4 * V_G)
         w_2 = V_T / (4 * V_G)
@@ -1234,10 +1241,14 @@ def perform_integration(E_values_by_tetrahedron, E_Fermi,
                     corners, E_values_by_tetrahedron, n, number_of_bands,
                     density_by_tetrahedron, weightings, E_at_corners)
 
+            [w_1, w_2, w_3, w_4] = weightings
+
             # use weights for integration
-            tetrahedra_integral_contribution = w_1 * E_1 + w_2 * E_2 + w_3 * E_3 + w_4 * E_4
-            """float: the contribution of the given tetrahedron to the total energy in the Brillouin zone."""
-            total_energy += tetrahedra_integral_contribution
+            tetrahedron_integral_contribution = w_1 * E_1 + w_2 * E_2 + w_3 * \
+                                                E_3 + w_4 * E_4
+            """float: the contribution of the given tetrahedron to the total 
+            energy in the Brillouin zone."""
+            total_energy += tetrahedron_integral_contribution
 
     return total_energy
 

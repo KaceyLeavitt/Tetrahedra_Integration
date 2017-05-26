@@ -297,53 +297,69 @@ test_energy_bands_2 = np.array([[1, 2, 3], [.1, .2, .3], [-1, 0, 1],
 test_tetrahedra_quadruples_2 = [[7, 8, 6, 2], [7, 8, 5, 2], [7, 4, 6, 2],
                               [7, 3, 5, 2], [7, 1, 4, 2], [7, 1, 3, 2]]
 # list of lists of indices of corners of tetrahedra used for testing.
-test_E_values_by_tetrahedron = np.empty([18, 10])
+test_E_values_by_tetrahedron_1 = np.empty([18, 10])
 """the energy levels at the corners and other useful energy values for each 
 band of each tetrahedron used for testing."""
-test_number_of_bands = 3
+test_number_of_bands_1 = 3
 # the number of energy bands used for testing.
 
 def test_determine_energy_at_corners1():
+    # Checking if the correct energy values are determined.
     test_m1 = 0
     """the index in the list test_tetrahedra_quadruples_2 for the given 
     tetrahedron used for testing."""
     test_n1 = 0
     # the index of the given energy band used for testing.
     assert np.allclose(tetrahedron_method.determine_energy_at_corners(
-        test_energy_bands_2, test_E_values_by_tetrahedron, test_m1, test_n1,
-        test_tetrahedra_quadruples_2, test_number_of_bands)[0,:], [.01, .1, .4,
+        test_energy_bands_2, test_E_values_by_tetrahedron_1, test_m1, test_n1,
+        test_tetrahedra_quadruples_2, test_number_of_bands_1)[0,:], [.01, .1, .4,
         .7, .09, .39, .3, .69, .6, .3])
 
 
 # Tests for number_of_states_for_tetrahedron.
-test_E_values = np.array([.01, .1, .4, .7, .09, .39, .3, .69, .6, .3])
-test_V_G = 1
-test_V_T = 1 / 6
+test_E_values_1 = np.array([.01, .1, .4, .7, .09, .39, .3, .69, .6, .3])
+"""the energy levels at the corners and other useful energy values for the 
+tetrahedron used for testing."""
+test_V_G_1 = 1
+# the volume of the reciprocal unit cell used for testing.
+test_V_T_1 = 1 / 6
+# the volume of a single tetrahedron used for testing.
 
 def test_number_of_states_for_tetrahedron1():
-    test_E_Fermi1 = 4
-    assert tetrahedron_method.number_of_states_for_tetrahedron(test_E_Fermi1,
-        test_E_values, test_V_G, test_V_T) == 1 / 6
+    # Checking if the correct number of states has been calculated.
+    test_E_Fermi1_1 = 4
+    # the Fermi energy level used for testing.
+    assert tetrahedron_method.number_of_states_for_tetrahedron(test_E_Fermi1_1,
+        test_E_values_1, test_V_G_1, test_V_T_1) == 1 / 6
 
 def test_number_of_states_for_tetrahedron2():
-    test_E_Fermi2 = .5
-    assert math.isclose(tetrahedron_method.number_of_states_for_tetrahedron(test_E_Fermi2,
-        test_E_values, test_V_G, test_V_T), .15593129361)
+    # Checking if the correct number of states has been calculated.
+    test_E_Fermi2_1 = .5
+    # the Fermi energy level used for testing.
+    assert math.isclose(tetrahedron_method.number_of_states_for_tetrahedron(
+        test_E_Fermi2_1, test_E_values_1, test_V_G_1, test_V_T_1), .15593129361)
 
 def test_number_of_states_for_tetrahedron3():
-    test_E_Fermi3 = .3
-    assert math.isclose(tetrahedron_method.number_of_states_for_tetrahedron(test_E_Fermi3,
-        test_E_values, test_V_G, test_V_T), .08553202031)
+    # Checking if the correct number of states has been calculated.
+    test_E_Fermi3_1 = .3
+    # the Fermi energy level used for testing.
+    assert math.isclose(tetrahedron_method.number_of_states_for_tetrahedron(
+        test_E_Fermi3_1, test_E_values_1, test_V_G_1, test_V_T_1), .08553202031)
 
 def test_number_of_states_for_tetrahedron4():
-    test_E_Fermi4 = .05
-    assert math.isclose(tetrahedron_method.number_of_states_for_tetrahedron(test_E_Fermi4,
-        test_E_values, test_V_G, test_V_T), .0004404255611984084114)
+    # Checking if the correct number of states has been calculated.
+    test_E_Fermi4_1 = .05
+    # the Fermi energy level used for testing.
+    assert math.isclose(tetrahedron_method.number_of_states_for_tetrahedron(
+        test_E_Fermi4_1, test_E_values_1, test_V_G_1, test_V_T_1),
+        .0004404255611984084114)
 
 def test_number_of_states_for_tetrahedron5():
-    test_E_Fermi1 = -.1
-    assert tetrahedron_method.number_of_states_for_tetrahedron(test_E_Fermi1,
-        test_E_values, test_V_G, test_V_T) == 0
+    # Checking if the correct number of states has been calculated.
+    test_E_Fermi5_1 = -.1
+    # the Fermi energy level used for testing.
+    assert tetrahedron_method.number_of_states_for_tetrahedron(test_E_Fermi5_1,
+        test_E_values_1, test_V_G_1, test_V_T_1) == 0
 
 
 # Tests for adjust_fermi_level.
@@ -357,6 +373,8 @@ test_theoretical_number_of_states = 5
 # the theoretical number of states used for testing.
 
 def test_adjust_fermi_level1():
+    """Checking if the upper and lower bounds and the Fermi energy level are 
+    adjusted correctly."""
     test_total_number_of_states1 = 6
     # the calculated number of states used for testing.
     assert np.array_equal(np.asarray(tetrahedron_method.adjust_fermi_level(
@@ -365,6 +383,8 @@ def test_adjust_fermi_level1():
         test_theoretical_number_of_states)), [2.45, 5, -.1])
 
 def test_adjust_fermi_level2():
+    """Checking if the upper and lower bounds and the Fermi energy level are 
+    adjusted correctly."""
     test_total_number_of_states2 = 4
     # the calculated number of states used for testing.
     assert np.array_equal(np.asarray(tetrahedron_method.adjust_fermi_level(
@@ -373,6 +393,8 @@ def test_adjust_fermi_level2():
         test_theoretical_number_of_states)), [7.55, 10.1, 5])
 
 def test_adjust_fermi_level3():
+    """Checking if the upper and lower bounds and the Fermi energy level are 
+    adjusted correctly."""
     test_total_number_of_states3 = 5
     # the calculated number of states used for testing.
     assert np.array_equal(np.asarray(tetrahedron_method.adjust_fermi_level(
@@ -380,6 +402,250 @@ def test_adjust_fermi_level3():
         test_lower_bound_initial, test_total_number_of_states3,
         test_theoretical_number_of_states)), [5, 5, 5])
 
+
+# Tests for calculate_fermi_energy.
+
+
+# Tests for add_density_of_states_for_tetrahedron.
+test_density_by_tetrahedron_1 = []
+# the density of states for the tetrahedra used for testing.
+test_number_of_bands_2 = 1
+# the number of energy bands used for testing.
+test_E_values_by_tetrahedron_2 = np.array([[.01, .1, .4, .7, .09, .39, .3, .69,
+                                    .6, .3], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
+"""the corner energy values and other useful energy values for each tetrahedron 
+and energy band used for testing."""
+test_V_G_2 = 1
+# the volume of the reciprocal unit cell used for testing.
+test_V_T_2 = 1 / 6
+# the volume of each tetrahedron used for testing.
+test_m = 0
+# the index for the given tetrahedron used for testing.
+test_n_1 = 0
+# the index for the given energy band used for testing.
+
+def test_add_density_of_states_for_tetrahedron1():
+    # Checking if the correct density of states has been calculated.
+    test_E_Fermi1_2 = 4
+    # the Fermi energy level used for testing.
+    assert tetrahedron_method.add_density_of_states_for_tetrahedron(
+        test_density_by_tetrahedron_1, test_E_Fermi1_2, test_number_of_bands_2,
+        test_E_values_by_tetrahedron_2, test_V_G_2, test_V_T_2, test_m,
+        test_n_1) == [0]
+
+def test_add_density_of_states_for_tetrahedron2():
+    # Checking if the correct density of states has been calculated.
+    test_E_Fermi2_2 = .5
+    # the Fermi energy level used for testing.
+    density_of_states_list = tetrahedron_method.\
+        add_density_of_states_for_tetrahedron(test_density_by_tetrahedron_1,
+        test_E_Fermi2_2, test_number_of_bands_2,
+        test_E_values_by_tetrahedron_2, test_V_G_2, test_V_T_2, test_m, test_n_1)
+    assert math.isclose(density_of_states_list[0], .1610305958132045)
+    assert len(density_of_states_list) == 1
+
+def test_add_density_of_states_for_tetrahedron3():
+    # Checking if the correct density of states has been calculated.
+    test_E_Fermi3_2 = .3
+    # the Fermi energy level used for testing.
+    density_of_states_list = tetrahedron_method.\
+        add_density_of_states_for_tetrahedron(test_density_by_tetrahedron_1,
+        test_E_Fermi3_2, test_number_of_bands_2,
+        test_E_values_by_tetrahedron_2, test_V_G_2, test_V_T_2, test_m, test_n_1)
+    assert math.isclose(density_of_states_list[0], 0.5016722408)
+    assert len(density_of_states_list) == 1
+
+def test_add_density_of_states_for_tetrahedron4():
+    # Checking if the correct density of states has been calculated.
+    test_E_Fermi4_2 = .05
+    # the Fermi energy level used for testing.
+    density_of_states_list = tetrahedron_method.\
+        add_density_of_states_for_tetrahedron(test_density_by_tetrahedron_1,
+        test_E_Fermi4_2, test_number_of_bands_2,
+        test_E_values_by_tetrahedron_2, test_V_G_2, test_V_T_2, test_m, test_n_1)
+    assert math.isclose(density_of_states_list[0], 0.03303191708)
+    assert len(density_of_states_list) == 1
+
+def test_add_density_of_states_for_tetrahedron5():
+    # Checking if the correct density of states has been calculated.
+    test_E_Fermi5_2 = -.1
+    # the Fermi energy level used for testing.
+    assert tetrahedron_method.add_density_of_states_for_tetrahedron(
+        test_density_by_tetrahedron_1, test_E_Fermi5_2, test_number_of_bands_2,
+        test_E_values_by_tetrahedron_2, test_V_G_2, test_V_T_2, test_m,
+        test_n_1) == [0]
+
+
+# Tests for calculate_density_of_states.
+test_tetrahedra_quadruples_3 = [[7, 8, 6, 2], [7, 8, 5, 2]]
+# the indices of the corners of each tetrahedron.
+
+def test_add_density_of_states_for_tetrahedron1():
+    # Checking if the correct density of states has been calculated.
+    test_E_Fermi1_3 = 4
+    # the Fermi energy level used for testing.
+    assert tetrahedron_method.calculate_density_of_states(test_E_Fermi1_3,
+        test_tetrahedra_quadruples_3, test_number_of_bands_2,
+        test_E_values_by_tetrahedron_2, test_V_G_2, test_V_T_2) == [0, 0]
+
+def test_add_density_of_states_for_tetrahedron2():
+    # Checking if the correct density of states has been calculated.
+    test_E_Fermi2_3 = .5
+    # the Fermi energy level used for testing.
+    density_of_states_list = tetrahedron_method.calculate_density_of_states(
+        test_E_Fermi2_3, test_tetrahedra_quadruples_3, test_number_of_bands_2,
+        test_E_values_by_tetrahedron_2, test_V_G_2, test_V_T_2)
+    assert math.isclose(density_of_states_list[0], .1610305958132045)
+    assert density_of_states_list[1] == 0
+    assert len(density_of_states_list) == 2
+
+def test_add_density_of_states_for_tetrahedron3():
+    # Checking if the correct density of states has been calculated.
+    test_E_Fermi3_3 = .3
+    # the Fermi energy level used for testing.
+    density_of_states_list = tetrahedron_method.calculate_density_of_states(
+        test_E_Fermi3_3, test_tetrahedra_quadruples_3, test_number_of_bands_2,
+        test_E_values_by_tetrahedron_2, test_V_G_2, test_V_T_2)
+    assert math.isclose(density_of_states_list[0], 0.5016722408)
+    assert density_of_states_list[1] == 0
+    assert len(density_of_states_list) == 2
+
+def test_add_density_of_states_for_tetrahedron4():
+    # Checking if the correct density of states has been calculated.
+    test_E_Fermi4_3 = .05
+    # the Fermi energy level used for testing.
+    density_of_states_list = tetrahedron_method.calculate_density_of_states(
+        test_E_Fermi4_3, test_tetrahedra_quadruples_3, test_number_of_bands_2,
+        test_E_values_by_tetrahedron_2, test_V_G_2, test_V_T_2)
+    assert math.isclose(density_of_states_list[0], 0.03303191708)
+    assert density_of_states_list[1] == 0
+    assert len(density_of_states_list) == 2
+
+def test_add_density_of_states_for_tetrahedron5():
+    # Checking if the correct density of states has been calculated.
+    test_E_Fermi5_3 = -.1
+    # the Fermi energy level used for testing.
+    assert tetrahedron_method.calculate_density_of_states(test_E_Fermi5_3,
+        test_tetrahedra_quadruples_3, test_number_of_bands_2,
+        test_E_values_by_tetrahedron_2, test_V_G_2, test_V_T_2) == [0, 0]
+
+
+# Tests for cluster_tetrahedra_by_point.
+test_k = 8
+# the number of points used for testing.
+test_tetrahedra_quadruples_4 = [[7, 8, 6, 2], [7, 8, 5, 2], [7, 4, 6, 2],
+                                [7, 3, 5, 2], [7, 1, 4, 2], [7, 1, 3, 2]]
+# the indices of the corner points of each tetrahedron used for testing.
+
+def test_cluster_tetrahedra_by_point():
+    """Checking if the tetrahedra containing each k point are correctly 
+    identified."""
+    assert tetrahedron_method.cluster_tetrahedra_by_point(
+        test_tetrahedra_quadruples_4, test_k) == [[5, 6], [1, 2, 3, 4, 5, 6],
+        [4, 6], [3, 5], [2, 4], [1, 3], [1, 2, 3, 4, 5, 6], [1, 2]]
+
+
+# Tests for sort_corners_by_energy.
+test_corners = [1, 2, 3, 4]
+# the unsorted list of indices for the tetrahedron's corners used for testing.
+test_energy_bands_3 = np.array([[1, 2, 3], [.1, .2, .3], [-1, 0, 1],
+                                [1.5, 2.5, 3.5]])
+# the energy levels for each band at each k point used for testing.
+test_n_2 = 0
+# the band index used for testing.
+
+def test_sort_corners_by_energy():
+    # Checking if the corners and energy values are correctly sorted
+    assert np.array_equal(tetrahedron_method.sort_corners_by_energy(
+        test_corners, test_energy_bands_3, test_n_2)[0],
+                          np.array([-1, .1, 1, 1.5]))
+    assert np.array_equal(tetrahedron_method.sort_corners_by_energy(
+        test_corners, test_energy_bands_3, test_n_2)[1], [3, 2, 1, 4])
+
+
+# Tests for calculate_integration_weights
+test_E_values_2 = np.array([.01, .1, .4, .7, .09, .39, .3, .69, .6, .3])
+"""the energy values at the corners and other useful energy values for the 
+tetrahedron used for testing."""
+test_V_G_3 = 1
+# volume of the reciprocal unit cell used for testing.
+test_V_T_3 = 1 / 6
+# volume of each tetrahedron used for testing.
+
+def test_calculate_integration_weights1():
+    """Checking if the integration weights are correctly determined for the 
+    given Fermi energy level."""
+    test_E_Fermi1_4 = 4
+    # the Fermi energy level used for testing.
+    assert tetrahedron_method.calculate_integration_weights(test_E_Fermi1_4,
+        test_E_values_2, test_V_G_3, test_V_T_3) == (1 / 24, 1 / 24, 1 / 24,
+                                                     1 / 24)
+
+def test_calculate_integration_weights2():
+    """Checking if the integration weights are correctly determined for the 
+    given Fermi energy level."""
+    test_E_Fermi2_4 = .5
+    # the Fermi energy level used for testing.
+    assert np.allclose(np.asarray(tetrahedron_method.
+        calculate_integration_weights(test_E_Fermi2_4, test_E_values_2,
+        test_V_G_3, test_V_T_3)), np.array([0.040888741083027997,
+                                            0.040772052245482197,
+                                            0.039877437824297727,
+                                            0.03439306245964511]))
+
+def test_calculate_integration_weights3():
+    """Checking if the integration weights are correctly determined for the 
+    given Fermi energy level."""
+    test_E_Fermi3_4 = .3
+    # the Fermi energy level used for testing.
+    assert np.allclose(np.asarray(tetrahedron_method.
+        calculate_integration_weights(test_E_Fermi3_4, test_E_values_2,
+        test_V_G_3, test_V_T_3)), np.array([0.029524237974708948,
+                                            0.027748530767854439,
+                                            0.017482962624174069,
+                                            0.010776288947891552]))
+
+def test_calculate_integration_weights4():
+    """Checking if the integration weights are correctly determined for the 
+    given Fermi energy level."""
+    test_E_Fermi4_4 = .05
+    # the Fermi energy level used for testing.
+    assert np.allclose(np.asarray(tetrahedron_method.
+        calculate_integration_weights(test_E_Fermi4_4, test_E_values_2,
+        test_V_G_3, test_V_T_3)), np.array([0.000373813445476548,
+                                            0.000048936173466500,
+                                            0.000011292963107654,
+                                            0.000006382979147804]))
+
+def test_calculate_integration_weights5():
+    """Checking if the integration weights are correctly determined for the 
+    given Fermi energy level."""
+    test_E_Fermi5_4 = -.1
+    # the Fermi energy level used for testing.
+    assert tetrahedron_method.calculate_integration_weights(test_E_Fermi5_4,
+        test_E_values_2, test_V_G_3, test_V_T_3) == (0, 0, 0, 0)
+
+
+# Tests for calculate_weight_correction.
+test_adjacent_tetrahedra = [1, 2]
+test_E_values_by_tetrahedron_3 = np.array([[.01, .1, .4, .7, .09, .39, .3, .69,
+                        .6, .3], [.01, .1, .4, .7, .09, .39, .3, .69, .6, .3]])
+test_n_3 = 0
+test_number_of_bands_3 = 1
+test_E = .4
+test_density_by_tetrahedron_2 = [.2, .1]
+
+def test_calculate_weight_correction():
+    assert math.isclose(tetrahedron_method.calculate_weight_correction(
+        test_adjacent_tetrahedra, test_E_values_by_tetrahedron_3, test_n_3,
+        test_number_of_bands_3, test_E, test_density_by_tetrahedron_2),
+        -0.002925)
+
+
+# Tests for adjust_integration_weightings.
+
+
+#create tests for adjust_integration_weightings and perform_integration and create function that performs the integral summation with weightings as an input.
 
 
 

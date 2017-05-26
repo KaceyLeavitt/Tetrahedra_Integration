@@ -19,8 +19,8 @@
       <file leaf-file-name="tetrahedron_method.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tetrahedron_method.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="12580">
-              <caret line="740" column="18" lean-forward="true" selection-start-line="740" selection-start-column="17" selection-end-line="740" selection-end-column="52" />
+            <state relative-caret-position="-5407">
+              <caret line="1015" column="0" lean-forward="true" selection-start-line="1015" selection-start-column="0" selection-end-line="1015" selection-end-column="0" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -31,8 +31,8 @@
       <file leaf-file-name="test_tetrahedron_method.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test_tetrahedron_method.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="771">
-              <caret line="348" column="31" lean-forward="true" selection-start-line="348" selection-start-column="31" selection-end-line="348" selection-end-column="31" />
+            <state relative-caret-position="594">
+              <caret line="647" column="157" lean-forward="false" selection-start-line="647" selection-start-column="157" selection-end-line="647" selection-end-column="157" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -72,10 +72,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1696" />
-    <option name="height" value="1026" />
+    <option name="x" value="-11" />
+    <option name="y" value="-11" />
+    <option name="width" value="2038" />
+    <option name="height" value="1215" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -92,7 +92,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -107,7 +107,7 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -131,8 +131,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python tests.py.test for test_tetrahedron_method.test_adjust_fermi_level2">
-    <configuration default="false" name="py.test for test_tetrahedron_method.test_add_tetrahedron4" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python tests.py.test for test_tetrahedron_method.test_calculate_weight_correction">
+    <configuration default="false" name="py.test for test_tetrahedron_method.test_calculate_integration_weights2" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
@@ -144,11 +144,11 @@
       <module name="Tetrahedra_Integration" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_tetrahedron_method.test_add_tetrahedron4&quot;" />
+      <option name="_new_target" value="&quot;test_tetrahedron_method.test_calculate_integration_weights2&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method />
     </configuration>
-    <configuration default="false" name="py.test for test_tetrahedron_method.test_bound_fermi_energy3" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="py.test for test_tetrahedron_method.test_calculate_integration_weights3" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
@@ -160,11 +160,11 @@
       <module name="Tetrahedra_Integration" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_tetrahedron_method.test_bound_fermi_energy3&quot;" />
+      <option name="_new_target" value="&quot;test_tetrahedron_method.test_calculate_integration_weights3&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method />
     </configuration>
-    <configuration default="false" name="py.test for test_tetrahedron_method.test_determine_energy_at_corners1" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="py.test for test_tetrahedron_method.test_calculate_integration_weights4" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
@@ -176,11 +176,11 @@
       <module name="Tetrahedra_Integration" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_tetrahedron_method.test_determine_energy_at_corners1&quot;" />
+      <option name="_new_target" value="&quot;test_tetrahedron_method.test_calculate_integration_weights4&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method />
     </configuration>
-    <configuration default="false" name="py.test for test_tetrahedron_method.test_adjust_fermi_level1" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="py.test for test_tetrahedron_method.test_calculate_integration_weights5" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
@@ -192,11 +192,11 @@
       <module name="Tetrahedra_Integration" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_tetrahedron_method.test_adjust_fermi_level1&quot;" />
+      <option name="_new_target" value="&quot;test_tetrahedron_method.test_calculate_integration_weights5&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method />
     </configuration>
-    <configuration default="false" name="py.test for test_tetrahedron_method.test_adjust_fermi_level2" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="py.test for test_tetrahedron_method.test_calculate_weight_correction" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
@@ -208,7 +208,7 @@
       <module name="Tetrahedra_Integration" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_tetrahedron_method.test_adjust_fermi_level2&quot;" />
+      <option name="_new_target" value="&quot;test_tetrahedron_method.test_calculate_weight_correction&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method />
     </configuration>
@@ -329,19 +329,19 @@
     <list size="7">
       <item index="0" class="java.lang.String" itemvalue="Python.Unnamed" />
       <item index="1" class="java.lang.String" itemvalue="Python tests.Unnamed" />
-      <item index="2" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_add_tetrahedron4" />
-      <item index="3" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_bound_fermi_energy3" />
-      <item index="4" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_determine_energy_at_corners1" />
-      <item index="5" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_adjust_fermi_level1" />
-      <item index="6" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_adjust_fermi_level2" />
+      <item index="2" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_calculate_integration_weights2" />
+      <item index="3" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_calculate_integration_weights3" />
+      <item index="4" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_calculate_integration_weights4" />
+      <item index="5" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_calculate_integration_weights5" />
+      <item index="6" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_calculate_weight_correction" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_adjust_fermi_level2" />
-        <item index="1" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_adjust_fermi_level1" />
-        <item index="2" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_determine_energy_at_corners1" />
-        <item index="3" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_bound_fermi_energy3" />
-        <item index="4" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_add_tetrahedron4" />
+        <item index="0" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_calculate_weight_correction" />
+        <item index="1" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_calculate_integration_weights5" />
+        <item index="2" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_calculate_integration_weights4" />
+        <item index="3" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_calculate_integration_weights3" />
+        <item index="4" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_calculate_integration_weights2" />
       </list>
     </recent_temporary>
   </component>
@@ -359,35 +359,35 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="py_test_for_test_tetrahedron_method_test_add_tetrahedra2 - 2017.05.24 at 11h 29m 37s.xml">
-      <configuration name="py.test for test_tetrahedron_method.test_add_tetrahedra2" configurationId="tests" />
+    <history-entry file="py_test_for_test_tetrahedron_method_test_calculate_integration_weights1 - 2017.05.25 at 20h 17m 51s.xml">
+      <configuration name="py.test for test_tetrahedron_method.test_calculate_integration_weights1" configurationId="tests" />
     </history-entry>
-    <history-entry file="py_test_for_test_tetrahedron_method_test_add_tetrahedra2 - 2017.05.24 at 11h 29m 46s.xml">
-      <configuration name="py.test for test_tetrahedron_method.test_add_tetrahedra2" configurationId="tests" />
+    <history-entry file="py_test_for_test_tetrahedron_method_test_calculate_integration_weights2 - 2017.05.25 at 20h 18m 00s.xml">
+      <configuration name="py.test for test_tetrahedron_method.test_calculate_integration_weights2" configurationId="tests" />
     </history-entry>
-    <history-entry file="py_test_for_test_tetrahedron_method_test_add_tetrahedron2 - 2017.05.24 at 11h 29m 57s.xml">
-      <configuration name="py.test for test_tetrahedron_method.test_add_tetrahedron2" configurationId="tests" />
+    <history-entry file="py_test_for_test_tetrahedron_method_test_calculate_integration_weights3 - 2017.05.25 at 20h 18m 10s.xml">
+      <configuration name="py.test for test_tetrahedron_method.test_calculate_integration_weights3" configurationId="tests" />
     </history-entry>
-    <history-entry file="py_test_for_test_tetrahedron_method_test_add_tetrahedron3 - 2017.05.24 at 11h 30m 30s.xml">
-      <configuration name="py.test for test_tetrahedron_method.test_add_tetrahedron3" configurationId="tests" />
+    <history-entry file="py_test_for_test_tetrahedron_method_test_calculate_integration_weights4 - 2017.05.25 at 20h 18m 18s.xml">
+      <configuration name="py.test for test_tetrahedron_method.test_calculate_integration_weights4" configurationId="tests" />
     </history-entry>
-    <history-entry file="py_test_for_test_tetrahedron_method_test_add_tetrahedron4 - 2017.05.24 at 11h 30m 37s.xml">
-      <configuration name="py.test for test_tetrahedron_method.test_add_tetrahedron4" configurationId="tests" />
+    <history-entry file="py_test_for_test_tetrahedron_method_test_calculate_integration_weights5 - 2017.05.25 at 19h 59m 25s.xml">
+      <configuration name="py.test for test_tetrahedron_method.test_calculate_integration_weights5" configurationId="tests" />
     </history-entry>
-    <history-entry file="py_test_for_test_tetrahedron_method_test_add_tetrahedron4 - 2017.05.24 at 11h 53m 56s.xml">
-      <configuration name="py.test for test_tetrahedron_method.test_add_tetrahedron4" configurationId="tests" />
+    <history-entry file="py_test_for_test_tetrahedron_method_test_calculate_integration_weights5 - 2017.05.25 at 20h 18m 28s.xml">
+      <configuration name="py.test for test_tetrahedron_method.test_calculate_integration_weights5" configurationId="tests" />
     </history-entry>
-    <history-entry file="py_test_for_test_tetrahedron_method_test_adjust_fermi_level1 - 2017.05.24 at 12h 07m 51s.xml">
-      <configuration name="py.test for test_tetrahedron_method.test_adjust_fermi_level1" configurationId="tests" />
+    <history-entry file="py_test_for_test_tetrahedron_method_test_calculate_weight_correction - 2017.05.25 at 22h 13m 11s.xml">
+      <configuration name="py.test for test_tetrahedron_method.test_calculate_weight_correction" configurationId="tests" />
     </history-entry>
-    <history-entry file="py_test_for_test_tetrahedron_method_test_adjust_fermi_level2 - 2017.05.24 at 12h 07m 57s.xml">
-      <configuration name="py.test for test_tetrahedron_method.test_adjust_fermi_level2" configurationId="tests" />
+    <history-entry file="py_test_for_test_tetrahedron_method_test_calculate_weight_correction - 2017.05.25 at 22h 15m 13s.xml">
+      <configuration name="py.test for test_tetrahedron_method.test_calculate_weight_correction" configurationId="tests" />
     </history-entry>
-    <history-entry file="py_test_for_test_tetrahedron_method_test_bound_fermi_energy3 - 2017.05.24 at 11h 54m 04s.xml">
-      <configuration name="py.test for test_tetrahedron_method.test_bound_fermi_energy3" configurationId="tests" />
+    <history-entry file="py_test_for_test_tetrahedron_method_test_calculate_weight_correction - 2017.05.25 at 22h 15m 55s.xml">
+      <configuration name="py.test for test_tetrahedron_method.test_calculate_weight_correction" configurationId="tests" />
     </history-entry>
-    <history-entry file="py_test_for_test_tetrahedron_method_test_determine_energy_at_corners1 - 2017.05.24 at 12h 02m 50s.xml">
-      <configuration name="py.test for test_tetrahedron_method.test_determine_energy_at_corners1" configurationId="tests" />
+    <history-entry file="py_test_for_test_tetrahedron_method_test_sort_corners_by_energy - 2017.05.25 at 20h 15m 42s.xml">
+      <configuration name="py.test for test_tetrahedron_method.test_sort_corners_by_energy" configurationId="tests" />
     </history-entry>
   </component>
   <component name="TodoView">
@@ -400,14 +400,14 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
+    <frame x="-11" y="-11" width="2038" height="1215" extended-state="6" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24755502" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25179857" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289941" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289941" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.45240763" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5394477" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24972972" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -457,6 +457,86 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/tetrahedron_method.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="27650">
+          <caret line="1106" column="79" lean-forward="false" selection-start-line="1106" selection-start-column="79" selection-end-line="1106" selection-end-column="79" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_tetrahedron_method.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="13100">
+          <caret line="524" column="58" lean-forward="true" selection-start-line="524" selection-start-column="58" selection-end-line="524" selection-end-column="58" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tetrahedron_method.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_tetrahedron_method.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="11193">
+          <caret line="533" column="10" lean-forward="true" selection-start-line="533" selection-start-column="10" selection-end-line="533" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tetrahedron_method.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_tetrahedron_method.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="11950">
+          <caret line="478" column="40" lean-forward="false" selection-start-line="478" selection-start-column="40" selection-end-line="478" selection-end-column="40" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tetrahedron_method.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18500">
+          <caret line="740" column="18" lean-forward="true" selection-start-line="740" selection-start-column="17" selection-end-line="740" selection-end-column="52" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_tetrahedron_method.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8700">
+          <caret line="348" column="31" lean-forward="true" selection-start-line="348" selection-start-column="31" selection-end-line="348" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/test_tetrahedron_method.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6358">
@@ -774,8 +854,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/tetrahedron_method.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="12580">
-          <caret line="740" column="18" lean-forward="true" selection-start-line="740" selection-start-column="17" selection-end-line="740" selection-end-column="52" />
+        <state relative-caret-position="-5407">
+          <caret line="1015" column="0" lean-forward="true" selection-start-line="1015" selection-start-column="0" selection-end-line="1015" selection-end-column="0" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
@@ -784,8 +864,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test_tetrahedron_method.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="771">
-          <caret line="348" column="31" lean-forward="true" selection-start-line="348" selection-start-column="31" selection-end-line="348" selection-end-column="31" />
+        <state relative-caret-position="594">
+          <caret line="647" column="157" lean-forward="false" selection-start-line="647" selection-start-column="157" selection-end-line="647" selection-end-column="157" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
           </folding>

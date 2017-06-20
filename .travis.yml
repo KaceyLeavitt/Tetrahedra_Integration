@@ -6,7 +6,7 @@ python:
 install:
 #    - pip install --upgrade -r requirements.txt
 #    - pip install --upgrade .
-    - pip install --upgrade tox-travis
+#    - pip install --upgrade tox-travis
 # command to run tests
-script: tox
-after_success: coveralls
+script: pytest test_tetrahedron_method.py
+#after_success: coveralls

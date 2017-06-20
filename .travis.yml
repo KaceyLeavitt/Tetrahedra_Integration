@@ -3,10 +3,10 @@ cache: pip
 python:
     - "3.6"
 # command to install dependencies
-#install:
+install:
 #    - pip install --upgrade -r requirements.txt
 #    - pip install --upgrade .
-#    - pip install --upgrade tox-travis
+    - pip install --upgrade tox-travis
 # command to run tests
 script: tox
 after_success: coveralls

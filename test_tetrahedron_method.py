@@ -3,43 +3,43 @@ import numpy as np
 import math
 
 # Tests for generate_r_lattice_vectors.
-test_r_lattice_vectors = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+test_r_lattice_vectors1 = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
 # Reciprocal lattice vectors to be used in the testing.
 
 def test_generate_r_lattice_vectors1():
     # Checking if the first reciprocal lattice vector is correctly determined.
     assert np.array_equal(tetrahedron_method.generate_r_lattice_vectors(
-        test_r_lattice_vectors)[0], [1, 4, 7])
+        test_r_lattice_vectors1)[0], [1, 4, 7])
 
 def test_generate_r_lattice_vectors2():
     # Checking if the second reciprocal lattice vector is correctly determined.
     assert np.array_equal(tetrahedron_method.generate_r_lattice_vectors(
-        test_r_lattice_vectors)[1], [2, 5, 8])
+        test_r_lattice_vectors1)[1], [2, 5, 8])
 
 def test_generate_r_lattice_vectors3():
     # Checking if the third reciprocal lattice vector is correctly determined.
     assert np.array_equal(tetrahedron_method.generate_r_lattice_vectors(
-        test_r_lattice_vectors)[2], [3, 6, 9])
+        test_r_lattice_vectors1)[2], [3, 6, 9])
 
 
 # Tests for generate_submesh_lattice_vectors.
-test_grid_vecs = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+test_grid_vecs1 = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
 # Grid vectors used for testing.
 
 def test_generate_submesh_lattice_vectors1():
     # Checking if the first submesh lattice vector is correctly determined.
     assert np.array_equal(tetrahedron_method.generate_submesh_lattice_vectors(
-        test_grid_vecs)[0], [1, 4, 7])
+        test_grid_vecs1)[0], [1, 4, 7])
 
 def test_generate_submesh_lattice_vectors2():
     # Checking if the second submesh lattice vector is correctly determined.
     assert np.array_equal(tetrahedron_method.generate_submesh_lattice_vectors(
-        test_grid_vecs)[1], [2, 5, 8])
+        test_grid_vecs1)[1], [2, 5, 8])
 
 def test_generate_submesh_lattice_vectors3():
     # Checking if the third submesh lattice vector is correctly determined.
     assert np.array_equal(tetrahedron_method.generate_submesh_lattice_vectors(
-        test_grid_vecs)[2], [3, 6, 9])
+        test_grid_vecs1)[2], [3, 6, 9])
 
 
 # Tests for generate_diagonal_vectors.
@@ -125,6 +125,9 @@ def test_determine_shortest_diagonal():
     assert tetrahedron_method.determine_shortest_diagonal(
         test_diagonal1_length, test_diagonal2_length, test_diagonal3_length,
         test_diagonal4_length) == 2
+
+
+# Tests for index_grid_points.
 
 
 # Tests for determine_parallelepiped_corners.
@@ -220,7 +223,7 @@ def test_add_tetrahedron4():
 
 
 # Tests for generate_tetrahedra
-test_grid = [[0, 0, 0], [.5, 0, 1], [-.5, 1, 0], [1, 0, 0], [0, 1, 1],
+test_grid1 = [[0, 0, 0], [.5, 0, 1], [-.5, 1, 0], [1, 0, 0], [0, 1, 1],
              [1.5, 0, 1], [.5, 1, 0],  [1, 1, 1]]
 # a grid of parallelepiped corner points used for testing.
 test_B1 = np.array([1, 0, 0])
@@ -234,14 +237,14 @@ test_shortest_diagonal = 4
 
 def test_1_generate_tetrahedra():
     # Checking if the correct tetrahedra quadruples are generated.
-    assert tetrahedron_method.generate_tetrahedra(test_grid, test_B1, test_B2,
+    assert tetrahedron_method.generate_tetrahedra(test_grid1, test_B1, test_B2,
         test_B3, test_shortest_diagonal) == [[7, 8, 6, 2], [7, 8, 5, 2],
         [7, 4, 6, 2], [7, 3, 5, 2], [7, 1, 4, 2], [7, 1, 3, 2]]
 
 def test_2_generate_tetrahedra():
     """Checking if the indices in the tetrahedra quadruples are linked to the 
     right grid points."""
-    assert test_grid[tetrahedron_method.generate_tetrahedra(test_grid, test_B1,
+    assert test_grid1[tetrahedron_method.generate_tetrahedra(test_grid1, test_B1,
         test_B2, test_B3, test_shortest_diagonal)[0][0] - 1] == [.5, 1, 0]
 
 
@@ -692,3 +695,64 @@ def test_adjust_integration_weightings():
 # Tests for perform_integration.
 
 # Tests for integrate.
+test_r_lattice_vectors2 = np.array([[2, 0, 0], [0, 2, 0], [0, 0, 2]])
+test_V_G_4 = 8
+test_grid_vecs2 = np.array([[0.0999999, 0, 0], [0, 0.0999999, 0], [0, 0, 0.0999999]])
+test_grid2 = []
+
+for m in range(21):
+    for n in range(21):
+        for l in range(21):
+            test_grid2.append((test_grid_vecs2[:,0] * m + test_grid_vecs2[:,1] * n + test_grid_vecs2[:,2] * l).tolist())
+
+test_valence_electrons = 2
+test_offset = np.array([0, 0, 0])
+test_apply_weight_correction = False
+
+def toy_energy1(k_point, number_of_bands):
+    energy = np.dot(k_point, k_point)
+    return energy
+
+def test_integrate1():
+    (calculated_E_Fermi, calculated_integral_result) = tetrahedron_method.integrate(test_r_lattice_vectors2, test_grid_vecs2, test_grid2, toy_energy1, test_valence_electrons, test_offset, test_apply_weight_correction)
+
+    theoretical_E_Fermi = (3 * test_V_G_4 * test_valence_electrons / (8 * np.pi)) ** (2/3)
+    allowed_E_Fermi_error = theoretical_E_Fermi / 20
+    assert abs(theoretical_E_Fermi - calculated_E_Fermi) < allowed_E_Fermi_error
+
+    test_rho = np.sqrt(calculated_E_Fermi)
+    theoretical_integral_result = np.pi / 10 * test_rho ** 5
+    allowed_integral_error = theoretical_integral_result / 20
+    assert abs(theoretical_integral_result - calculated_integral_result) < allowed_integral_error
+
+def toy_energy2(k_point, number_of_bands):
+    energy = np.dot(k_point, k_point) ** 1.5
+    return energy
+
+def test_integrate2():
+    (calculated_E_Fermi, calculated_integral_result) = tetrahedron_method.integrate(test_r_lattice_vectors2, test_grid_vecs2, test_grid2, toy_energy2, test_valence_electrons, test_offset, test_apply_weight_correction)
+
+    theoretical_E_Fermi = (3 * test_V_G_4 * test_valence_electrons / (8 * np.pi))
+    allowed_E_Fermi_error = theoretical_E_Fermi / 20
+    assert abs(theoretical_E_Fermi - calculated_E_Fermi) < allowed_E_Fermi_error
+
+    test_rho = calculated_E_Fermi ** (1 / 3)
+    theoretical_integral_result = np.pi / 12 * test_rho ** 6
+    allowed_integral_error = theoretical_integral_result / 20
+    assert abs(theoretical_integral_result - calculated_integral_result) < allowed_integral_error
+
+def toy_energy3(k_point, number_of_bands):
+    energy = np.dot(k_point, k_point) ** .5
+    return energy
+
+def test_integrate3():
+    (calculated_E_Fermi, calculated_integral_result) = tetrahedron_method.integrate(test_r_lattice_vectors2, test_grid_vecs2, test_grid2, toy_energy3, test_valence_electrons, test_offset, test_apply_weight_correction)
+
+    theoretical_E_Fermi = (3 * test_V_G_4 * test_valence_electrons / (8 * np.pi)) ** (1/3)
+    allowed_E_Fermi_error = theoretical_E_Fermi / 20
+    assert abs(theoretical_E_Fermi - calculated_E_Fermi) < allowed_E_Fermi_error
+
+    test_rho = calculated_E_Fermi
+    theoretical_integral_result = np.pi / 8 * test_rho ** 4
+    allowed_integral_error = theoretical_integral_result / 20
+    assert abs(theoretical_integral_result - calculated_integral_result) < allowed_integral_error

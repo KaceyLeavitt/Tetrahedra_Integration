@@ -1,5 +1,6 @@
 import math
 import numpy as np
+import time
 
 
 def generate_r_lattice_vectors(r_lattice_vectors):
@@ -159,6 +160,108 @@ def determine_shortest_diagonal(diagonal1_length, diagonal2_length,
     return shortest_diagonal
 
 
+def index_grid_points(grid, grid_vecs, offset):
+    """Assigns an index to each grid point according to its position in the 
+    reciprocal unit cell and sorts the grid points according to their index.
+    
+    Args:
+        grid (list of lists of floats): the coordinates of each k point in the 
+            reciprocal lattice unit cell at which calculations will be 
+            performed.
+        grid_vecs (NumPy array): the vectors used to create the grid of k 
+            points. All grid points are an integer combination of these 
+            vectors. Each column of the array is one of the vectors.
+        offset (NumPy array): the coordinates for how much the origin of the 
+            grid is offset from the origin of the reciprocal unit cell.
+            
+    Returns:
+        grid (list of lists of floats): the coordinates of each k point in the 
+            reciprocal lattice unit cell at which calculations will be 
+            performed. The grid will now be indexed and sorted accordingly.
+        max_indices (list of ints): the maximum integer coefficients needed to 
+            express every point in the grid (with the offset removed) as an 
+            integer combination of the grid basis vectors.
+    """
+
+    grid_inverse = np.linalg.inv(grid_vecs)
+    """(NumPy array): The inverse of the matrix containing each of the grid's 
+    basis vectors as its columns."""
+
+    max_m = 0
+    """(int): The maximum integer coefficient needed for the first grid basis 
+    vector to express every point in the grid (with the offset removed) as an 
+    integer combination of the grid_vecs."""
+    max_n = 0
+    """(int): The maximum integer coefficient needed for the second grid basis 
+    vector to express every point in the grid (with the offset removed) as an 
+    integer combination of the grid_vecs."""
+    max_l = 0
+    """(int): The maximum integer coefficient needed for the first grid basis 
+    vector to express every point in the grid (with the offset removed) as an 
+    integer combination of the grid_vecs."""
+
+    index_values = []
+    """(list of lists of ints): the integer coefficients necessary to express 
+    each grid point as an integer combination of the grid basis vectors."""
+
+    for grid_point in grid:
+        grid_point_not_offset = np.asarray(grid_point) - offset
+        """(NumPy array): the coordinates of the grid point with the offset 
+        removed."""
+        grid_indices = np.dot(grid_inverse, grid_point_not_offset).T
+        """(list of ints): the integer coefficients necessary to express the
+        grid point in question as an integer combination of the grid basis 
+        vectors."""
+
+        m = int(grid_indices[0] + .5)
+        """(int): the integer coefficient for the first grid vector necessary 
+        to express the grid point in question as an integer combination of the 
+        grid basis vectors."""
+        n = int(grid_indices[1] + .5)
+        """(int): the integer coefficient for the second grid vector necessary 
+        to express the grid point in question as an integer combination of the 
+        grid basis vectors."""
+        l = int(grid_indices[2] + .5)
+        """(int): the integer coefficient for the third grid vector necessary 
+        to express the grid point in question as an integer combination of the 
+        grid basis vectors."""
+
+        index_values.append([m, n, l])
+
+        if m > max_m:
+            max_m = m
+
+        if n > max_n:
+            max_n = n
+
+        if l > max_l:
+            max_l = l
+
+    limit_on_number_of_points = (max_m + 1) * (max_n + 1) * (max_l + 1)
+    """(int): An upper bound on the number of grid points that will still 
+    allow a consistent indexing method for all possible grids."""
+    grid_points = np.zeros((limit_on_number_of_points, 3))
+    # (NumPy array): the indexed and sorted grid points.
+    max_indices = [max_m, max_n, max_l]
+    """(list of ints): the maximum integer coefficients needed to express 
+    every point in the grid (with the offset removed) as an integer 
+    combination of the grid basis vectors."""
+
+    for p in range(len(grid)):
+        [m, n, l] = index_values[p]
+        grid_point = grid[p]
+
+        N = l + (max_l + 1) * (n + (max_n + 1) * m)
+        """(int) A unigue index for the grid point that is based on the point's 
+        position."""
+
+        grid_points[N,:] = grid_point
+
+    indexed_grid = grid_points.tolist()
+
+    return (indexed_grid, max_indices)
+
+
 def determine_parallelepiped_corners(point1, B1, B2, B3):
     """Determines the grid points that define the corners of a given 
     parallelepiped. All of the edges of the parallelepipeds can be spanned by 
@@ -185,10 +288,10 @@ def determine_parallelepiped_corners(point1, B1, B2, B3):
     point3 = point1 + B2
     """NumPy array: the coordinates of the third corner of a parallelepiped 
     from the grid."""
-    point4 = point1 + B1
+    point4 = point1 + B3 + B2
     """NumPy array: the coordinates of the fourth corner of a parallelepiped 
     from the grid."""
-    point5 = point1 + B3 + B2
+    point5 = point1 + B1
     """NumPy array: the coordinates of the fifth corner of a parallelepiped 
     from the grid."""
     point6 = point1 + B3 + B1
@@ -204,7 +307,7 @@ def determine_parallelepiped_corners(point1, B1, B2, B3):
     return (point2, point3, point4, point5, point6, point7, point8)
 
 
-def add_tetrahedron(tetrahedra_quadruples, shortest_diagonal, point_indices):
+def add_tetrahedron(tetrahedra_quadruples, shortest_diagonal, point_indices, tetrahedra_by_point):
     """Adds a quadruple of point indices of the corners of a tetrahedron to the 
     list tetrahedra_quadruples. The corner points of the tetrahedron are formed 
     by breaking every parallelepiped in the grid up into six tetrahedra that 
@@ -221,12 +324,18 @@ def add_tetrahedron(tetrahedra_quadruples, shortest_diagonal, point_indices):
         point_indices (NumPy array of ints): the indices for point one through 
             point eight in the grid arranged in order by point number (i.e. 
             point 1 is first, point 2 is second, etc.).
+        tetrahedra_by_point (list of list of ints): for each k point in the 
+            grid, a list of the indices of each tetrahedron containing that 
+            k point is given.
     
     Returns:
         tetrahedra_quadruples (list of lists of ints): a list of quadruples. 
             There is exactly one quadruple for every tetrahedron. Each 
             quadruple is a list of the grid_points indices for the corners of 
             the tetrahedron.
+        tetrahedra_by_point (list of list of ints): for each k point in the 
+            grid, a list of the indices of each tetrahedron containing that 
+            k point is given.
     """
 
     point1_index = point_indices[0]
@@ -247,6 +356,8 @@ def add_tetrahedron(tetrahedra_quadruples, shortest_diagonal, point_indices):
     # int: the index for point8 in the grid.
 
     if shortest_diagonal == 1:
+        initial_length = len(tetrahedra_quadruples)
+
         tetrahedra_quadruples.append([point1_index, point4_index, point7_index,
                                       point8_index])
         tetrahedra_quadruples.append([point1_index, point3_index, point7_index,
@@ -259,7 +370,28 @@ def add_tetrahedron(tetrahedra_quadruples, shortest_diagonal, point_indices):
                                       point8_index])
         tetrahedra_quadruples.append([point1_index, point3_index, point5_index,
                                       point8_index])
+
+        tetrahedra_by_point[point1_index - 1] += [initial_length + 1,
+            initial_length + 2, initial_length + 3, initial_length + 4,
+            initial_length + 5, initial_length + 6]
+        tetrahedra_by_point[point2_index - 1] += [initial_length + 3,
+                                                  initial_length + 4]
+        tetrahedra_by_point[point3_index - 1] += [initial_length + 2,
+                                                  initial_length + 6]
+        tetrahedra_by_point[point4_index - 1] += [initial_length + 1,
+                                                  initial_length + 5]
+        tetrahedra_by_point[point5_index - 1] += [initial_length + 3,
+                                                  initial_length + 6]
+        tetrahedra_by_point[point6_index - 1] += [initial_length + 4,
+                                                  initial_length + 5]
+        tetrahedra_by_point[point7_index - 1] += [initial_length +1,
+                                                  initial_length + 2]
+        tetrahedra_by_point[point8_index - 1] += [initial_length + 1,
+            initial_length + 2, initial_length + 3, initial_length + 4,
+            initial_length + 5, initial_length + 6]
     elif shortest_diagonal == 2:
+        initial_length = len(tetrahedra_quadruples)
+
         tetrahedra_quadruples.append([point4_index, point6_index, point2_index,
                                       point5_index])
         tetrahedra_quadruples.append([point4_index, point6_index, point8_index,
@@ -272,7 +404,28 @@ def add_tetrahedron(tetrahedra_quadruples, shortest_diagonal, point_indices):
                                       point5_index])
         tetrahedra_quadruples.append([point4_index, point1_index, point2_index,
                                       point5_index])
+
+        tetrahedra_by_point[point1_index - 1] += [initial_length + 3,
+                                                  initial_length + 6]
+        tetrahedra_by_point[point2_index - 1] += [initial_length + 1,
+                                                  initial_length + 6]
+        tetrahedra_by_point[point3_index - 1] += [initial_length + 3,
+                                                  initial_length + 4]
+        tetrahedra_by_point[point4_index - 1] += [initial_length + 1,
+            initial_length + 2, initial_length + 3, initial_length + 4,
+            initial_length + 5, initial_length + 6]
+        tetrahedra_by_point[point5_index - 1] += [initial_length + 1,
+            initial_length + 2, initial_length + 3, initial_length + 4,
+            initial_length + 5, initial_length + 6]
+        tetrahedra_by_point[point6_index - 1] += [initial_length + 1,
+                                                  initial_length + 2]
+        tetrahedra_by_point[point7_index - 1] += [initial_length + 4,
+                                                  initial_length + 5]
+        tetrahedra_by_point[point8_index - 1] += [initial_length + 2,
+                                                  initial_length + 5]
     elif shortest_diagonal == 3:
+        initial_length = len(tetrahedra_quadruples)
+
         tetrahedra_quadruples.append([point3_index, point1_index, point4_index,
                                       point6_index])
         tetrahedra_quadruples.append([point3_index, point7_index, point4_index,
@@ -285,7 +438,28 @@ def add_tetrahedron(tetrahedra_quadruples, shortest_diagonal, point_indices):
                                       point6_index])
         tetrahedra_quadruples.append([point3_index, point5_index, point8_index,
                                       point6_index])
+
+        tetrahedra_by_point[point1_index - 1] += [initial_length + 1,
+                                                  initial_length + 3]
+        tetrahedra_by_point[point2_index - 1] += [initial_length + 3,
+                                                  initial_length + 5]
+        tetrahedra_by_point[point3_index - 1] += [initial_length + 1,
+            initial_length + 2, initial_length + 3, initial_length + 4,
+            initial_length + 5, initial_length + 6]
+        tetrahedra_by_point[point4_index - 1] += [initial_length + 1,
+                                                  initial_length + 2]
+        tetrahedra_by_point[point5_index - 1] += [initial_length + 5,
+                                                  initial_length + 6]
+        tetrahedra_by_point[point6_index - 1] += [initial_length + 1,
+            initial_length + 2, initial_length + 3, initial_length + 4,
+            initial_length + 5, initial_length + 6]
+        tetrahedra_by_point[point7_index - 1] += [initial_length + 2,
+                                                  initial_length + 4]
+        tetrahedra_by_point[point8_index - 1] += [initial_length + 4,
+                                                  initial_length + 6]
     elif shortest_diagonal == 4:
+        initial_length = len(tetrahedra_quadruples)
+
         tetrahedra_quadruples.append([point7_index, point8_index, point6_index,
                                       point2_index])
         tetrahedra_quadruples.append([point7_index, point8_index, point5_index,
@@ -299,10 +473,29 @@ def add_tetrahedron(tetrahedra_quadruples, shortest_diagonal, point_indices):
         tetrahedra_quadruples.append([point7_index, point1_index, point3_index,
                                       point2_index])
 
-    return tetrahedra_quadruples
+        tetrahedra_by_point[point1_index - 1] += [initial_length + 5,
+                                                  initial_length + 6]
+        tetrahedra_by_point[point2_index - 1] += [initial_length + 1,
+            initial_length + 2, initial_length + 3, initial_length + 4,
+            initial_length + 5, initial_length + 6]
+        tetrahedra_by_point[point3_index - 1] += [initial_length + 4,
+                                                  initial_length + 6]
+        tetrahedra_by_point[point4_index - 1] += [initial_length + 3,
+                                                  initial_length + 5]
+        tetrahedra_by_point[point5_index - 1] += [initial_length + 2,
+                                                  initial_length + 4]
+        tetrahedra_by_point[point6_index - 1] += [initial_length + 1,
+                                                  initial_length + 3]
+        tetrahedra_by_point[point7_index - 1] += [initial_length + 1,
+            initial_length + 2, initial_length + 3, initial_length + 4,
+            initial_length + 5, initial_length + 6]
+        tetrahedra_by_point[point8_index - 1] += [initial_length + 1,
+                                                  initial_length + 2]
+
+    return tetrahedra_quadruples, tetrahedra_by_point
 
 
-def generate_tetrahedra(grid, B1, B2, B3, shortest_diagonal):
+def generate_tetrahedra_old(grid, B1, B2, B3, shortest_diagonal):
     """Creates a list of corner points of tetrahedra that are formed by 
     breaking every parallelepiped in the grid up into six tetrahedra that all 
     share the shortest diagonal as an edge and all have the same volume.
@@ -410,6 +603,121 @@ def generate_tetrahedra(grid, B1, B2, B3, shortest_diagonal):
                                             shortest_diagonal, point_indices)
 
     return tetrahedra_quadruples
+
+
+def generate_tetrahedra(grid, B1, B2, B3, shortest_diagonal, max_indices):
+    """Creates a list of corner points of tetrahedra that are formed by 
+    breaking every parallelepiped in the grid up into six tetrahedra that all 
+    share the shortest diagonal as an edge and all have the same volume.
+
+    Args:
+        grid (list of lists of floats): the coordinates of each k point in the 
+            reciprocal lattice unit cell at which calculations will be 
+            performed.
+        B1 (NumPy array): the first submesh lattice vector.
+        B2 (NumPy array): the second submesh lattice vector.
+        B1 (NumPy array): the third submesh lattice vector.
+        shortest_diagonal (int): either 1, 2, 3, or 4; an index designating 
+            whether diagonal1, diagonal2, diagonal3, or diagonal is the 
+            shortest.
+        max_indices (list of ints): the maximum integer coefficients needed to 
+            express every point in the grid (with the offset removed) as an 
+            integer combination of the grid basis vectors.
+
+    Returns:
+        tetrahedra_quadruples (list of lists of ints): a list of quadruples. 
+            There is exactly one quadruple for every tetrahedron. Each 
+            quadruple is a list of the grid_points indices for the corners of 
+            the tetrahedron.
+        tetrahedra_by_point (list of list of ints): for each k point in the 
+            grid, a list of the indices of each tetrahedron containing that 
+            k point is given.
+    """
+
+    tetrahedra_quadruples = []
+    """list of lists of ints: a list of quadruples. There is exactly one 
+    quadruple for every tetrahedron. Each quadruple is a list of the 
+    grid_points indices for the corners of the tetrahedron."""
+
+    [max_m, max_n, max_l] = max_indices
+
+    number_of_points = len(grid)
+    # int: the total number of grid points.
+
+    tetrahedra_by_point = [[] for x in range(number_of_points)]
+    """list of list of ints: for each k point in the grid, a list of the 
+    indices of each tetrahedron containing that k point is given."""
+
+    for N in range(number_of_points):
+        while np.allclose(grid[N], [0, 0, 0]) == False or N == 0:
+            point1_index = N + 1
+            # int: the index for point1 in the grid.
+            point2_index = N + 2
+            # int: the index for point2 in the grid.
+            point3_index = N + 2 + max_l
+            # int: the index for point3 in the grid.
+            point4_index = N + 3 + max_l
+            # int: the index for point4 in the grid.
+            point5_index = N + 1 + (max_l + 1) * (max_n + 1)
+            # int: the index for point5 in the grid.
+            point6_index = N + 2 + (max_l + 1) * (max_n + 1)
+            # int: the index for point6 in the grid.
+            point7_index = N + 2 + max_l + (max_l + 1) * (max_n + 1)
+            # int: the index for point7 in the grid.
+            point8_index = N + 3 + max_l + (max_l + 1) * (max_n + 1)
+            # int: the index for point8 in the grid.
+
+            point1 = np.asarray(grid[N])
+            """NumPy array: the coordinates of the first corner of a 
+            parallelepiped from the grid."""
+            point2, point3, point4, point5, point6, point7, point8 = \
+                determine_parallelepiped_corners(point1, B1, B2, B3)
+            """tuple of NumPy arrays: the coordinates of the second through 
+            eighth corners of a parallelepiped from the grid respectively."""
+
+            """Whether on not tetrahedra can be created off of the given point 
+            is tested."""
+            if point2_index > number_of_points or not np.allclose(
+                    grid[point2_index - 1], point2):
+                break
+
+            if point3_index > number_of_points or not np.allclose(
+                    grid[point3_index - 1], point3):
+                break
+
+            if point4_index > number_of_points or not np.allclose(
+                    grid[point4_index - 1], point4):
+                break
+
+            if point5_index > number_of_points or not np.allclose(
+                    grid[point5_index - 1], point5):
+                break
+
+            if point6_index > number_of_points or not np.allclose(
+                    grid[point6_index - 1], point6):
+                break
+
+            if point7_index > number_of_points or not np.allclose(
+                    grid[point7_index - 1], point7):
+                break
+
+            if point8_index > number_of_points or not np.allclose(
+                    grid[point8_index - 1], point8):
+                break
+
+            # create quadruples for the corner points of each tetrahedra
+            point_indices = np.array([point1_index, point2_index, point3_index,
+                                      point4_index, point5_index, point6_index,
+                                      point7_index, point8_index])
+            """NumPy array: the indices of the corner points of a 
+            parallelepiped in the grid."""
+            tetrahedra_quadruples, tetrahedra_by_point = add_tetrahedron(
+                tetrahedra_quadruples, shortest_diagonal, point_indices,
+                tetrahedra_by_point)
+
+            break
+
+    return tetrahedra_quadruples, tetrahedra_by_point
 
 
 def calculate_volume(vector1, vector2, vector3):
@@ -574,6 +882,8 @@ def number_of_states_for_tetrahedron(E_Fermi, E_values, V_G, V_T):
     elif E_Fermi >= E_4:
         number_of_states = V_T / V_G
 
+    number_of_states = number_of_states * 8
+
     return number_of_states
 
 
@@ -599,6 +909,27 @@ def adjust_fermi_level(E_Fermi, upper_bound, lower_bound,
         upper_bound (float): the revised upper bound on the Fermi energy level.
         lower_bound (float): the revised lower bound on the Fermi energy level.
     """
+
+    """estimate_for_E_Fermi = (theoretical_number_of_states / 
+    total_number_of_states) ** 1.5 * E_Fermi
+    
+    if total_number_of_states > theoretical_number_of_states:
+        upper_bound = E_Fermi
+
+        if estimate_for_E_Fermi > lower_bound:
+            E_Fermi = estimate_for_E_Fermi
+        else:
+            E_Fermi = (upper_bound + lower_bound) / 2
+    elif total_number_of_states < theoretical_number_of_states:
+        lower_bound = E_Fermi
+
+        if estimate_for_E_Fermi < upper_bound:
+            E_Fermi = estimate_for_E_Fermi
+        else:
+            E_Fermi = (upper_bound + lower_bound) / 2
+    elif total_number_of_states == theoretical_number_of_states:
+        upper_bound = E_Fermi
+        lower_bound = E_Fermi"""
 
     if total_number_of_states > theoretical_number_of_states:
         upper_bound = E_Fermi
@@ -654,6 +985,7 @@ def calculate_fermi_energy(valence_electrons, energy_bands, V_G, V_T,
 
     # number of states function generation
     theoretical_number_of_states = valence_electrons / 2
+    print(theoretical_number_of_states)
     """float: the actual total number of states (integrated density of states) 
     for the reciprocal unit cell."""
     total_number_of_states = 0
@@ -715,7 +1047,8 @@ def calculate_fermi_energy(valence_electrons, energy_bands, V_G, V_T,
 
         new_number_of_states = total_number_of_states
 
-    print("The calculated Fermi Energy Level is:", E_Fermi)
+    print("The calculated Fermi Energy Level is:", E_Fermi, "+ or -",
+          upper_bound - lower_bound)
 
     return (E_Fermi, E_values_by_tetrahedron)
 
@@ -977,7 +1310,8 @@ def calculate_integration_weights(E_Fermi, E_values, V_G, V_T):
         w_3 = 0
         w_4 = 0
     elif E_Fermi >= E_1 and E_Fermi < E_2:
-        C = V_T / (4 * V_G) * (E_Fermi - E_1) ** 3 / (E_21 * E_31 * E_41)
+        #C = V_T / (4 * V_G) * (E_Fermi - E_1) ** 3 / (E_21 * E_31 * E_41)
+        C = V_T / 4 * (E_Fermi - E_1) ** 3 / (E_21 * E_31 * E_41)
         """float: a useful value for the following calculations."""
 
         w_1 = C * (4 - (E_Fermi - E_1) * (1 / E_21 + 1 / E_31 + 1 / E_41))
@@ -985,12 +1319,17 @@ def calculate_integration_weights(E_Fermi, E_values, V_G, V_T):
         w_3 = C * (E_Fermi - E_1) / E_31
         w_4 = C * (E_Fermi - E_1) / E_41
     elif E_Fermi >= E_2 and E_Fermi < E_3:
-        C_1 = V_T / (4 * V_G) * (E_Fermi - E_1) ** 2 / (E_41 * E_31)
+        #C_1 = V_T / (4 * V_G) * (E_Fermi - E_1) ** 2 / (E_41 * E_31)
+        C_1 = V_T / 4 * (E_Fermi - E_1) ** 2 / (E_41 * E_31)
         """float: a useful value for the following calculations."""
-        C_2 = V_T / (4 * V_G) * (E_Fermi - E_1) * (E_Fermi - E_2) * \
+        """C_2 = V_T / (4 * V_G) * (E_Fermi - E_1) * (E_Fermi - E_2) * \
+              (E_3 - E_Fermi) / (E_41 * E_32 * E_31)"""
+        C_2 = V_T / 4 * (E_Fermi - E_1) * (E_Fermi - E_2) * \
               (E_3 - E_Fermi) / (E_41 * E_32 * E_31)
         """float: a useful value for the following calculations."""
-        C_3 = V_T / (4 * V_G) * (E_Fermi - E_2) ** 2 * (E_4 - E_Fermi) / \
+        """C_3 = V_T / (4 * V_G) * (E_Fermi - E_2) ** 2 * (E_4 - E_Fermi) / \
+              (E_42 * E_32 * E_41)"""
+        C_3 = V_T / 4 * (E_Fermi - E_2) ** 2 * (E_4 - E_Fermi) / \
               (E_42 * E_32 * E_41)
         """float: a useful value for the following calculations."""
 
@@ -1003,19 +1342,29 @@ def calculate_integration_weights(E_Fermi, E_values, V_G, V_T):
         w_4 = (C_1 + C_2 + C_3) * (E_Fermi - E_1) / E_41 + C_3 * \
               (E_Fermi - E_2) / E_42
     elif E_Fermi >= E_3 and E_Fermi < E_4:
-        C = V_T / (4 * V_G) * (E_4 - E_Fermi) ** 3 / (E_41 * E_42 * E_43)
+        #C = V_T / (4 * V_G) * (E_4 - E_Fermi) ** 3 / (E_41 * E_42 * E_43)
+        C = V_T / 4 * (E_4 - E_Fermi) ** 3 / (E_41 * E_42 * E_43)
         """float: a useful value for the following calculations."""
 
-        w_1 = V_T / (4 * V_G) - C * (E_4 - E_Fermi) / E_41
-        w_2 = V_T / (4 * V_G) - C * (E_4 - E_Fermi) / E_42
-        w_3 = V_T / (4 * V_G) - C * (E_4 - E_Fermi) / E_43
-        w_4 = V_T / (4 * V_G) - C * (4 - (1 / E_41 + 1 / E_42 + 1 / E_43) *
+        #w_1 = V_T / (4 * V_G) - C * (E_4 - E_Fermi) / E_41
+        w_1 = V_T / 4 - C * (E_4 - E_Fermi) / E_41
+        #w_2 = V_T / (4 * V_G) - C * (E_4 - E_Fermi) / E_42
+        w_2 = V_T / 4 - C * (E_4 - E_Fermi) / E_42
+        #w_3 = V_T / (4 * V_G) - C * (E_4 - E_Fermi) / E_43
+        w_3 = V_T / 4 - C * (E_4 - E_Fermi) / E_43
+        """w_4 = V_T / (4 * V_G) - C * (4 - (1 / E_41 + 1 / E_42 + 1 / E_43) *
+                                     (E_4 - E_Fermi))"""
+        w_4 = V_T / 4 - C * (4 - (1 / E_41 + 1 / E_42 + 1 / E_43) *
                                      (E_4 - E_Fermi))
     elif E_Fermi >= E_4:
-        w_1 = V_T / (4 * V_G)
-        w_2 = V_T / (4 * V_G)
-        w_3 = V_T / (4 * V_G)
-        w_4 = V_T / (4 * V_G)
+        #w_1 = V_T / (4 * V_G)
+        w_1 = V_T / 4
+        #w_2 = V_T / (4 * V_G)
+        w_2 = V_T / 4
+        #w_3 = V_T / (4 * V_G)
+        w_3 = V_T / 4
+        #w_4 = V_T / (4 * V_G)
+        w_4 = V_T / 4
 
     weightings = np.array([w_1, w_2, w_3, w_4])
 
@@ -1252,9 +1601,8 @@ def perform_integration(E_values_by_tetrahedron, E_Fermi,
 
     return total_energy
 
-
 def integrate(r_lattice_vectors, grid_vecs, grid, PP, valence_electrons,
-              apply_weight_correction):
+              offset, apply_weight_correction):
     """A function that performs Brillouin zone integration of the energy bands 
     to determine the total energy. An improved version of the tetrahedron 
     method is used.
@@ -1284,6 +1632,8 @@ def integrate(r_lattice_vectors, grid_vecs, grid, PP, valence_electrons,
             at that point.
         valence_electrons (int): the number of valence electrons possessed by 
             the element in question.
+        offset (NumPy array): the coordinates for how much the origin of the 
+            grid is offset from the origin of the reciprocal unit cell.
         apply_weight_correction (bool): true if the integration weights should 
             be corrected to take curvature into account, false otherwise.
     
@@ -1292,7 +1642,7 @@ def integrate(r_lattice_vectors, grid_vecs, grid, PP, valence_electrons,
         total_energy (float): the total calculated energy in the Brillouin 
             zone, the result of the integration.
     """
-
+    start1 = time.time()
     k = len(grid)
     # int: the total number of points in the grid.
 
@@ -1320,16 +1670,20 @@ def integrate(r_lattice_vectors, grid_vecs, grid, PP, valence_electrons,
     shortest_diagonal = determine_shortest_diagonal(diagonal1_length,
         diagonal2_length, diagonal3_length, diagonal4_length)
 
+    # The grid points are indexed and sorted accordingly.
+    grid, max_indices = index_grid_points(grid, grid_vecs, offset)
+
     # Tetrahedra are generated
-    tetrahedra_quadruples = generate_tetrahedra(grid, B1, B2, B3,
-                                                shortest_diagonal)
+    tetrahedra_quadruples, tetrahedra_by_point = generate_tetrahedra(grid, B1,
+                                        B2, B3, shortest_diagonal, max_indices)
     """list of lists of ints: a list of quadruples. There is exactly one 
     quadruple for every tetrahedron. Each quadruple is a list of the 
     grid_points indices for the corners of the tetrahedron."""
-
-
+    end1 = time.time()
+    #print(1, end1 - start1)
     # determine energy band levels for each of the k points in the submesh
-    number_of_bands = 8
+    #number_of_bands = 8
+    number_of_bands = 1
     """int: the number of energy band levels to calculate for each point in the 
     grid."""
     energy_bands = np.empty([k, number_of_bands])
@@ -1345,12 +1699,14 @@ def integrate(r_lattice_vectors, grid_vecs, grid, PP, valence_electrons,
         """list of floats: the energy levels at the point k_vec returned by the 
         function PP."""
         energy_bands[m, :] = np.asarray(energy_bands_for_point)
-
+    end2 = time.time()
+    #print(2, end2 - end1)
     """The Fermi energy level is iteratively determined from the number of 
     states function"""
     V_G = calculate_volume(b1, b2, b3)
     """float: the volume of the reciprocal unit cell."""
     V_T = calculate_volume(B1, B2, B3) / 6
+
     """float: the volume of each tetrahedron in reciprocal space. Each 
     tetrahedron has an equal volume. The 6 is present because there are 6 
     tetrahedra per parallelepiped in the grid."""
@@ -1362,7 +1718,8 @@ def integrate(r_lattice_vectors, grid_vecs, grid, PP, valence_electrons,
     E_Fermi is the calculated value for the Fermi energy level. 
     E_values_by_tetrahedron contains the corner energy values and other useful 
     energy values for each band of each tetrahedron."""
-
+    end3 = time.time()
+    #print(3, end3 - end2)
     """The density of states function is determined for each band of each 
     tetrahedron."""
     density_by_tetrahedron = calculate_density_of_states(E_Fermi,
@@ -1370,9 +1727,11 @@ def integrate(r_lattice_vectors, grid_vecs, grid, PP, valence_electrons,
         V_T)
     """list of floats: the density of states at the Fermi energy level for each 
     band of each tetrahedron."""
-
-    tetrahedra_by_point = cluster_tetrahedra_by_point(tetrahedra_quadruples, k)
-
+    end4 = time.time()
+    #print(4, end4 - end3)
+    # tetrahedra_by_point = cluster_tetrahedra_by_point(tetrahedra_quadruples, k)
+    end5 = time.time()
+    #print(5, end5 - end4)
     """Integration weights at the corners of each tetrahedron are calculated 
     from the Fermi level and energy levels for each band. Integration of the 
     energy levels over the Brillouin zone is performed."""
@@ -1381,7 +1740,8 @@ def integrate(r_lattice_vectors, grid_vecs, grid, PP, valence_electrons,
         apply_weight_correction, tetrahedra_by_point, density_by_tetrahedron)
     """float: the total energy in the Brillouin zone. This value is the final 
     result of the integration."""
-
+    end6 = time.time()
+    #print(6, end6- end5)
     print("The integral result is:", total_energy)
 
     return E_Fermi, total_energy

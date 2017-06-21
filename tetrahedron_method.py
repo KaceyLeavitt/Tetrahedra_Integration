@@ -677,6 +677,7 @@ def generate_tetrahedra(grid, B1, B2, B3, shortest_diagonal, max_indices):
 
             """Whether on not tetrahedra can be created off of the given point 
             is tested."""
+
             if point2_index > number_of_points or not np.allclose(
                     grid[point2_index - 1], point2):
                 break

@@ -143,26 +143,26 @@ test_B3_2 = np.array([7, 8, 9])
 def test_determine_parallelepiped_corners2():
     """Checking if the second corner of the parallelepiped is correctly 
     determined."""
-    assert np.array_equal(tetrahedron_method.determine_parallelepiped_corners(test_point1,
+    assert np.allclose(tetrahedron_method.determine_parallelepiped_corners(test_point1,
         test_B1_2, test_B2_2, test_B3_2)[0], [7.1, 7.8, 9.3])
 
 def test_determine_parallelepiped_corners3():
     """Checking if the third corner of the parallelepiped is correctly 
     determined."""
-    assert np.array_equal(tetrahedron_method.determine_parallelepiped_corners(
+    assert np.allclose(tetrahedron_method.determine_parallelepiped_corners(
         test_point1, test_B1_2, test_B2_2, test_B3_2)[1], [4.1, 4.8, -5.7])
 
 def test_determine_parallelepiped_corners4():
     """Checking if the fourth corner of the parallelepiped is correctly 
     determined."""
-    assert np.array_equal(tetrahedron_method.determine_parallelepiped_corners(
-        test_point1, test_B1_2, test_B2_2, test_B3_2)[2], [1.1, 1.8, 3.3])
+    assert np.allclose(tetrahedron_method.determine_parallelepiped_corners(
+        test_point1, test_B1_2, test_B2_2, test_B3_2)[2], [11.1, 12.8, 3.3])
 
 def test_determine_parallelepiped_corners5():
     """Checking if the fifth corner of the parallelepiped is correctly 
     determined."""
     assert np.allclose(tetrahedron_method.determine_parallelepiped_corners(
-        test_point1, test_B1_2, test_B2_2, test_B3_2)[3], [11.1, 12.8, 3.3])
+        test_point1, test_B1_2, test_B2_2, test_B3_2)[3], [1.1, 1.8, 3.3])
 
 def test_determine_parallelepiped_corners6():
     """Checking if the sixth corner of the parallelepiped is correctly 
@@ -184,46 +184,77 @@ def test_determine_parallelepiped_corners8():
 
 
 # Tests for add_tetrahedron.
-test_tetrahedra_quadruples_1 = []
-# list of lists of indices of corners of tetrahedra used for testing.
 test_point_indices = np.array([1, 2, 3, 4, 5, 6, 7, 8])
 # indices of corners of parralelepiped used for testing.
+test_number_of_points = 8
 
 def test_add_tetrahedron1():
     # Checking if the tetrahedra quadruples are correctly generated.
+    test_tetrahedra_quadruples_1 = []
+    # list of lists of indices of corners of tetrahedra used for testing.
     test_shortest_diagonal1 = 1
     # the index of the shortest diagonal used for testing.
+    test_tetrahedra_by_point1 = [[] for x in range(test_number_of_points)]
+    """list of list of ints: for each k point in the grid, a list of the 
+    indices of each tetrahedron containing that k point is given."""
     assert tetrahedron_method.add_tetrahedron(test_tetrahedra_quadruples_1,
-        test_shortest_diagonal1, test_point_indices) == [[1, 4, 7, 8],
-        [1, 3, 7, 8], [1, 2, 5, 8], [1, 2, 6, 8], [1, 4, 6, 8], [1, 3, 5, 8]]
+        test_shortest_diagonal1, test_point_indices,
+        test_tetrahedra_by_point1) == ([[1, 4, 7, 8], [1, 3, 7, 8],
+        [1, 2, 5, 8], [1, 2, 6, 8], [1, 4, 6, 8], [1, 3, 5, 8]],
+        [[1, 2, 3, 4, 5, 6], [3, 4], [2, 6], [1, 5], [3, 6], [4, 5], [1, 2],
+         [1, 2, 3, 4, 5, 6]])
 
 def test_add_tetrahedron2():
     # Checking if the tetrahedra quadruples are correctly generated.
+    test_tetrahedra_quadruples_1 = []
+    # list of lists of indices of corners of tetrahedra used for testing.
     test_shortest_diagonal2 = 2
     # the index of the shortest diagonal used for testing.
+    test_tetrahedra_by_point1 = [[] for x in range(test_number_of_points)]
+    """list of list of ints: for each k point in the grid, a list of the 
+    indices of each tetrahedron containing that k point is given."""
     assert tetrahedron_method.add_tetrahedron(test_tetrahedra_quadruples_1,
-        test_shortest_diagonal2, test_point_indices) == [[4, 6, 2, 5],
-        [4, 6, 8, 5], [4, 1, 3, 5], [4, 7, 3, 5], [4, 7, 8, 5], [4, 1, 2, 5]]
+        test_shortest_diagonal2, test_point_indices,
+        test_tetrahedra_by_point1) == ([[4, 6, 2, 5], [4, 6, 8, 5],
+        [4, 1, 3, 5], [4, 7, 3, 5], [4, 7, 8, 5], [4, 1, 2, 5]], [[3, 6],
+        [1, 6], [3, 4], [1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6], [1, 2], [4, 5],
+        [2, 5]])
 
 def test_add_tetrahedron3():
     # Checking if the tetrahedra quadruples are correctly generated.
+    test_tetrahedra_quadruples_1 = []
+    # list of lists of indices of corners of tetrahedra used for testing.
     test_shortest_diagonal3 = 3
     # the index of the shortest diagonal used for testing.
+    test_tetrahedra_by_point1 = [[] for x in range(test_number_of_points)]
+    """list of list of ints: for each k point in the grid, a list of the 
+    indices of each tetrahedron containing that k point is given."""
     assert tetrahedron_method.add_tetrahedron(test_tetrahedra_quadruples_1,
-        test_shortest_diagonal3, test_point_indices) == [[3, 1, 4, 6],
-        [3, 7, 4, 6], [3, 1, 2, 6], [3, 7, 8, 6], [3, 5, 2, 6], [3, 5, 8, 6]]
+        test_shortest_diagonal3, test_point_indices,
+        test_tetrahedra_by_point1) == ([[3, 1, 4, 6], [3, 7, 4, 6],
+        [3, 1, 2, 6], [3, 7, 8, 6], [3, 5, 2, 6], [3, 5, 8, 6]], [[1, 3],
+        [3, 5], [1, 2, 3, 4, 5, 6], [1, 2], [5, 6], [1, 2, 3, 4, 5, 6], [2, 4],
+        [4, 6]])
 
 def test_add_tetrahedron4():
     # Checking if the tetrahedra quadruples are correctly generated.
+    test_tetrahedra_quadruples_1 = []
+    # list of lists of indices of corners of tetrahedra used for testing.
     test_shortest_diagonal4 = 4
     # the index of the shortest diagonal used for testing.
+    test_tetrahedra_by_point1 = [[] for x in range(test_number_of_points)]
+    """list of list of ints: for each k point in the grid, a list of the 
+    indices of each tetrahedron containing that k point is given."""
     assert tetrahedron_method.add_tetrahedron(test_tetrahedra_quadruples_1,
-        test_shortest_diagonal4, test_point_indices) == [[7, 8, 6, 2],
-        [7, 8, 5, 2], [7, 4, 6, 2], [7, 3, 5, 2], [7, 1, 4, 2], [7, 1, 3, 2]]
+        test_shortest_diagonal4, test_point_indices,
+        test_tetrahedra_by_point1) == ([[7, 8, 6, 2], [7, 8, 5, 2],
+        [7, 4, 6, 2], [7, 3, 5, 2], [7, 1, 4, 2], [7, 1, 3, 2]], [[5, 6],
+        [1, 2, 3, 4, 5, 6], [4, 6], [3, 5], [2, 4], [1, 3], [1, 2, 3, 4, 5, 6],
+        [1, 2]])
 
 
 # Tests for generate_tetrahedra
-test_grid1 = [[0, 0, 0], [.5, 0, 1], [-.5, 1, 0], [1, 0, 0], [0, 1, 1],
+test_grid1 = [[0, 0, 0], [.5, 0, 1], [-.5, 1, 0], [0, 1, 1], [1, 0, 0],
              [1.5, 0, 1], [.5, 1, 0],  [1, 1, 1]]
 # a grid of parallelepiped corner points used for testing.
 test_B1 = np.array([1, 0, 0])
@@ -234,18 +265,22 @@ test_B3 = np.array([.5, 0, 1])
 # the third reciprocal lattice vector used for testing.
 test_shortest_diagonal = 4
 # the index of the shortest diagonal used for testing.
+test_max_indices = [1, 1, 1]
 
 def test_1_generate_tetrahedra():
     # Checking if the correct tetrahedra quadruples are generated.
     assert tetrahedron_method.generate_tetrahedra(test_grid1, test_B1, test_B2,
-        test_B3, test_shortest_diagonal) == [[7, 8, 6, 2], [7, 8, 5, 2],
-        [7, 4, 6, 2], [7, 3, 5, 2], [7, 1, 4, 2], [7, 1, 3, 2]]
+        test_B3, test_shortest_diagonal, test_max_indices) == ([[7, 8, 6, 2],
+        [7, 8, 5, 2], [7, 4, 6, 2], [7, 3, 5, 2], [7, 1, 4, 2], [7, 1, 3, 2]],
+        [[5, 6], [1, 2, 3, 4, 5, 6], [4, 6], [3, 5], [2, 4], [1, 3],
+         [1, 2, 3, 4, 5, 6], [1, 2]])
 
 def test_2_generate_tetrahedra():
     """Checking if the indices in the tetrahedra quadruples are linked to the 
     right grid points."""
-    assert test_grid1[tetrahedron_method.generate_tetrahedra(test_grid1, test_B1,
-        test_B2, test_B3, test_shortest_diagonal)[0][0] - 1] == [.5, 1, 0]
+    assert test_grid1[tetrahedron_method.generate_tetrahedra(test_grid1,
+        test_B1, test_B2, test_B3, test_shortest_diagonal,
+        test_max_indices)[0][0][0] - 1] == [.5, 1, 0]
 
 
 # Tests for calculate_volume.
@@ -333,21 +368,21 @@ def test_number_of_states_for_tetrahedron1():
     test_E_Fermi1_1 = 4
     # the Fermi energy level used for testing.
     assert tetrahedron_method.number_of_states_for_tetrahedron(test_E_Fermi1_1,
-        test_E_values_1, test_V_G_1, test_V_T_1) == 1 / 6
+        test_E_values_1, test_V_G_1, test_V_T_1) == 1 / 6 * 8
 
 def test_number_of_states_for_tetrahedron2():
     # Checking if the correct number of states has been calculated.
     test_E_Fermi2_1 = .5
     # the Fermi energy level used for testing.
     assert math.isclose(tetrahedron_method.number_of_states_for_tetrahedron(
-        test_E_Fermi2_1, test_E_values_1, test_V_G_1, test_V_T_1), .15593129361)
+        test_E_Fermi2_1, test_E_values_1, test_V_G_1, test_V_T_1), .15593129361 * 8)
 
 def test_number_of_states_for_tetrahedron3():
     # Checking if the correct number of states has been calculated.
     test_E_Fermi3_1 = .3
     # the Fermi energy level used for testing.
     assert math.isclose(tetrahedron_method.number_of_states_for_tetrahedron(
-        test_E_Fermi3_1, test_E_values_1, test_V_G_1, test_V_T_1), .08553202031)
+        test_E_Fermi3_1, test_E_values_1, test_V_G_1, test_V_T_1), .08553202031 * 8)
 
 def test_number_of_states_for_tetrahedron4():
     # Checking if the correct number of states has been calculated.
@@ -355,14 +390,14 @@ def test_number_of_states_for_tetrahedron4():
     # the Fermi energy level used for testing.
     assert math.isclose(tetrahedron_method.number_of_states_for_tetrahedron(
         test_E_Fermi4_1, test_E_values_1, test_V_G_1, test_V_T_1),
-        .0004404255611984084114)
+        .0004404255611984084114 * 8)
 
 def test_number_of_states_for_tetrahedron5():
     # Checking if the correct number of states has been calculated.
     test_E_Fermi5_1 = -.1
     # the Fermi energy level used for testing.
     assert tetrahedron_method.number_of_states_for_tetrahedron(test_E_Fermi5_1,
-        test_E_values_1, test_V_G_1, test_V_T_1) == 0
+        test_E_values_1, test_V_G_1, test_V_T_1) == 0 * 8
 
 
 # Tests for adjust_fermi_level.
@@ -657,7 +692,7 @@ def test_calculate_weight_correction():
 
 
 # Tests for adjust_integration_weightings.
-test_tetrahedra_by_point = [[5, 6], [1, 2, 3, 4, 5, 6], [4, 6], [3, 5], [2, 4],
+test_tetrahedra_by_point2 = [[5, 6], [1, 2, 3, 4, 5, 6], [4, 6], [3, 5], [2, 4],
                             [1, 3], [1, 2, 3, 4, 5, 6], [1, 2]]
 # the indices of the tetrahedra containing each k point used for testing.
 test_corners_2 = [7, 8, 6, 2]
@@ -686,7 +721,7 @@ test_E_at_corners = np.array([.01, .1, .4, .7])
 def test_adjust_integration_weightings():
     # Checking if each of the integration weights are adjusted correctly.
     assert np.allclose(tetrahedron_method.adjust_integration_weightings(
-        test_tetrahedra_by_point, test_corners_2,
+        test_tetrahedra_by_point2, test_corners_2,
         test_E_values_by_tetrahedron_4, test_n_4, test_number_of_bands_4,
         test_density_by_tetrahedron_3, test_weightings, test_E_at_corners),
         np.array([1.061425, 2.006075, 2.9961, 3.916525]))

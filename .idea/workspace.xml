@@ -2,7 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c8e350bb-1183-4ae4-97e2-bd46b215a6e3" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.travis.yml" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rect_conv_plot.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tetr_conv_plot_weight_corrections.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tetrahedra_convergence_plot.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/convergence_plots.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/greens_function.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rectangular_method.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tetrahedron_method.py" afterPath="$PROJECT_DIR$/tetrahedron_method.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -17,8 +24,8 @@
       <file leaf-file-name="tetrahedron_method.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/tetrahedron_method.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="21">
-              <caret line="679" column="0" lean-forward="false" selection-start-line="679" selection-start-column="0" selection-end-line="679" selection-end-column="0" />
+            <state relative-caret-position="-596">
+              <caret line="1473" column="9" lean-forward="false" selection-start-line="1473" selection-start-column="9" selection-end-line="1473" selection-end-column="9" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -29,10 +36,67 @@
       <file leaf-file-name="test_tetrahedron_method.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test_tetrahedron_method.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="8379">
-              <caret line="401" column="0" lean-forward="false" selection-start-line="401" selection-start-column="0" selection-end-line="401" selection-end-column="0" />
+            <state relative-caret-position="-843">
+              <caret line="738" column="23" lean-forward="true" selection-start-line="738" selection-start-column="23" selection-end-line="738" selection-end-column="23" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="convergence_plots.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/convergence_plots.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="453">
+              <caret line="22" column="27" lean-forward="false" selection-start-line="22" selection-start-column="27" selection-end-line="22" selection-end-column="27" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tetrahedra_convergence_plot.png" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tetrahedra_convergence_plot.png">
+          <provider selected="true" editor-type-id="images">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="rect_conv_plot.png" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/rect_conv_plot.png">
+          <provider selected="true" editor-type-id="images">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="rectangular_method.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/rectangular_method.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="325">
+              <caret line="22" column="23" lean-forward="true" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="23" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tetr_conv_plot_weight_corrections.png" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tetr_conv_plot_weight_corrections.png">
+          <provider selected="true" editor-type-id="images">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="greens_function.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/greens_function.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="259">
+              <caret line="28" column="115" lean-forward="false" selection-start-line="28" selection-start-column="115" selection-end-line="28" selection-end-column="115" />
+              <folding>
+                <element signature="e#0#12#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -65,8 +129,8 @@
       <find>cluster</find>
       <find>add</find>
       <find>generate_te</find>
-      <find>print</find>
       <find>add_tetra</find>
+      <find>print</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -80,16 +144,19 @@
         <option value="$PROJECT_DIR$/test_integrate.py" />
         <option value="$PROJECT_DIR$/test_number_of_states_for_tetrahedron1.py" />
         <option value="$PROJECT_DIR$/random_tests.py" />
-        <option value="$PROJECT_DIR$/tetrahedron_method.py" />
         <option value="$PROJECT_DIR$/test_tetrahedron_method.py" />
+        <option value="$PROJECT_DIR$/greens_function.py" />
+        <option value="$PROJECT_DIR$/tetrahedron_method.py" />
+        <option value="$PROJECT_DIR$/convergence_plots.py" />
+        <option value="$PROJECT_DIR$/rectangular_method.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-9" />
-    <option name="y" value="-9" />
-    <option name="width" value="1698" />
-    <option name="height" value="1020" />
+    <option name="x" value="-11" />
+    <option name="y" value="-11" />
+    <option name="width" value="2038" />
+    <option name="height" value="1215" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -106,8 +173,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -145,55 +212,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python tests.Unnamed">
-    <configuration default="false" name="py.test for test_tetrahedron_method.test_calculate_volume" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="C:\Users\Kacey\AppData\Local\Programs\Python\Python36-32\python.exe" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="Tetrahedra_Integration" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_tetrahedron_method.test_calculate_volume&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method />
-    </configuration>
-    <configuration default="false" name="py.test for test_tetrahedron_method.test_add_tetrahedron1" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="C:\Users\Kacey\AppData\Local\Programs\Python\Python36-32\python.exe" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="Tetrahedra_Integration" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_tetrahedron_method.test_add_tetrahedron1&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method />
-    </configuration>
-    <configuration default="false" name="py.test for test_tetrahedron_method.test_add_tetrahedron2" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="C:\Users\Kacey\AppData\Local\Programs\Python\Python36-32\python.exe" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="Tetrahedra_Integration" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_tetrahedron_method.test_add_tetrahedron2&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Python.rectangular_method">
     <configuration default="false" name="py.test for test_tetrahedron_method.test_add_tetrahedron3" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -224,6 +243,60 @@
       <option name="_new_additionalArguments" value="&quot;&quot;" />
       <option name="_new_target" value="&quot;test_tetrahedron_method.test_add_tetrahedron4&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method />
+    </configuration>
+    <configuration default="false" name="greens_function" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Tetrahedra_Integration" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/greens_function.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="convergence_plots" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Tetrahedra_Integration" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/convergence_plots.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="rectangular_method" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Tetrahedra_Integration" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/rectangular_method.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
       <method />
     </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
@@ -381,19 +454,19 @@
       <item index="1" class="java.lang.String" itemvalue="Python tests.Unnamed" />
       <item index="2" class="java.lang.String" itemvalue="Python.Unnamed (1)" />
       <item index="3" class="java.lang.String" itemvalue="Python.Unnamed (2)" />
-      <item index="4" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_calculate_volume" />
-      <item index="5" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_add_tetrahedron1" />
-      <item index="6" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_add_tetrahedron2" />
-      <item index="7" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_add_tetrahedron3" />
-      <item index="8" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_add_tetrahedron4" />
+      <item index="4" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_add_tetrahedron3" />
+      <item index="5" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_add_tetrahedron4" />
+      <item index="6" class="java.lang.String" itemvalue="Python.greens_function" />
+      <item index="7" class="java.lang.String" itemvalue="Python.convergence_plots" />
+      <item index="8" class="java.lang.String" itemvalue="Python.rectangular_method" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_add_tetrahedron4" />
-        <item index="1" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_add_tetrahedron3" />
-        <item index="2" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_add_tetrahedron2" />
-        <item index="3" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_add_tetrahedron1" />
-        <item index="4" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_calculate_volume" />
+        <item index="0" class="java.lang.String" itemvalue="Python.rectangular_method" />
+        <item index="1" class="java.lang.String" itemvalue="Python.convergence_plots" />
+        <item index="2" class="java.lang.String" itemvalue="Python.greens_function" />
+        <item index="3" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_add_tetrahedron4" />
+        <item index="4" class="java.lang.String" itemvalue="Python tests.py.test for test_tetrahedron_method.test_add_tetrahedron3" />
       </list>
     </recent_temporary>
   </component>
@@ -452,12 +525,12 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1698" height="1020" extended-state="6" />
+    <frame x="-11" y="-11" width="2038" height="1215" extended-state="6" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.42231813" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.42394656" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289941" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.53846157" sideWeight="0.5043243" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28070176" sideWeight="0.49567568" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23372781" sideWeight="0.49567568" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289941" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24972972" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -509,66 +582,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/test_tetrahedron_method.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="13881">
-          <caret line="661" column="41" lean-forward="false" selection-start-line="661" selection-start-column="41" selection-end-line="661" selection-end-column="41" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tetrahedron_method.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21315">
-          <caret line="1015" column="0" lean-forward="true" selection-start-line="1015" selection-start-column="0" selection-end-line="1015" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test_tetrahedron_method.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="13587">
-          <caret line="647" column="157" lean-forward="false" selection-start-line="647" selection-start-column="157" selection-end-line="647" selection-end-column="157" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tetrahedron_method.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="27650">
-          <caret line="1106" column="79" lean-forward="false" selection-start-line="1106" selection-start-column="79" selection-end-line="1106" selection-end-column="79" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test_tetrahedron_method.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="13100">
-          <caret line="524" column="58" lean-forward="true" selection-start-line="524" selection-start-column="58" selection-end-line="524" selection-end-column="58" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tetrahedron_method.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test_tetrahedron_method.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="11193">
@@ -934,32 +947,76 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/random_tests.py" />
+    <entry file="file://$PROJECT_DIR$/.travis.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/greens_function.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="259">
+          <caret line="28" column="115" lean-forward="false" selection-start-line="28" selection-start-column="115" selection-end-line="28" selection-end-column="115" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/test_tetrahedron_method.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8379">
-          <caret line="401" column="0" lean-forward="false" selection-start-line="401" selection-start-column="0" selection-end-line="401" selection-end-column="0" />
+        <state relative-caret-position="-843">
+          <caret line="738" column="23" lean-forward="true" selection-start-line="738" selection-start-column="23" selection-end-line="738" selection-end-column="23" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/random_tests.py" />
-    <entry file="file://$PROJECT_DIR$/tetrahedron_method.py">
+    <entry file="file://$PROJECT_DIR$/tetr_conv_plot_weight_corrections.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rectangular_method.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21">
-          <caret line="679" column="0" lean-forward="false" selection-start-line="679" selection-start-column="0" selection-end-line="679" selection-end-column="0" />
+        <state relative-caret-position="325">
+          <caret line="22" column="23" lean-forward="true" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="23" />
           <folding>
-            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.travis.yml">
+    <entry file="file://$PROJECT_DIR$/convergence_plots.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="453">
+          <caret line="22" column="27" lean-forward="false" selection-start-line="22" selection-start-column="27" selection-end-line="22" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tetrahedra_convergence_plot.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rect_conv_plot.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tetrahedron_method.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-596">
+          <caret line="1473" column="9" lean-forward="false" selection-start-line="1473" selection-start-column="9" selection-end-line="1473" selection-end-column="9" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

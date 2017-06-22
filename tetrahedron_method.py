@@ -2,7 +2,6 @@ import math
 import numpy as np
 import time
 
-
 def generate_r_lattice_vectors(r_lattice_vectors):
     """Generates the reciprocal lattice vectors.
     
@@ -986,7 +985,6 @@ def calculate_fermi_energy(valence_electrons, energy_bands, V_G, V_T,
 
     # number of states function generation
     theoretical_number_of_states = valence_electrons / 2
-    print(theoretical_number_of_states)
     """float: the actual total number of states (integrated density of states) 
     for the reciprocal unit cell."""
     total_number_of_states = 0

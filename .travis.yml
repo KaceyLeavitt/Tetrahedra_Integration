@@ -1,11 +1,10 @@
 language: python
-cache: pip
 python:
     - "2.7"
     - "3.6"
 # command to install dependencies
 install:
-    - pip install --upgrade .
-    - pip install --upgrade tox-travis
+    - pip install .
+    - pip install tox
 # command to run tests
-script: tox-travis
+script: tox

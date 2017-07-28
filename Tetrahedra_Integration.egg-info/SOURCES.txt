@@ -1,5 +1,6 @@
 setup.cfg
 setup.py
+Tetrahedra_Integration/__init__.py
 Tetrahedra_Integration/convergence_plots.py
 Tetrahedra_Integration/greens_function.py
 Tetrahedra_Integration/rectangular_method.py

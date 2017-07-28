@@ -1607,8 +1607,8 @@ def integrate(r_lattice_vectors, grid_vecs, grid, PP, valence_electrons,
     method is used.
     
     This function is an implementation of the algorithm proposed in "Improved 
-    tetrahedron method for Brillouin-zone integrations" by Peter E. Blöchl, O. 
-    Jepsen, and O. K. Andersen from Physical Review B 49, 16223 – Published 15 
+    tetrahedron method for Brillouin-zone integrations" by Peter E. Blochl, O. 
+    Jepsen, and O. K. Andersen from Physical Review B 49, 16223 - Published 15 
     June 1994. It is modified in that the submesh vectors (grid_vecs) are not 
     necessarily the reciprocal lattice vectors divided by an integer.
     

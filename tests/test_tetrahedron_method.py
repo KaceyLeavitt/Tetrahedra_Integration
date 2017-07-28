@@ -1,4 +1,4 @@
-import tetrahedron_method
+from Tetrahedra_Integration.tetrahedron_method import *
 import numpy as np
 import math
 

@@ -1,0 +1,54 @@
+actionid: tox
+msg: packaging
+cmdargs: ['c:\\users\\leavi\\anaconda2\\python.exe', local('C:\\Users\\leavi\\Documents\\GitHub\\Tetrahedra_Integration\\setup.py'), 'sdist', '--formats=zip', '--dist-dir', local('C:\\Users\\leavi\\Documents\\GitHub\\Tetrahedra_Integration\\.tox\\dist')]
+env: None
+
+zip_safe flag not set; analyzing archive contents...
+warning: pypandoc module not found, could not convert Markdown to RST
+
+Installed c:\users\leavi\documents\github\tetrahedra_integration\.eggs\pytest_runner-2.11.1-py2.7.egg
+running sdist
+running egg_info
+creating Tetrahedra_Integration.egg-info
+writing requirements to Tetrahedra_Integration.egg-info\requires.txt
+writing Tetrahedra_Integration.egg-info\PKG-INFO
+writing top-level names to Tetrahedra_Integration.egg-info\top_level.txt
+writing dependency_links to Tetrahedra_Integration.egg-info\dependency_links.txt
+writing manifest file 'Tetrahedra_Integration.egg-info\SOURCES.txt'
+package init file 'Tetrahedra_Integration\__init__.py' not found (or not a regular file)
+reading manifest file 'Tetrahedra_Integration.egg-info\SOURCES.txt'
+writing manifest file 'Tetrahedra_Integration.egg-info\SOURCES.txt'
+warning: sdist: standard file not found: should have one of README, README.rst, README.txt
+
+running check
+creating Tetrahedra_Integration-0.0.1
+creating Tetrahedra_Integration-0.0.1\Tetrahedra_Integration
+creating Tetrahedra_Integration-0.0.1\Tetrahedra_Integration.egg-info
+copying files to Tetrahedra_Integration-0.0.1...
+copying setup.cfg -> Tetrahedra_Integration-0.0.1
+copying setup.py -> Tetrahedra_Integration-0.0.1
+copying Tetrahedra_Integration\convergence_plots.py -> Tetrahedra_Integration-0.0.1\Tetrahedra_Integration
+copying Tetrahedra_Integration\greens_function.py -> Tetrahedra_Integration-0.0.1\Tetrahedra_Integration
+copying Tetrahedra_Integration\rectangular_method.py -> Tetrahedra_Integration-0.0.1\Tetrahedra_Integration
+copying Tetrahedra_Integration\tetrahedron_method.py -> Tetrahedra_Integration-0.0.1\Tetrahedra_Integration
+copying Tetrahedra_Integration.egg-info\PKG-INFO -> Tetrahedra_Integration-0.0.1\Tetrahedra_Integration.egg-info
+copying Tetrahedra_Integration.egg-info\SOURCES.txt -> Tetrahedra_Integration-0.0.1\Tetrahedra_Integration.egg-info
+copying Tetrahedra_Integration.egg-info\dependency_links.txt -> Tetrahedra_Integration-0.0.1\Tetrahedra_Integration.egg-info
+copying Tetrahedra_Integration.egg-info\requires.txt -> Tetrahedra_Integration-0.0.1\Tetrahedra_Integration.egg-info
+copying Tetrahedra_Integration.egg-info\top_level.txt -> Tetrahedra_Integration-0.0.1\Tetrahedra_Integration.egg-info
+Writing Tetrahedra_Integration-0.0.1\setup.cfg
+creating C:\Users\leavi\Documents\GitHub\Tetrahedra_Integration\.tox\dist
+creating 'C:\Users\leavi\Documents\GitHub\Tetrahedra_Integration\.tox\dist\Tetrahedra_Integration-0.0.1.zip' and adding 'Tetrahedra_Integration-0.0.1' to it
+adding 'Tetrahedra_Integration-0.0.1\PKG-INFO'
+adding 'Tetrahedra_Integration-0.0.1\setup.cfg'
+adding 'Tetrahedra_Integration-0.0.1\setup.py'
+adding 'Tetrahedra_Integration-0.0.1\Tetrahedra_Integration\convergence_plots.py'
+adding 'Tetrahedra_Integration-0.0.1\Tetrahedra_Integration\greens_function.py'
+adding 'Tetrahedra_Integration-0.0.1\Tetrahedra_Integration\rectangular_method.py'
+adding 'Tetrahedra_Integration-0.0.1\Tetrahedra_Integration\tetrahedron_method.py'
+adding 'Tetrahedra_Integration-0.0.1\Tetrahedra_Integration.egg-info\dependency_links.txt'
+adding 'Tetrahedra_Integration-0.0.1\Tetrahedra_Integration.egg-info\PKG-INFO'
+adding 'Tetrahedra_Integration-0.0.1\Tetrahedra_Integration.egg-info\requires.txt'
+adding 'Tetrahedra_Integration-0.0.1\Tetrahedra_Integration.egg-info\SOURCES.txt'
+adding 'Tetrahedra_Integration-0.0.1\Tetrahedra_Integration.egg-info\top_level.txt'
+removing 'Tetrahedra_Integration-0.0.1' (and everything under it)

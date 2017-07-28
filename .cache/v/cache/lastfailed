@@ -1,1 +1,3 @@
-{}
+{
+  "tests/test_tetrahedron_method.py": true
+}

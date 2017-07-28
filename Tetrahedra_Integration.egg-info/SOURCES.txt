@@ -1,0 +1,11 @@
+setup.cfg
+setup.py
+Tetrahedra_Integration/convergence_plots.py
+Tetrahedra_Integration/greens_function.py
+Tetrahedra_Integration/rectangular_method.py
+Tetrahedra_Integration/tetrahedron_method.py
+Tetrahedra_Integration.egg-info/PKG-INFO
+Tetrahedra_Integration.egg-info/SOURCES.txt
+Tetrahedra_Integration.egg-info/dependency_links.txt
+Tetrahedra_Integration.egg-info/requires.txt
+Tetrahedra_Integration.egg-info/top_level.txt

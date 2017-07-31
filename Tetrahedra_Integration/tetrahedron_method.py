@@ -758,7 +758,7 @@ def bound_fermi_energy(valence_electrons, energy_bands):
         lower_bound (float): an initial lower bound on the Fermi energy level.
     """
 
-    band_index = math.ceil(valence_electrons / 2)
+    band_index = int(round(math.ceil(valence_electrons / 2.)))
     # int: the index of the energy band containing the Fermi energy level.
     band_minima = np.amin(energy_bands, axis=0)
     # NumPy array: the smallest energy value contained in each energy band.
@@ -863,32 +863,32 @@ def number_of_states_for_tetrahedron(E_Fermi, E_values, V_G, V_T):
 
     [E_1, E_2, E_3, E_4, E_21, E_31, E_32, E_41, E_42, E_43] = E_values
 
-    number_of_states = 0
+    number_of_states = 0.
     """float: the number-of-states for a given tetrahedron and Fermi energy 
     level."""
 
     if E_Fermi < E_1:
-        number_of_states = 0
+        number_of_states = 0.
     elif E_Fermi >= E_1 and E_Fermi < E_2:
-        number_of_states = V_T / V_G * (E_Fermi - E_1) ** 3 / (E_21 * E_31 *
+        number_of_states = V_T / V_G * (E_Fermi - E_1) ** 3. / (E_21 * E_31 *
                                                                E_41)
     elif E_Fermi >= E_2 and E_Fermi < E_3:
         number_of_states = V_T / (V_G * E_31 * E_41) * (E_21 ** 2 + 3 * E_21 *
-            (E_Fermi - E_2) + 3 * (E_Fermi - E_2) ** 2 - (E_31 + E_42) *
-            (E_Fermi - E_2) ** 3 / (E_32 * E_42))
+            (E_Fermi - E_2) + 3. * (E_Fermi - E_2) ** 2. - (E_31 + E_42) *
+            (E_Fermi - E_2) ** 3. / (E_32 * E_42))
     elif E_Fermi >= E_3 and E_Fermi < E_4:
-        number_of_states = V_T / V_G * (1 - (E_4 - E_Fermi) ** 3 / (E_41 *
+        number_of_states = V_T / V_G * (1. - (E_4 - E_Fermi) ** 3. / (E_41 *
                                                                 E_42 * E_43))
     elif E_Fermi >= E_4:
         number_of_states = V_T / V_G
 
-    number_of_states = number_of_states * 8
+    number_of_states = number_of_states * 8.
 
     return number_of_states
 
 
 def adjust_fermi_level(E_Fermi, upper_bound, lower_bound,
-                       total_number_of_states, theoretical_number_of_states,):
+                       total_number_of_states, theoretical_number_of_states):
     """Adjusts the upper and lower bounds on the Fermi energy level by 
     comparing the calculated number of states with the theoretical number of 
     states. The Fermi energy level is then set in between the upper and lower 
@@ -939,7 +939,7 @@ def adjust_fermi_level(E_Fermi, upper_bound, lower_bound,
         upper_bound = E_Fermi
         lower_bound = E_Fermi
 
-    E_Fermi = (upper_bound + lower_bound) / 2
+    E_Fermi = (upper_bound + lower_bound) / 2.
 
     return E_Fermi, upper_bound, lower_bound
 
@@ -974,7 +974,7 @@ def calculate_fermi_energy(valence_electrons, energy_bands, V_G, V_T,
                                                   energy_bands)
     """tuple of floats: an initial upper and lower bound on the Fermi energy 
     level respectively."""
-    E_Fermi = (lower_bound + upper_bound) / 2
+    E_Fermi = (lower_bound + upper_bound) / 2.
     """float: an initial value for the Fermi energy level that will be 
     iteratively refined by tightening the upper and lower bounds."""
 
@@ -984,7 +984,7 @@ def calculate_fermi_energy(valence_electrons, energy_bands, V_G, V_T,
     each band of each tetrahedron."""
 
     # number of states function generation
-    theoretical_number_of_states = valence_electrons / 2
+    theoretical_number_of_states = valence_electrons / 2.
     """float: the actual total number of states (integrated density of states) 
     for the reciprocal unit cell."""
     total_number_of_states = 0
@@ -996,12 +996,12 @@ def calculate_fermi_energy(valence_electrons, energy_bands, V_G, V_T,
     """float: the Fermi energy level is iteratively refined until the 
     calculated number of states varies by less than this amount from the 
     calculated number of states from the previous iteration."""
-    new_number_of_states = 2 * number_of_states_error_threshold
+    new_number_of_states = 2. * number_of_states_error_threshold
     """float: the calculated number of states from the most recent iteration. 
     This value is compared to the calculated number of states from the previous 
     iteration to know whether or not to further refine the Fermi energy 
     level."""
-    old_number_of_states = 0
+    old_number_of_states = 0.
     """float: the calculated number of states from the second most recent 
     iteration. This value is compared to the calculated number of states from 
     the most recent iteration to know whether or not to further refine the 
@@ -1010,7 +1010,7 @@ def calculate_fermi_energy(valence_electrons, energy_bands, V_G, V_T,
     while abs(new_number_of_states - old_number_of_states) > \
             number_of_states_error_threshold:
         old_number_of_states = total_number_of_states
-        total_number_of_states = 0
+        total_number_of_states = 0.
 
         for m in range(len(tetrahedra_quadruples)):
             # Each energy band is looped over
@@ -1110,24 +1110,24 @@ def add_density_of_states_for_tetrahedron(density_by_tetrahedron, E_Fermi,
 
     """The density of states at the fermi energy level for a given band for a 
     given tetrahedron is determined"""
-    density_of_states = 0
+    density_of_states = 0.
     """float: the density of states at the Fermi energy level for a given band 
     of a given tetrahedron."""
 
     if E_Fermi < E_1:
-        density_of_states = 0
+        density_of_states = 0.
     elif E_Fermi >= E_1 and E_Fermi < E_2:
-        density_of_states = V_T / V_G * 3 * (E_Fermi - E_1) ** 2 / (E_21 *
+        density_of_states = V_T / V_G * 3. * (E_Fermi - E_1) ** 2. / (E_21 *
                                                                 E_31 * E_41)
     elif E_Fermi >= E_2 and E_Fermi < E_3:
-        density_of_states = V_T / (V_G * E_31 * E_41) * (3 * E_21 + 6 *
-                            (E_Fermi - E_2) - 3 * (E_31 + E_42) * (E_Fermi -
-                            E_2) ** 2 / (E_32 * E_42))
+        density_of_states = V_T / (V_G * E_31 * E_41) * (3. * E_21 + 6. *
+                            (E_Fermi - E_2) - 3. * (E_31 + E_42) * (E_Fermi -
+                            E_2) ** 2. / (E_32 * E_42))
     elif E_Fermi >= E_3 and E_Fermi < E_4:
-        density_of_states = V_T / V_G * 3 * (E_4 - E_Fermi) ** 2 / (E_41 *
+        density_of_states = V_T / V_G * 3. * (E_4 - E_Fermi) ** 2. / (E_41 *
                                                                 E_42 * E_43)
     elif E_Fermi >= E_4:
-        density_of_states = 0
+        density_of_states = 0.
 
     density_by_tetrahedron.append(density_of_states)
 
@@ -1265,16 +1265,16 @@ def calculate_integration_weights(E_Fermi, E_values, V_G, V_T):
             the given tetrahedron for the given band.
     """
 
-    w_1 = 0
+    w_1 = 0.
     """float: the weighting assigned to the energy level at the first corner of 
     the tetrahedron when integration is being performed."""
-    w_2 = 0
+    w_2 = 0.
     """float: the weighting assigned to the energy level at the second corner 
     of the tetrahedron when integration is being performed."""
-    w_3 = 0
+    w_3 = 0.
     """float: the weighting assigned to the energy level at the third corner of 
     the tetrahedron when integration is being performed."""
-    w_4 = 0
+    w_4 = 0.
     """float: the weighting assigned to the energy level at the fourth corner 
     of the tetrahedron when integration is being performed."""
 
@@ -1304,31 +1304,31 @@ def calculate_integration_weights(E_Fermi, E_values, V_G, V_T):
     # float: a useful value for the following calculations.
 
     if E_Fermi < E_1:
-        w_1 = 0
-        w_2 = 0
-        w_3 = 0
-        w_4 = 0
+        w_1 = 0.
+        w_2 = 0.
+        w_3 = 0.
+        w_4 = 0.
     elif E_Fermi >= E_1 and E_Fermi < E_2:
         #C = V_T / (4 * V_G) * (E_Fermi - E_1) ** 3 / (E_21 * E_31 * E_41)
-        C = V_T / 4 * (E_Fermi - E_1) ** 3 / (E_21 * E_31 * E_41)
+        C = V_T / 4. * (E_Fermi - E_1) ** 3. / (E_21 * E_31 * E_41)
         """float: a useful value for the following calculations."""
 
-        w_1 = C * (4 - (E_Fermi - E_1) * (1 / E_21 + 1 / E_31 + 1 / E_41))
+        w_1 = C * (4. - (E_Fermi - E_1) * (1. / E_21 + 1. / E_31 + 1. / E_41))
         w_2 = C * (E_Fermi - E_1) / E_21
         w_3 = C * (E_Fermi - E_1) / E_31
         w_4 = C * (E_Fermi - E_1) / E_41
     elif E_Fermi >= E_2 and E_Fermi < E_3:
         #C_1 = V_T / (4 * V_G) * (E_Fermi - E_1) ** 2 / (E_41 * E_31)
-        C_1 = V_T / 4 * (E_Fermi - E_1) ** 2 / (E_41 * E_31)
+        C_1 = V_T / 4. * (E_Fermi - E_1) ** 2. / (E_41 * E_31)
         """float: a useful value for the following calculations."""
         """C_2 = V_T / (4 * V_G) * (E_Fermi - E_1) * (E_Fermi - E_2) * \
               (E_3 - E_Fermi) / (E_41 * E_32 * E_31)"""
-        C_2 = V_T / 4 * (E_Fermi - E_1) * (E_Fermi - E_2) * \
+        C_2 = V_T / 4. * (E_Fermi - E_1) * (E_Fermi - E_2) * \
               (E_3 - E_Fermi) / (E_41 * E_32 * E_31)
         """float: a useful value for the following calculations."""
         """C_3 = V_T / (4 * V_G) * (E_Fermi - E_2) ** 2 * (E_4 - E_Fermi) / \
               (E_42 * E_32 * E_41)"""
-        C_3 = V_T / 4 * (E_Fermi - E_2) ** 2 * (E_4 - E_Fermi) / \
+        C_3 = V_T / 4. * (E_Fermi - E_2) ** 2. * (E_4 - E_Fermi) / \
               (E_42 * E_32 * E_41)
         """float: a useful value for the following calculations."""
 
@@ -1342,28 +1342,28 @@ def calculate_integration_weights(E_Fermi, E_values, V_G, V_T):
               (E_Fermi - E_2) / E_42
     elif E_Fermi >= E_3 and E_Fermi < E_4:
         #C = V_T / (4 * V_G) * (E_4 - E_Fermi) ** 3 / (E_41 * E_42 * E_43)
-        C = V_T / 4 * (E_4 - E_Fermi) ** 3 / (E_41 * E_42 * E_43)
+        C = V_T / 4. * (E_4 - E_Fermi) ** 3. / (E_41 * E_42 * E_43)
         """float: a useful value for the following calculations."""
 
         #w_1 = V_T / (4 * V_G) - C * (E_4 - E_Fermi) / E_41
-        w_1 = V_T / 4 - C * (E_4 - E_Fermi) / E_41
+        w_1 = V_T / 4. - C * (E_4 - E_Fermi) / E_41
         #w_2 = V_T / (4 * V_G) - C * (E_4 - E_Fermi) / E_42
-        w_2 = V_T / 4 - C * (E_4 - E_Fermi) / E_42
+        w_2 = V_T / 4. - C * (E_4 - E_Fermi) / E_42
         #w_3 = V_T / (4 * V_G) - C * (E_4 - E_Fermi) / E_43
-        w_3 = V_T / 4 - C * (E_4 - E_Fermi) / E_43
+        w_3 = V_T / 4. - C * (E_4 - E_Fermi) / E_43
         """w_4 = V_T / (4 * V_G) - C * (4 - (1 / E_41 + 1 / E_42 + 1 / E_43) *
                                      (E_4 - E_Fermi))"""
-        w_4 = V_T / 4 - C * (4 - (1 / E_41 + 1 / E_42 + 1 / E_43) *
+        w_4 = V_T / 4. - C * (4. - (1. / E_41 + 1. / E_42 + 1. / E_43) *
                                      (E_4 - E_Fermi))
     elif E_Fermi >= E_4:
         #w_1 = V_T / (4 * V_G)
-        w_1 = V_T / 4
+        w_1 = V_T / 4.
         #w_2 = V_T / (4 * V_G)
-        w_2 = V_T / 4
+        w_2 = V_T / 4.
         #w_3 = V_T / (4 * V_G)
-        w_3 = V_T / 4
+        w_3 = V_T / 4.
         #w_4 = V_T / (4 * V_G)
-        w_4 = V_T / 4
+        w_4 = V_T / 4.
 
     weightings = np.array([w_1, w_2, w_3, w_4])
 
@@ -1394,7 +1394,7 @@ def calculate_weight_correction(adjacent_tetrahedra, E_values_by_tetrahedron,
             should be adjusted by to take curvature into account.
     """
 
-    weight_correction = 0
+    weight_correction = 0.
     """float: how much the weighting for the given corner should be adjusted by 
     to take curvature into account."""
 
@@ -1407,7 +1407,7 @@ def calculate_weight_correction(adjacent_tetrahedra, E_values_by_tetrahedron,
                                                 (adjacent_tetrahedra[p] - 1)]
         """float the density of states for the second tetrahedron that contains 
         the given corner of the first tetrahedron in question."""
-        corner_E_sum = 0
+        corner_E_sum = 0.
         """float: the sum of the difference between the energy value at the 
         given corner of the first tetrahedron and the the energy value at each 
         corner of the second tetrahedron."""
@@ -1415,7 +1415,7 @@ def calculate_weight_correction(adjacent_tetrahedra, E_values_by_tetrahedron,
         for q in range(4):
             corner_E_sum += E_for_adjacent_tetrahedron[q] - E
 
-        weight_correction += density_of_states / 40 * corner_E_sum
+        weight_correction += density_of_states / 40. * corner_E_sum
 
     return weight_correction
 
@@ -1548,7 +1548,7 @@ def perform_integration(E_values_by_tetrahedron, E_Fermi,
         total_energy
     """
 
-    total_energy = 0
+    total_energy = 0.
     """float: the total energy in the Brillouin zone. This value is the final 
     result of the integration."""
 
@@ -1704,7 +1704,7 @@ def integrate(r_lattice_vectors, grid_vecs, grid, PP, valence_electrons,
     states function"""
     V_G = calculate_volume(b1, b2, b3)
     """float: the volume of the reciprocal unit cell."""
-    V_T = calculate_volume(B1, B2, B3) / 6
+    V_T = calculate_volume(B1, B2, B3) / 6.
 
     """float: the volume of each tetrahedron in reciprocal space. Each 
     tetrahedron has an equal volume. The 6 is present because there are 6 

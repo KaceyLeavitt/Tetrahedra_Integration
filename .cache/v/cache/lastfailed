@@ -1,1 +1,6 @@
-{}
+{
+  "tests/test_tetrahedron_method.py::test_integrate1": true, 
+  "tests/test_tetrahedron_method.py::test_integrate2": true, 
+  "tests/test_tetrahedron_method.py::test_integrate3": true, 
+  "tests/test_tetrahedron_method.py::test_integrate4": true
+}

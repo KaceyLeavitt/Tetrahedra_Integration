@@ -757,7 +757,6 @@ def bound_fermi_energy(valence_electrons, energy_bands):
         upper_bound (float): an initial upper bound on the Fermi energy level.
         lower_bound (float): an initial lower bound on the Fermi energy level.
     """
-
     band_index = int(round(math.ceil(valence_electrons / 2.)))
     # int: the index of the energy band containing the Fermi energy level.
     band_minima = np.amin(energy_bands, axis=0)
@@ -882,6 +881,8 @@ def number_of_states_for_tetrahedron(E_Fermi, E_values, V_G, V_T):
     elif E_Fermi >= E_4:
         number_of_states = V_T / V_G
 
+    #number_of_states = number_of_states * V_G
+    
     return number_of_states
 
 
@@ -1036,14 +1037,14 @@ def calculate_fermi_energy(valence_electrons, energy_bands, V_G, V_T,
 
                 total_number_of_states = total_number_of_states + \
                                          number_of_states
-
+        
         # Adjust the Fermi level
         (E_Fermi, upper_bound, lower_bound) = adjust_fermi_level(E_Fermi,
             upper_bound, lower_bound, total_number_of_states,
             theoretical_number_of_states)
 
         new_number_of_states = total_number_of_states
-    
+
     print("The calculated Fermi Energy Level is:", E_Fermi, "+ or -",
           upper_bound - lower_bound)
 
@@ -1640,9 +1641,7 @@ def integrate(r_lattice_vectors, grid_vecs, grid, PP, valence_electrons,
             zone, the result of the integration.
     """
     start1 = time.time()
-    k = len(grid)
-    # int: the total number of points in the grid.
-
+    
     # reciprocal lattice vectors
     b1, b2, b3 = generate_r_lattice_vectors(r_lattice_vectors)
     """tuple of NumPy arrays: the first, second, and third reciprocal lattice 
@@ -1687,7 +1686,7 @@ def integrate(r_lattice_vectors, grid_vecs, grid, PP, valence_electrons,
     """NumPy array: the energy band levels for each point in the grid. Each row 
     corresponds to the point in the grid with the same index, and each column 
     corresponds to a different energy band."""
-
+    
     for m in range(len(grid)):
         k_vec = grid[m]
         """list of floats: the coordinates of the point that the energy levels 
@@ -1703,7 +1702,6 @@ def integrate(r_lattice_vectors, grid_vecs, grid, PP, valence_electrons,
     V_G = calculate_volume(b1, b2, b3)
     """float: the volume of the reciprocal unit cell."""
     V_T = calculate_volume(B1, B2, B3) / 6.
-
     """float: the volume of each tetrahedron in reciprocal space. Each 
     tetrahedron has an equal volume. The 6 is present because there are 6 
     tetrahedra per parallelepiped in the grid."""
@@ -1726,7 +1724,7 @@ def integrate(r_lattice_vectors, grid_vecs, grid, PP, valence_electrons,
     band of each tetrahedron."""
     end4 = time.time()
     #print(4, end4 - end3)
-    # tetrahedra_by_point = cluster_tetrahedra_by_point(tetrahedra_quadruples, k)
+    # tetrahedra_by_point = cluster_tetrahedra_by_point(tetrahedra_quadruples, len(grid))
     end5 = time.time()
     #print(5, end5 - end4)
     """Integration weights at the corners of each tetrahedron are calculated 

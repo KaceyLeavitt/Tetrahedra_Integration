@@ -4,7 +4,25 @@ import tetrahedron_method
 import matplotlib.pyplot as plt
 import scipy.integrate as integrate
 
+"""Creates convergence plots for the total energy for grids in the first reciprocal unit 
+cell."""
+
 def toy_energy1(k_point, number_of_bands):
+    """A toy energy model used for testing.
+
+    Args:
+        k_point (:obj:'numpy.ndarray' of :obj:'numpy.float64'): the point to calculate the 
+            energy density at.
+        number_of_bands (int): the number of eigenvalues to return. Unlike the real energy 
+            density functions, only one value is generated regardless of the value of this 
+            parameter.
+    
+    Returns:
+        energy (float): the energy density at the k_point. Calculated using the Free 
+            Electron Model with E = r ^ 2 where E is the energy density and r is the 
+            distance from the origin.
+    """
+
     energy = np.dot(k_point, k_point)
     return energy
 

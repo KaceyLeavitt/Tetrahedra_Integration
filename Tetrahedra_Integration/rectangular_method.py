@@ -3,6 +3,9 @@ import matplotlib.pyplot as plt
 import math
 import scipy.integrate as integrate
 
+"""Calculates the total energy in the first reciprocal unit cell by 
+integrating the energy density using the rectangle method."""
+
 def toy_energy1(k_point, number_of_bands):
     energy = np.dot(k_point, k_point)
     return energy
